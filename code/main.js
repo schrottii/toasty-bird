@@ -10,6 +10,7 @@ var time = Date.now();
 var width = 0;
 var height = 0;
 
+// the holy quattroformaggi
 var images = {
     placeholder: "sosnog.png",
 }
@@ -26,6 +27,7 @@ var clickables = {
 
 }
 
+// loading stuff
 var loadingImages = 0;
 var loadedImages = 0;
 
@@ -37,20 +39,34 @@ function loadImages() {
             loadedImages++;
             if (loadingImages == loadedImages) {
                 console.log("all images loaded");
-                loop(); // start game
+                init(); // start game
             }
         }
         images[image] = img;
         loadingImages++;
     }
 }
-loadImages();
+
+// scene stuff
+var currentScene = "none";
+
+class Scene {
+    constructor(init, loop) {
+        this.init = init;
+        this.loop = loop;
+    }
+}
 
 function loadScene(sceneName) {
+    console.log("loading scene: " + sceneName)
+    if (scenes[sceneName] == undefined) return false;
+
+    currentScene = sceneName;
+
     objects = {};
     clickables = {};
 
-    console.log("loaded scene: " + sceneName)
+    scenes[sceneName].init();
 }
 
 // event listeners and their functions
@@ -135,11 +151,15 @@ function createText(name, x, y, text, color, fontSize) {
 }
 
 function createClickable(clickableName, x, y, w, h, onClick) {
-    // onclick = ["name", () => { function }]
-
     if (clickables[clickableName] == undefined) {
         clickables[clickableName] = [width * x, height * y, width * w, height * h, onClick];
-        // example: myButton: 100, 100, 300, 300, () => { ... }
+    }
+}
+
+function createButton(clickableName, x, y, w, h, color, onClick) {
+    if (objects[name] == undefined && clickables[clickableName] == undefined) {
+        objects[name] = new Square(x, y, w, h, color);
+        clickables[clickableName] = [width * x, height * y, width * w, height * h, onClick];
     }
 
 }
@@ -159,16 +179,31 @@ function loop() {
     width = window.innerWidth;
     height = window.innerHeight;
 
-    for (o in objects) {
-        objects[o].render();
+    // loop
+    if (currentScene != "none") {
+        scenes[currentScene].loop();
+
+        for (o in objects) {
+            objects[o].render();
+        }
+    }
+    else {
+        // Loading images / no scene selected
+        ctx.font = "40px serif";
+        ctx.fillStyle = "white";
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "center";
+
+        ctx.fillText("Toasty Bird", width / 2, height / 4);
+        ctx.fillText("Loaded: " + loadedImages + "/" + loadingImages, width / 2, height / 2);
     }
 
-    // exmp
-    createSquare("ex1", 0.4, 0.4, 0.2, 0.2, "white");
-
-    createClickable("ex1", 0.4, 0.4, 0.2, 0.2, () => { objects.buddha.text = "Jesus is dead!" });
-    createText("buddha", 0.5, 0.5, "Jesus is born!");
-
-    // loop
     requestAnimationFrame(loop);
+}
+
+// init the game
+loop();
+loadImages();
+function init() {
+    loadScene("mainmenu");
 }
