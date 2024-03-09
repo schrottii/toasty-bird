@@ -10,6 +10,10 @@ var time = Date.now();
 var width = 0;
 var height = 0;
 
+var images = {
+    placeholder: "sosnog.png",
+}
+
 var scenes = {
 
 }
@@ -21,6 +25,26 @@ var objects = {
 var clickables = {
 
 }
+
+var loadingImages = 0;
+var loadedImages = 0;
+
+function loadImages() {
+    for (let image in images) {
+        let img = new Image();
+        img.src = "images/" + images[image];
+        img.onload = () => {
+            loadedImages++;
+            if (loadingImages == loadedImages) {
+                console.log("all images loaded");
+                loop(); // start game
+            }
+        }
+        images[image] = img;
+        loadingImages++;
+    }
+}
+loadImages();
 
 function loadScene(sceneName) {
     objects = {};
@@ -48,29 +72,69 @@ function onClick(e) {
     }
 }
 
+// object functions
+class Square {
+    constructor(x, y, w, h, color) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.color = color;
+    }
 
-
-// draw functions
-function drawSquare(x, y, w, h, color = "black") {
-    ctx.fillStyle = color;
-    ctx.fillRect(width * x, height * y, width * w, height * h);
+    render() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(width * this.x, height * this.y, width * this.w, height * this.h);
+    }
 }
 
-function drawImage(x, y, w, h, image) {
-    ctx.fillStyle = color;
-    ctx.drawImage(image, width * x, height * y, width * w, height * h);
+class Picture {
+    constructor(x, y, w, h, image) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.image = image;
+    }
+
+    render() {
+        ctx.drawImage(this.image, width * this.x, height * this.y, width * this.w, height * this.h);
+    }
 }
 
-function drawText(x, y, text, color = "black", fontSize = 20) {
-    ctx.fillStyle = color;
-    ctx.font = fontSize + "px serif";
-    ctx.textBaseline = "bottom";
-    ctx.textAlign = "center";
+class Text {
+    constructor(x, y, text, color, fontSize) {
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.color = color;
+        this.fontSize = fontSize;
+    }
 
-    ctx.fillText(text, width * x, height * y);
+    render() {
+        ctx.fillStyle = this.color ? this.color : "black";
+        ctx.font = (this.fontSize ? this.fontSize : 20) + "px serif";
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "center";
+
+        ctx.fillText(this.text, width * this.x, height * this.y);
+    }
 }
 
-function addButton(x, y, w, h, clickableName, onClick) {
+// create functions
+function createSquare(name, x, y, w, h, color) {
+    if (objects[name] == undefined) objects[name] = new Square(x, y, w, h, color);
+}
+
+function createImage(name, x, y, w, h, image) {
+    if (objects[name] == undefined) objects[name] = new Picture(x, y, w, h, image);
+}
+
+function createText(name, x, y, text, color, fontSize) {
+    if (objects[name] == undefined) objects[name] = new Text(x, y, text, color, fontSize);
+}
+
+function createClickable(clickableName, x, y, w, h, onClick) {
     // onclick = ["name", () => { function }]
 
     if (clickables[clickableName] == undefined) {
@@ -95,12 +159,16 @@ function loop() {
     width = window.innerWidth;
     height = window.innerHeight;
 
+    for (o in objects) {
+        objects[o].render();
+    }
+
     // exmp
-    drawSquare(0.4, 0.4, 0.2, 0.2, "white");
-    addButton(0.4, 0.4, 0.2, 0.2, "ex1", () => { console.log("heyo") });
-    drawText(0.5, 0.5, "Jesus is born!");
+    createSquare("ex1", 0.4, 0.4, 0.2, 0.2, "white");
+
+    createClickable("ex1", 0.4, 0.4, 0.2, 0.2, () => { objects.buddha.text = "Jesus is dead!" });
+    createText("buddha", 0.5, 0.5, "Jesus is born!");
 
     // loop
     requestAnimationFrame(loop);
 }
-loop();
