@@ -22,6 +22,7 @@ scenes["mainmenu"] = new Scene(
 
             pipes = [];
             pipeSpawnTime = 1;
+            gameAcceleration = 1;
             points = 0;
             gameState = "running";
             loadScene("play");
