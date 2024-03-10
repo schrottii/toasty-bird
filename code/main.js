@@ -250,6 +250,8 @@ function init() {
         game.loadFromSaveGame(JSON.parse(atob(cachedGame.slice(6))));
     }
 
+    musicPlayer.loop = true;
+
     createClickable("startMusic", 0, 0, 1, 1, () => {
         loadScene("mainmenu");
     });
