@@ -151,12 +151,16 @@ class Text {
 
     render() {
         ctx.fillStyle = this.color ? this.color : "black";
-        ctx.font = ((this.fontSize ? this.fontSize : 20) * (width > 480 ? 1 : 0.5)) + "px serif";
+        ctx.font = ((this.fontSize ? this.fontSize : 20) * (isMobile() ? 0.5 : 1)) + "px serif";
         ctx.textBaseline = "bottom";
         ctx.textAlign = this.textAlign ? this.textAlign : "center";
 
         ctx.fillText(this.text, width * this.x, height * this.y);
     }
+}
+
+function isMobile() {
+    return /Mobi/i.test(window.navigator.userAgent) || width <= 480;
 }
 
 // create functions

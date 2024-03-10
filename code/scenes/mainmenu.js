@@ -21,7 +21,7 @@ scenes["mainmenu"] = new Scene(
             game.stats.totalplays += 1;
 
             pipes = [];
-            pipeSpawnTime = 0;
+            pipeSpawnTime = 1;
             points = 0;
             gameState = "running";
             loadScene("play");
@@ -54,7 +54,7 @@ scenes["mainmenu"] = new Scene(
             objects["menuground3"].x = 0;
         }
 
-        if (width <= 480) {
+        if (isMobile()) {
             objects["buttonText3"].text = "Discord";
         }
     }

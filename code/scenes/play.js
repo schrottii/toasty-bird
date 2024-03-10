@@ -1,7 +1,7 @@
 // Game made by Schrottii - don't steal or cheat
 
 var pipes = [];
-var pipeSpawnTime = 0;
+var pipeSpawnTime = 1;
 var pipesAmount = 0;
 var gameAcceleration = 1;
 var gameState = "running"; // running / lost / paused
@@ -84,8 +84,8 @@ scenes["play"] = new Scene(
 
             let thisPipe = objects[pipes[p][0]];
             if (gameState == "running") {
-                pipes[p][1] -= gameAcceleration * tick / 4 * (width > 480 ? 1 : 4);
-                objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (width > 480 ? 1 : 4);
+                pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 4 : 1);
+                objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 4 : 1);
             }
 
             // Player-Pipe Collision
