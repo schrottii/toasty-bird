@@ -14,6 +14,7 @@ var height = 0;
 // the holy quattroformaggi
 var images = {
     placeholder: "sosnog.png",
+    gameLogo: "toasty-bird-by-tpot.png",
     logo: "logo.png",
     button: "button.png",
     player: "player.png",
@@ -24,6 +25,10 @@ var images = {
 
     pipeUp: "pipe-up.png",
     pipeDown: "pipe-down.png",
+
+    whiteDiscord: "white-dc-logo.png",
+    whiteNotes: "white-patch-notes.png",
+    whiteWebsite: "white-website.png",
 }
 
 var scenes = {
@@ -151,7 +156,7 @@ class Text {
 
     render() {
         ctx.fillStyle = this.color ? this.color : "black";
-        ctx.font = ((this.fontSize ? this.fontSize : 20) * (isMobile() ? 0.5 : 1)) + "px serif";
+        ctx.font = ((this.fontSize ? this.fontSize : 20) * (isMobile() ? 0.5 : 1)) + "px Joystix";
         ctx.textBaseline = "bottom";
         ctx.textAlign = this.textAlign ? this.textAlign : "center";
 
@@ -160,6 +165,8 @@ class Text {
 }
 
 function isMobile() {
+    if (game.settings.device == "pc") return false;
+    if (game.settings.device == "mobile") return true;
     return /Mobi/i.test(window.navigator.userAgent) || width <= 480;
 }
 
@@ -188,10 +195,11 @@ function createClickable(clickableName, x, y, w, h, onClick) {
     }
 }
 
-function createButton(clickableName, x, y, w, h, color, onClick) {
+function createButton(clickableName, x, y, w, h, color, onClick, quadratic = false) {
     if (objects[clickableName] == undefined && clickables[clickableName] == undefined) {
-        objects[clickableName] = new Picture(x, y, w, h, color);
-        clickables[clickableName] = [width * x, height * y, width * w, height * h, onClick];
+        objects[clickableName] = new Picture(x, y, w, h, color, quadratic);
+        if (quadratic) clickables[clickableName] = [width * x - ((height * h) / 2), height * y, height * h, height * h, onClick];
+        else clickables[clickableName] = [width * x, height * y, width * w, height * h, onClick];
     }
 
 }
@@ -226,7 +234,7 @@ function loop() {
     }
     else {
         // Loading images / no scene selected
-        ctx.font = "40px serif";
+        ctx.font = "40px Joystix";
         ctx.fillStyle = "white";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "center";

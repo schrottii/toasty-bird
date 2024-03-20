@@ -47,7 +47,7 @@ scenes["play"] = new Scene(
         objects["cloud4"].snip = [0, 96, 64, 32];
 
         musicPlayer.src = "audio/toasty-bird.mp3";
-        musicPlayer.play();
+        if (game.settings.music) musicPlayer.play();
     },
     (tick) => {
         // Loop
@@ -84,8 +84,8 @@ scenes["play"] = new Scene(
 
             let thisPipe = objects[pipes[p][0]];
             if (gameState == "running") {
-                pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 4 : 1);
-                objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 4 : 1);
+                pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
+                objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
             }
 
             // Player-Pipe Collision
@@ -101,7 +101,7 @@ scenes["play"] = new Scene(
                 && foregroundObjects.player.y >= thisPipe.y * 1.3 && foregroundObjects.player.y <= thisPipe.y + (thisPipe.h * 0.7)) {
                 gameState = "lost";
 
-                createText("lostText", 0.5, 0.3, "You lost! Score: " + points, "red", 72);
+                createText("lostText", 0.5, 0.3, isMobile() ? "Score: " + points : "You lost! Score: " + points, "red", 60);
                 if (points > game.stats.highscore) createText("lostText2", 0.5, 0.42, "New Highscore!", "yellow", 42);
                 createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
                     if (points > game.stats.highscore) game.stats.highscore = points;
@@ -137,7 +137,7 @@ scenes["play"] = new Scene(
                 }
             }
             foregroundObjects.player.rotatevelocity = (foregroundObjects.player.rotatevelocity * 0.9) + (foregroundObjects.player.velocity * 0.1);
-            foregroundObjects.player.rotate = Math.max(-0.3, Math.min(0.3, -foregroundObjects.player.rotatevelocity * 15));
+            foregroundObjects.player.rotate = Math.max(-0.2, Math.min(0.2, -foregroundObjects.player.rotatevelocity * 12));
         }
 
         // Clouds

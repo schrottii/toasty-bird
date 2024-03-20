@@ -17,6 +17,10 @@ class SaveGame {
 
             totaltime: 0,
         }
+        this.settings = {
+            music: true,
+            device: "automatic",
+        }
     }
     loadFromSaveGame(sg) {
         this.id = sg.id;
@@ -25,6 +29,7 @@ class SaveGame {
         let tempEmptyStats = new SaveGame();
         tempEmptyStats.new();
         this.stats = Object.assign({}, tempEmptyStats.stats, sg.stats);
+        this.settings = Object.assign({}, tempEmptyStats.settings, sg.settings);
     }
 }
 

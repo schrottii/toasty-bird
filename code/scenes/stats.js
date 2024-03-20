@@ -12,11 +12,11 @@ scenes["stats"] = new Scene(
 
         createText("header", 0.5, 0.2, "Stats", "black", 80);
         createText("playerName", 0.5, 0.3, "Player", "black", 80);
-        createButton("playerNameButton", 0.75, 0.25, 0.05, 0.05, "button", () => {
+        createButton("playerNameButton", 0.75, 0.15, 0.05, 0.05, "button", () => {
             let newName = prompt("New player name?", "Peter").slice(0, 8);
             game.name = newName;
         });
-        createText("playerNameButtonText", 0.775, 0.3, "*", "black", 40);
+        createText("playerNameButtonText", 0.775, 0.2, "*", "black", 40);
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {

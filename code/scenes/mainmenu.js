@@ -10,10 +10,12 @@ scenes["mainmenu"] = new Scene(
         createImage("menuground", 0, 0.8, 2, 0.1, "menuground");
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
+        createImage("gameLogo", 0.7, 0.4, 0.3, 0.3, "gameLogo", true);
+
 
 
         createImage("logo", 0.5, 0.125, 0.4, 0.25, "logo", true);
-        createText("version", 0.975, 0.8, "Version 1.0", "black", 60, "right");
+        createText("version", 0.975, 0.8, "Version " + gameVersion, "black", 40, "right");
 
         // Play button
         createButton("playbutton", 0.4, 0.4, 0.2, 0.1, "button", () => {
@@ -35,14 +37,31 @@ scenes["mainmenu"] = new Scene(
         });
         createText("buttonText2", 0.5, 0.6, "Stats", "black", 40);
 
-        // Server button
-        createButton("serverbutton", 0.4, 0.65, 0.2, 0.1, "button", () => {
-            window.open("https://discord.gg/CbBeJXKUrk");
+        // Settings button
+        createButton("settingsbutton", 0.4, 0.65, 0.2, 0.1, "button", () => {
+            loadScene("settings");
         });
-        createText("buttonText3", 0.5, 0.725, "Discord Server", "black", 40);
+        createText("buttonText3", 0.5, 0.725, "Settings", "black", 40);
+        
+        // Left Icons
+        createButton("serverbutton", 0.1, 0.4, 0.08, 0.08, "whiteDiscord", () => {
+            window.open("https://discord.gg/CbBeJXKUrk");
+        }, true);
+        createText("wButtonText1", 0.14, 0.46, "Discord", "white", 32, "left");
+
+        createButton("patchnotesbutton", 0.1, 0.5, 0.08, 0.08, "whiteNotes", () => {
+            loadScene("patchnotes");
+        }, true);
+        createText("wButtonText2", 0.14, 0.56, "Patch notes", "white", 32, "left");
+
+        createButton("websitebutton", 0.1, 0.6, 0.08, 0.08, "whiteWebsite", () => {
+            window.open("https://schrottii.github.io/");
+        }, true);
+        createText("wButtonText3", 0.14, 0.66, "Website", "white", 32, "left");
 
         musicPlayer.src = "audio/menu-theme.mp3";
-        musicPlayer.play();
+        musicPlayer.volume = game.settings.music ? 1 : 0;
+        if (game.settings.music) musicPlayer.play();
     },
     (tick) => {
         // Loop
@@ -56,7 +75,9 @@ scenes["mainmenu"] = new Scene(
         }
 
         if (isMobile()) {
-            objects["buttonText3"].text = "Discord";
+            objects["wButtonText1"].y = 10;
+            objects["wButtonText2"].y = 10;
+            objects["wButtonText3"].y = 10;
         }
     }
 );
