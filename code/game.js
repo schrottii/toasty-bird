@@ -5,15 +5,21 @@ class SaveGame {
         this.id = Math.random().toString(16).slice(2);
         this.name = "Player";
 
+        this.coins = 0;
+        this.skin = 0;
+        this.skins = [0];
+
         this.stats = {
             highscore: 0,
             normalpoints: 0,
             normalplays: 0,
             normaljumps: 0,
+            normalcoins: 0,
 
             totalpoints: 0,
             totalplays: 0,
             totaljumps: 0,
+            totalcoins: 0,
 
             totaltime: 0,
         }
@@ -26,10 +32,14 @@ class SaveGame {
         this.id = sg.id;
         this.name = sg.name;
 
+        this.skin = sg.skin != undefined ? sg.skin : 0;
+        this.coins = sg.coins != undefined ? sg.coins : 0;
+
         let tempEmptyStats = new SaveGame();
         tempEmptyStats.new();
         this.stats = Object.assign({}, tempEmptyStats.stats, sg.stats);
         this.settings = Object.assign({}, tempEmptyStats.settings, sg.settings);
+        this.skins = Object.assign([], tempEmptyStats.skins, sg.skins);
     }
 }
 

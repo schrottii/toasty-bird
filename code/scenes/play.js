@@ -7,6 +7,19 @@ var gameAcceleration = 1;
 var gameState = "running"; // running / lost / paused
 var points = 0;
 
+function jump() {
+    if (currentScene != "play") return false;
+    // Jump!
+    if (foregroundObjects.player.upTicks == 0 && gameState == "running") {
+        foregroundObjects.player.velocity = -0.008;
+        foregroundObjects.player.upTicks = 24;
+        foregroundObjects.player.snip = [0, 32, 32, 32];
+
+        game.stats.totaljumps += 1;
+        game.stats.normaljumps += 1;
+    }
+}
+
 scenes["play"] = new Scene(
     () => {
         // Init
@@ -18,22 +31,14 @@ scenes["play"] = new Scene(
         createText("pointsDisplay", 0.5, 0.1, "0 Points", "black", 40, "center", true);
 
         // Player
-        createImage("player", 0.1, 0.25, 0.1, 0.1, "player", true, true);
+        createImage("player", 0.1, 0.25, 0.1, 0.1, "skins/" + getSkin(game.skin), true, true);
         foregroundObjects.player.velocity = 0.003;
         foregroundObjects.player.rotatevelocity = 0.003;
         foregroundObjects.player.upTicks = 0;
         foregroundObjects.player.snip = [0, 0, 32, 32];
 
         createClickable("jump", 0, 0, 1, 1, () => {
-            // Jump!
-            if (foregroundObjects.player.upTicks == 0 && gameState == "running") {
-                foregroundObjects.player.velocity = -0.008;
-                foregroundObjects.player.upTicks = 24;
-                foregroundObjects.player.snip = [0, 32, 32, 32];
-
-                game.stats.totaljumps += 1;
-                game.stats.normaljumps += 1;
-            }
+            jump();
         });
 
         // Clouds
@@ -47,6 +52,7 @@ scenes["play"] = new Scene(
         objects["cloud4"].snip = [0, 96, 64, 32];
 
         musicPlayer.src = "audio/toasty-bird.mp3";
+        musicPlayer.volume = game.settings.music ? 1 : 0;
         if (game.settings.music) musicPlayer.play();
     },
     (tick) => {
@@ -72,6 +78,8 @@ scenes["play"] = new Scene(
             createImage("pipe" + pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeUp", true);
             pipesAmount += 1;
 
+            if (points % 50 == 47) createImage("coin" + pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "coin", true);
+
             spawnY = (randomY - 0.3);
             pipes.push(["pipe" + pipesAmount, 1.2, false]);
             createImage("pipe" + pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeDown", true);
@@ -86,6 +94,7 @@ scenes["play"] = new Scene(
             if (gameState == "running") {
                 pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
                 objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
+                if (objects["coin" + pipes[p][0].substr(4)] != undefined) objects["coin" + pipes[p][0].substr(4)].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
             }
 
             // Player-Pipe Collision
@@ -115,6 +124,11 @@ scenes["play"] = new Scene(
                 points += 1;
                 game.stats.totalpoints += 1;
                 game.stats.normalpoints += 1;
+                if (objects["coin" + (parseInt(pipes[p][0].substr(4)) + 1)] != undefined) {
+                    game.coins += 1;
+                    game.stats.totalcoins += 1;
+                    game.stats.normalcoins += 1;
+                }
 
                 pipes[p][2] = true;
                 pipes[p + 1][2] = true;

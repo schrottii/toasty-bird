@@ -17,11 +17,19 @@ var images = {
     gameLogo: "toasty-bird-by-tpot.png",
     logo: "logo.png",
     button: "button.png",
-    player: "player.png",
+    unknown: "unknown.png",
+
+    //skins
+    "skins/player": "skins/player.png",
+    "skins/bald": "skins/bald.png",
+    "skins/female": "skins/player-female.png",
+    "skins/elmenda": "skins/elmenda.png",
+
 
     menuground: "menu-ground.png",
     menuground2: "menu-ground2.png",
     clouds: "clouds.png",
+    coin: "coin.png",
 
     pipeUp: "pipe-up.png",
     pipeDown: "pipe-down.png",
@@ -29,6 +37,7 @@ var images = {
     whiteDiscord: "white-dc-logo.png",
     whiteNotes: "white-patch-notes.png",
     whiteWebsite: "white-website.png",
+    whiteShop: "shop.png",
 }
 
 var scenes = {
@@ -92,6 +101,12 @@ function loadScene(sceneName) {
 
 // event listeners and their functions
 canvas.addEventListener("pointerdown", onClick);
+document.addEventListener('keydown', event => {
+    if (event.code === 'Space') {
+        console.log('Space pressed');
+        jump();
+    }
+})
 
 function onClick(e) {
     let mouseX = e.clientX;
@@ -104,7 +119,7 @@ function onClick(e) {
         if (mouseX > clickables[c][0] && mouseY > clickables[c][1]
             && mouseX < clickables[c][0] + clickables[c][2] && mouseY < clickables[c][1] + clickables[c][3]) {
             // is in the hitbox
-            clickables[c][4]();
+            clickables[c][4](c);
         }
     }
 }
