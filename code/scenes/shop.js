@@ -30,7 +30,7 @@ scenes["shop"] = new Scene(
         // the offer
 
         // skin 1
-        let ski = (new Date().getUTCDate() * new Date().getUTCMonth()) % skins.length;
+        let ski = (new Date().getUTCDate() /** new Date().getUTCMonth()*/) % skins.length;
         createButton("skin" + ski, 0.5, 0.2, 0.15, 0.15, "unknown", (me) => {
             buySkin(me.substr(4));
         }, true);
