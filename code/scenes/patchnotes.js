@@ -1,5 +1,5 @@
-var gameVersion = "1.2";
-var newestVersion = 2;
+var gameVersion = "1.2.1";
+var newestVersion = 3;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -26,6 +26,8 @@ const patchnotes = {
         ],
     "v1.2":
         [
+            "The Skins & Shop Update",
+            "",
             "-> Skins:",
             "- Added skins and coins!",
             "- Added the skins menu!",
@@ -51,6 +53,27 @@ const patchnotes = {
             "-> Space support:",
             "- Space bar can now also be used to jump",
             "- It can be held to keep jumping",
+        ],
+    "v1.2.1":
+        [
+            "The More Skin Update",
+            "",
+            "-> Skins:",
+            "- Added 4 new skins (8 total)",
+            "- Added a second row for the new skins",
+            "- Added skin names",
+            "- Skin names are visible in the selection",
+            "-> Shop:",
+            "- Skin names are also visible here",
+            "- Skins in the shop are now animated to offer",
+            "a better preview",
+            "- Added a gray background",
+            "-> Stats:",
+            "- Added Total Coins stat",
+            "- Added Skins stat (e. g. 1/8)",
+            "-> Other:",
+            "- Update names are now shown in patch notes",
+            "(e. g. The More Skin Update)",
         ],
 }
 

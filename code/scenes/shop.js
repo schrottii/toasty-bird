@@ -25,6 +25,7 @@ scenes["shop"] = new Scene(
 
 
 
+        createSquare("underyourskin", 0.3, 0.2, 0.4, 0.6, "lightgray");
         skinsInShop = [];
 
         // the offer
@@ -37,7 +38,8 @@ scenes["shop"] = new Scene(
         objects["skin" + ski].snip = [0, 0, 32, 32];
         skinsInShop.push(ski);
 
-        createText("skintext1", 0.5, 0.4, "...", "black", 32, "center");
+        createText("skinname1", 0.5, 0.4, "...", "black", 32, "center");
+        createText("skintext1", 0.5, 0.433, "...", "black", 32, "center");
 
         // skin 2
         ski = (ski + 1) % skins.length;
@@ -47,7 +49,8 @@ scenes["shop"] = new Scene(
         objects["skin" + ski].snip = [0, 0, 32, 32];
         skinsInShop.push(ski);
 
-        createText("skintext2", 0.5, 0.7, "...", "black", 32, "center");
+        createText("skinname2", 0.5, 0.7, "...", "black", 32, "center");
+        createText("skintext2", 0.5, 0.733, "...", "black", 32, "center");
 
         // music
         musicPlayer.src = "audio/toasty-shop.mp3";
@@ -56,12 +59,18 @@ scenes["shop"] = new Scene(
     },
     (tick) => {
         // Loop
+        groundAnimation += tick;
+        if (groundAnimation > 2) groundAnimation = 0;
+
         objects["coinText"].text = game.coins + " Coins";
 
         for (i = 0; i < 2; i++) {
             objects["skin" + skinsInShop[i]].image = !hasSkin(skinsInShop[i]) ? "skins/" + getSkin(skinsInShop[i]) : "unknown";
+            objects["skin" + skinsInShop[i]].snip = [0, groundAnimation >= 1 ? 32 : 0, 32, 32];
+
             if (hasSkin(skinsInShop[i])) objects["skintext" + (i + 1)].text = "Already bought!";
             else objects["skintext" + (i + 1)].text = getSkinPrice(skinsInShop[i]) + " Coins";
+            objects["skinname" + (i + 1)].text = getSkinName(skinsInShop[i]);
         }
     }
 );

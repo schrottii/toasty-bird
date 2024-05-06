@@ -24,6 +24,10 @@ var images = {
     "skins/bald": "skins/bald.png",
     "skins/female": "skins/player-female.png",
     "skins/elmenda": "skins/elmenda.png",
+    "skins/deggame": "skins/deggame.png",
+    "skins/cube": "skins/cube.png",
+    "skins/gangsta": "skins/gangsta.png",
+    "skins/lemon": "skins/lemon.png",
 
 
     menuground: "menu-ground.png",
