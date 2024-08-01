@@ -77,7 +77,7 @@ class Skill {
     }
 
     select() {
-        if (this.isOwned) {
+        if (this.isOwned()) {
             if (this.type == 0) {
                 // infinite skill 0 1
                 game.selSkills[0] = this.ID;
