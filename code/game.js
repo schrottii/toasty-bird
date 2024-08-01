@@ -8,6 +8,8 @@ class SaveGame {
         this.coins = 0;
         this.skin = 0;
         this.skins = [0];
+        this.skills = [];
+        this.selSkills = [0, 0, 0, 0, 0, 0];
 
         this.stats = {
             highscore: 0,
@@ -40,6 +42,8 @@ class SaveGame {
         this.stats = Object.assign({}, tempEmptyStats.stats, sg.stats);
         this.settings = Object.assign({}, tempEmptyStats.settings, sg.settings);
         this.skins = Object.assign([], tempEmptyStats.skins, sg.skins);
+        this.skills = Object.assign([], tempEmptyStats.skills, sg.skills);
+        this.selSkills = Object.assign([], tempEmptyStats.selSkills, sg.selSkills);
     }
 }
 

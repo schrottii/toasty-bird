@@ -12,7 +12,7 @@ function jump() {
     // Jump!
     if (foregroundObjects.player.upTicks == 0 && gameState == "running") {
         foregroundObjects.player.velocity = -0.008;
-        foregroundObjects.player.upTicks = 24;
+        foregroundObjects.player.upTicks = getSkill(3).isEquipped() ? 16 : 24;
         foregroundObjects.player.snip = [0, 32, 32, 32];
 
         game.stats.totaljumps += 1;
@@ -25,13 +25,13 @@ scenes["play"] = new Scene(
         // Init
         createSquare("bg", 0, 0, 1, 1, "lightblue");
 
-        createImage("menuground2", 0, 0.95, 1, 0.1, "menuground2", false, true);
+        createImage("menuground2", 0, 0.95, 1, 0.1, "menuground2", { quadratic: false, foreground: true });
         createImage("menuground", 0, 0.85, 2, 0.1, "menuground");
 
-        createText("pointsDisplay", 0.5, 0.1, "0 Points", "black", 40, "center", true);
+        createText("pointsDisplay", 0.5, 0.1, "0 Points", "black", 40, "center", { quadratic: true });
 
         // Player
-        createImage("player", 0.1, 0.25, 0.1, 0.1, "skins/" + getSkin(game.skin), true, true);
+        createImage("player", 0.1, 0.25, 0.1, 0.1, "skins/" + getSkin(game.skin), { quadratic: true, foreground: true });
         foregroundObjects.player.velocity = 0.003;
         foregroundObjects.player.rotatevelocity = 0.003;
         foregroundObjects.player.upTicks = 0;
@@ -42,13 +42,13 @@ scenes["play"] = new Scene(
         });
 
         // Clouds
-        createImage("cloud1", 1.2, 0.2, 0.2, 0.2, "clouds", true);
+        createImage("cloud1", 1.2, 0.2, 0.2, 0.2, "clouds", { quadratic: true });
         objects["cloud1"].snip = [0, 0, 64, 32];
-        createImage("cloud2", 1.6, 0.3, 0.2, 0.2, "clouds", true);
+        createImage("cloud2", 1.6, 0.3, 0.2, 0.2, "clouds", { quadratic: true });
         objects["cloud2"].snip = [0, 32, 64, 32];
-        createImage("cloud3", 2, 0.15, 0.2, 0.2, "clouds", true);
+        createImage("cloud3", 2, 0.15, 0.2, 0.2, "clouds", { quadratic: true });
         objects["cloud3"].snip = [0, 64, 64, 32];
-        createImage("cloud4", 2.4, 0.35, 0.2, 0.2, "clouds", true);
+        createImage("cloud4", 2.4, 0.35, 0.2, 0.2, "clouds", { quadratic: true });
         objects["cloud4"].snip = [0, 96, 64, 32];
 
         musicPlayer.src = "audio/toasty-bird.mp3";
@@ -69,20 +69,20 @@ scenes["play"] = new Scene(
         }
 
         // Pipes spawning
-        pipeSpawnTime -= tick;
+        if (!(getSkill(4).isEquipped() && foregroundObjects.player.upTicks > 0)) pipeSpawnTime -= tick;
         if (pipeSpawnTime <= 0) {
             pipeSpawnTime = 2 / gameAcceleration;
             let randomY = Math.random() * 0.3;
             let spawnY = (randomY + 0.3) + Math.min(gameAcceleration, 0.1);
             pipes.push(["pipe" + pipesAmount, 1.2, false]);
-            createImage("pipe" + pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeUp", true);
+            createImage("pipe" + pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeUp", { quadratic: true });
             pipesAmount += 1;
 
-            if (points % 50 == 47) createImage("coin" + pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "coin", true);
+            if ((points + (getSkill(1).isEquipped() ? 10 : 0)) % 50 == 47) createImage("coin" + pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "coin", { quadratic: true });
 
             spawnY = (randomY - 0.3);
             pipes.push(["pipe" + pipesAmount, 1.2, false]);
-            createImage("pipe" + pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeDown", true);
+            createImage("pipe" + pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeDown", { quadratic: true });
             pipesAmount += 1;
         }
 
@@ -91,7 +91,7 @@ scenes["play"] = new Scene(
             if (pipes[p] == undefined) continue;
 
             let thisPipe = objects[pipes[p][0]];
-            if (gameState == "running") {
+            if (gameState == "running" && !(getSkill(4).isEquipped() && foregroundObjects.player.upTicks > 0)) {
                 pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
                 objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
                 if (objects["coin" + pipes[p][0].substr(4)] != undefined) objects["coin" + pipes[p][0].substr(4)].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
@@ -114,10 +114,10 @@ scenes["play"] = new Scene(
                 if (points > game.stats.highscore) createText("lostText2", 0.5, 0.42, "New Highscore!", "yellow", 42);
                 createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
                     if (points > game.stats.highscore) game.stats.highscore = points;
-                    localStorage.setItem("TOASTYBIRD1", "toasty" + btoa(JSON.stringify(game)));
+                    save();
 
                     loadScene("mainmenu")
-                })
+                });
                 createText("lostButtonText", 0.5, 0.85, "Continue", "black", 64);
             }
             else if (gameState == "running" && pipes[p][2] == false && foregroundObjects.player.x + (foregroundObjects.player.w / 2) >= thisPipe.x && foregroundObjects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
@@ -125,9 +125,12 @@ scenes["play"] = new Scene(
                 game.stats.totalpoints += 1;
                 game.stats.normalpoints += 1;
                 if (objects["coin" + (parseInt(pipes[p][0].substr(4)) + 1)] != undefined) {
-                    game.coins += 1;
-                    game.stats.totalcoins += 1;
-                    game.stats.normalcoins += 1;
+                    let amount = 1;
+                    if (getSkill(2).isEquipped() && Math.random() > 0.9) amount *= 2;
+
+                    game.coins += amount;
+                    game.stats.totalcoins += amount;
+                    game.stats.normalcoins += amount;
                 }
 
                 pipes[p][2] = true;

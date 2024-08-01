@@ -18,8 +18,11 @@ var images = {
     logo: "logo.png",
     button: "button.png",
     unknown: "unknown.png",
+    invBg: "invBg.png",
+    import: "import.png",
+    export: "export.png",
 
-    //skins
+    // skins
     "skins/player": "skins/player.png",
     "skins/bald": "skins/bald.png",
     "skins/female": "skins/player-female.png",
@@ -28,7 +31,16 @@ var images = {
     "skins/cube": "skins/cube.png",
     "skins/gangsta": "skins/gangsta.png",
     "skins/lemon": "skins/lemon.png",
+    "skins/roots": "skins/roots.png",
+    "skins/plane": "skins/plane.png",
+    "skins/arrow": "skins/arrow.png",
+    "skins/tomato": "skins/tomato.png",
 
+    // skills
+    "skills/faststart": "skills/faststart.png",
+    "skills/golddigger": "skills/golddigger.png",
+    "skills/youngfeathers": "skills/youngfeathers.png",
+    "skills/carefuljumper": "skills/carefuljumper.png",
 
     menuground: "menu-ground.png",
     menuground2: "menu-ground2.png",
@@ -41,6 +53,7 @@ var images = {
     whiteDiscord: "white-dc-logo.png",
     whiteNotes: "white-patch-notes.png",
     whiteWebsite: "white-website.png",
+    whiteStats: "white-stats.png",
     whiteShop: "shop.png",
 }
 
@@ -145,20 +158,30 @@ class Square {
 }
 
 class Picture {
-    constructor(x, y, w, h, image, quadratic) {
+    constructor(x, y, w, h, image, config) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.image = image;
-        this.quadratic = quadratic;
+
+        this.quadratic = config.quadratic;
+        this.centered = config.centered;
+        this.power = config.power;
+
+        this.config = config;
     }
 
     render() {
+        if (this.power == false) return false;
         if (this.rotate) ctx.translate(this.x + (this.w / 2), this.y + (this.h / 2)); ctx.rotate(this.rotate);
 
-        if (this.snip) ctx.drawImage(images[this.image], this.snip[0], this.snip[1], this.snip[2], this.snip[3], this.quadratic ? (width * this.x) - ((height * this.w) / 2) : width * this.x, height * this.y, this.quadratic ? height * this.w : width * this.w, height * this.h);
-        else ctx.drawImage(images[this.image], this.quadratic ? (width * this.x) - ((height * this.w) / 2) : width * this.x, height * this.y, this.quadratic ? height * this.w : width * this.w, height * this.h);
+        let Pquadratic = this.quadratic ? (width * this.x) : width * this.x;
+        let Pquadratic2 = this.quadratic ? height * this.w : width * this.w;
+        let Pcentered = this.centered ? (Pquadratic2 / 2) : 0;
+
+        if (this.snip) ctx.drawImage(images[this.image], this.snip[0], this.snip[1], this.snip[2], this.snip[3], Pquadratic - Pcentered, height * this.y, Pquadratic2, height * this.h);
+        else ctx.drawImage(images[this.image], Pquadratic - Pcentered, height * this.y, Pquadratic2, height * this.h);
         if (this.rotate) ctx.translate(-this.x - (this.w / 2), -this.y - (this.h / 2)); ctx.rotate(0);
     }
 }
@@ -194,11 +217,11 @@ function createSquare(name, x, y, w, h, color) {
     if (objects[name] == undefined) objects[name] = new Square(x, y, w, h, color);
 }
 
-function createImage(name, x, y, w, h, image, quadratic = false, foreground = false) {
-    if (!foreground) {
-        if (objects[name] == undefined) objects[name] = new Picture(x, y, w, h, image, quadratic);
+function createImage(name, x, y, w, h, image, config = {}) {
+    if (!config.foreground) {
+        if (objects[name] == undefined) objects[name] = new Picture(x, y, w, h, image, config);
     }
-    else if (foregroundObjects[name] == undefined) foregroundObjects[name] = new Picture(x, y, w, h, image, quadratic);
+    else if (foregroundObjects[name] == undefined) foregroundObjects[name] = new Picture(x, y, w, h, image, config);
 }
 
 function createText(name, x, y, text, color, fontSize, textAlign = "", foreground = false) {
@@ -214,11 +237,11 @@ function createClickable(clickableName, x, y, w, h, onClick) {
     }
 }
 
-function createButton(clickableName, x, y, w, h, color, onClick, quadratic = false) {
+function createButton(clickableName, x, y, w, h, color, onClick, config = {}) {
     if (objects[clickableName] == undefined && clickables[clickableName] == undefined) {
-        objects[clickableName] = new Picture(x, y, w, h, color, quadratic);
-        if (quadratic) clickables[clickableName] = [width * x - ((height * h) / 2), height * y, height * h, height * h, onClick];
-        else clickables[clickableName] = [width * x, height * y, width * w, height * h, onClick];
+        if (color.substr(0, 1) == "#") objects[clickableName] = new Square(x, y, w, h, color, config);
+        else objects[clickableName] = new Picture(x, y, w, h, color, config);
+        clickables[clickableName] = [width * x - (config.centered ? ((config.quadratic ? height * h : width * w) / 2) : 0), height * y, config.quadratic ? height * h : width * w, height * h, onClick];
     }
 
 }
@@ -264,6 +287,31 @@ function loop() {
     }
 
     requestAnimationFrame(loop);
+}
+
+function save() {
+    localStorage.setItem("TOASTYBIRD1", "toasty" + btoa(JSON.stringify(game)));
+}
+
+function exportGame() {
+    let save = game;
+    save = JSON.stringify(save);
+    save = "toasty" + btoa(save);
+    navigator.clipboard.writeText(save);
+}
+
+function importGame() {
+    let save = prompt("Insert the code here...");
+    try {
+        save = atob(save.slice(6));
+        save = JSON.parse(save);
+
+        game = new SaveGame();
+        game.loadFromSaveGame(save);
+    }
+    catch {
+        alert("Wrong!");
+    }
 }
 
 // init the game

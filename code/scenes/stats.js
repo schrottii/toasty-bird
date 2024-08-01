@@ -26,26 +26,13 @@ scenes["stats"] = new Scene(
 
         // Export button
         createButton("exportbutton", 0.25, 0.7, 0.2, 0.1, "button", () => {
-            let save = game;
-            save = JSON.stringify(save);
-            save = "toasty" + btoa(save);
-            navigator.clipboard.writeText(save);
+            exportGame();
         });
         createText("buttonText2", 0.35, 0.775, "Export", "black", 40);
 
         // Import button
         createButton("importbutton", 0.55, 0.7, 0.2, 0.1, "button", () => {
-            let save = prompt("Insert the code here...");
-            try {
-                save = atob(save.slice(6));
-                save = JSON.parse(save);
-
-                game = new SaveGame();
-                game.loadFromSaveGame(save);
-            }
-            catch {
-                alert("Wrong!");
-            }
+            importGame();
         });
         createText("buttonText3", 0.65, 0.775, "Import", "black", 40);
 

@@ -1,5 +1,5 @@
-var gameVersion = "1.2.1";
-var newestVersion = 3;
+var gameVersion = "1.3";
+var newestVersion = 4;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -75,6 +75,40 @@ const patchnotes = {
             "- Update names are now shown in patch notes",
             "(e. g. The More Skin Update)",
         ],
+    "v1.3":
+        [
+            "The Inventory Skills Update",
+            "",
+            "-> Inventory:",
+            "- Added a new scene for the player, inventory,",
+            "skin selection and more",
+            "- Current Skin and Skill are shown on the left",
+            "- Export and import are also available here",
+            "- The right side has the inventory",
+            "- Here many Skins or Skills can be shown",
+            "at once and be selected",
+            "-> Skills:",
+            "- New feature: Skills",
+            "- They can provide passive boosts",
+            "- 1 Skill can be equipped at once",
+            "- Added 4 Skills, 1 of each rarity",
+            "-> Shop:",
+            "- Expanded shop, 2 -> 3 skins",
+            "- Added 1 skill offer",
+            "-> Main menu:",
+            "- Changed the buttons:",
+            "Play, Stats, Settings, Skins ->",
+            "Play, Player, Shop, Settings",
+            "- Centered game logos",
+            "- Added a fourth white button for stats",
+            "- Moved white buttons even more to the left",
+            "-> Other:",
+            "- Added 4 new skins",
+            "- Buying a skin now saves the game",
+            "- Menda skin: fixed missing glass",
+            "- Changed shop background color",
+            "- Code and rendering improvements",
+        ]
 }
 
 scenes["patchnotes"] = new Scene(

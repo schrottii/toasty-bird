@@ -17,7 +17,7 @@ scenes["settings"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
-            localStorage.setItem("TOASTYBIRD1", "toasty" + btoa(JSON.stringify(game)));
+            save();
             loadScene("mainmenu");
         });
         createText("buttonText", 0.5, 0.95, "Save", "black", 40);
