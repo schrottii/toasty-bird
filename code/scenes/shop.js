@@ -62,7 +62,7 @@ scenes["shop"] = new Scene(
         ski = ski % skills.length;
         createButton("skill0", 0.8, 0.5, 0.15, 0.15, "unknown", (me) => {
             getSkill(objects[me].config.id).buy();
-        }, { quadratic: true, centered: true, id: ski });
+        }, { quadratic: true, centered: true, id: skills[ski].ID });
 
         createText("skillname0", 0.8, 0.7, "...", "black", 32, "center");
         createText("skilltext0", 0.8, 0.733, "...", "black", 24, "center");
