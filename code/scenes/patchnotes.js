@@ -1,5 +1,5 @@
-var gameVersion = "1.3";
-var newestVersion = 4;
+var gameVersion = "1.3.1";
+var newestVersion = 5;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -108,7 +108,30 @@ const patchnotes = {
             "- Menda skin: fixed missing glass",
             "- Changed shop background color",
             "- Code and rendering improvements",
-        ]
+        ],
+    "v1.3.1:":
+        [
+            "The Gifted Bird Update",
+            "",
+            "-> Daily Gift:",
+            "- Added the daily gift",
+            "- Can be claimed in the shop once per day",
+            "- Contains 5 coins",
+            "-> Skill Balance:",
+            "- Gold Digger: Increased chance from 10% to 20%",
+            "- Adjusted skill prices",
+            "-> Skill prices:",
+            "- Reduced prices:",
+            "- Common: 50 -> 25",
+            "- Uncommon: 100 -> 50",
+            "- Rare: 250 -> 100",
+            "- Epic: 400 -> 200",
+            "- No refunds.",
+            "-> Other:",
+            "- Shop now displays skill description",
+            "- Player: Added shop button in the top right",
+            "- Shop: Added daily gift button",
+        ],
 }
 
 scenes["patchnotes"] = new Scene(

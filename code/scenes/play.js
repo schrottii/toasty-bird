@@ -126,7 +126,7 @@ scenes["play"] = new Scene(
                 game.stats.normalpoints += 1;
                 if (objects["coin" + (parseInt(pipes[p][0].substr(4)) + 1)] != undefined) {
                     let amount = 1;
-                    if (getSkill(2).isEquipped() && Math.random() > 0.9) amount *= 2;
+                    if (getSkill(2).isEquipped() && Math.random() >= 0.8) amount *= 2;
 
                     game.coins += amount;
                     game.stats.totalcoins += amount;

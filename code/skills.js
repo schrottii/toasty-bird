@@ -44,14 +44,14 @@ class Skill {
             case 0:
                 return 999999;
             case 1:
-                return 50;
+                return 25;
             case 2:
-                return 100;
+                return 50;
             case 3:
-                return 250;
+                return 100;
             case 4:
-                return 400;
-            // legendary 1000?
+                return 200;
+            // legendary 500?
         }
     }
 
@@ -107,7 +107,7 @@ function getSkill(ID) {
 
 var skills = [
     new Skill(1, 1, 0, "Fast Start", "faststart", "Skip the first 10 points"),
-    new Skill(2, 2, 0, "Gold Digger", "golddigger", "Coins have a 10% chance of being worth 2x"),
+    new Skill(2, 2, 0, "Gold Digger", "golddigger", "Coins have a 20% chance of being worth 2x"),
     new Skill(3, 3, 0, "Young Feathers", "youngfeathers", "Jumps are smaller"),
     new Skill(4, 4, 0, "Careful Jumper", "carefuljumper", "Jumping causes a temporary slowdown"),
 ];

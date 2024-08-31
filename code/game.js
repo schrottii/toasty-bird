@@ -10,6 +10,7 @@ class SaveGame {
         this.skins = [0];
         this.skills = [];
         this.selSkills = [0, 0, 0, 0, 0, 0];
+        this.lastGift = "0";
 
         this.stats = {
             highscore: 0,
@@ -24,6 +25,7 @@ class SaveGame {
             totalcoins: 0,
 
             totaltime: 0,
+            totalgifts: 0,
         }
         this.settings = {
             music: true,
@@ -36,6 +38,7 @@ class SaveGame {
 
         this.skin = sg.skin != undefined ? sg.skin : 0;
         this.coins = sg.coins != undefined ? sg.coins : 0;
+        this.lastGift = sg.lastGift != undefined ? sg.lastGift : "0";
 
         let tempEmptyStats = new SaveGame();
         tempEmptyStats.new();

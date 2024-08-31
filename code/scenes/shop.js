@@ -22,7 +22,25 @@ scenes["shop"] = new Scene(
 
         createText("coinText", 0.5, 0.15, "0 Coins", "orange", 40);
 
+        // Daily Gift
+        createButton("dailygift", 0.95, 0, 0.1, 0.1, "whiteGift", () => {
+            let bob = new Date();
+            let today = bob.getUTCFullYear() + "0" + bob.getUTCMonth() + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
+            if (parseInt(game.lastGift) < parseInt(today)) {
+                game.lastGift = today;
 
+                let amount = 5;
+
+                game.coins += amount;
+                game.stats.totalcoins += amount;
+                game.stats.totalgifts += 1;
+            }
+            objects["dailygift"].image = "claimedGift";
+        }, { quadratic: true });
+
+        let bob = new Date();
+        let today = bob.getUTCFullYear() + "0" + bob.getUTCMonth() + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
+        if (parseInt(game.lastGift) == parseInt(today)) objects["dailygift"].image = "claimedGift";
 
         createSquare("underyourskin", 0, 0.2, 1, 0.6, "#006800");
 
@@ -66,6 +84,7 @@ scenes["shop"] = new Scene(
 
         createText("skillname0", 0.8, 0.7, "...", "black", 32, "center");
         createText("skilltext0", 0.8, 0.733, "...", "black", 24, "center");
+        createText("skilldesc0", 0.975, 0.8, "...", "black", 20, "right");
 
         // music
         musicPlayer.src = "audio/toasty-shop.mp3";
@@ -97,6 +116,7 @@ scenes["shop"] = new Scene(
         if (thisSkill.isOwned()) objects["skilltext0"].text = "Already bought!";
         else objects["skilltext0"].text = thisSkill.getPrice() + " Coins";
         objects["skillname0"].text = thisSkill.getName();
+        objects["skilldesc0"].text = thisSkill.getDesc();
         objects["skillname0"].color = thisSkill.getRarityColor();
     }
 );

@@ -18,6 +18,11 @@ scenes["player"] = new Scene(
         });
         createText("buttonText", 0.5, 0.95, "Back", "black", 40);
 
+        // Shop
+        createButton("shopbutton", 0.95, 0, 0.1, 0.1, "whiteShop", () => {
+            loadScene("shop");
+        }, { quadratic: true });
+
         // Meeeeeeeee
         createSquare("meBg", 0.05, 0.16, 0.2, 0.615, "#006800");
         createText("meText", 0.15, 0.15, "Your skin", "lightgray", 24, "center")

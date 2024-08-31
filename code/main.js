@@ -55,6 +55,8 @@ var images = {
     whiteWebsite: "white-website.png",
     whiteStats: "white-stats.png",
     whiteShop: "shop.png",
+    whiteGift: "gift.png",
+    claimedGift: "gift2.png",
 }
 
 var scenes = {
