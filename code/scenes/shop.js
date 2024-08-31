@@ -16,6 +16,7 @@ scenes["shop"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
+            save();
             loadScene("mainmenu");
         });
         createText("buttonText", 0.5, 0.95, "Back", "black", 40);
