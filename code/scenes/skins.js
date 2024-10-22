@@ -11,6 +11,10 @@ var skins = [
     ["plane", "Plane", 91, 1.3],
     ["arrow", "Arrow", 40, 1.3],
     ["tomato", "Tomatobird", 30, 1.3],
+    ["medibird", "Medibird", 24, 1.32],
+    ["sleepy-man", "Sleepy Man", 30, 1.32],
+    ["heart", "Heart", 20, 1.32],
+    ["diamond", "Diamond", 100, 1.32]
 ]
 
 function getSkin(skinID) {
@@ -44,13 +48,13 @@ scenes["skins"] = new Scene(
         // Init
         createSquare("bg", 0, 0, 1, 1, "green");
 
-        createText("header", 0.5, 0.1, "Skins", "black", 80);
+        createText("header", 0.5, 0.1, "Skins", { size: 80 });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             loadScene("mainmenu");
         });
-        createText("buttonText", 0.5, 0.95, "Back", "black", 40);
+        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         // Shop button
         createButton("shopbutton", 0.9, 0.1, 0.1, 0.1, "whiteShop", () => {
@@ -64,14 +68,14 @@ scenes["skins"] = new Scene(
                 clickSkin(me.substr(4));
             }, { quadratic: true });
             objects["skin" + ski].snip = [0, 0, 32, 32];
-            createText("skintext" + ski, 0.1 + (0.77 / 3 * ski), 0.375, hasSkin(ski) ? getSkinName(ski) : "???", "black", 20, "center");
+            createText("skintext" + ski, 0.1 + (0.77 / 3 * ski), 0.375, hasSkin(ski) ? getSkinName(ski) : "???", { size: 40 });
         }
         for (ski = 4; ski < 8; ski++) {
             createButton("skin" + ski, 0.1 + (0.77 / 3 * (ski - 4)), 0.4, 0.15, 0.15, hasSkin(ski) ? "skins/" + getSkin(ski) : "unknown", (me) => {
                 clickSkin(me.substr(4));
             }, { quadratic: true });
             objects["skin" + ski].snip = [0, 0, 32, 32];
-            createText("skintext" + ski, 0.1 + (0.77 / 3 * (ski - 4)), 0.575, hasSkin(ski) ? getSkinName(ski) : "???", "black", 20, "center");
+            createText("skintext" + ski, 0.1 + (0.77 / 3 * (ski - 4)), 0.575, hasSkin(ski) ? getSkinName(ski) : "???", { size: 40 });
         }
 
         createSquare("underyourskin2", 0.4, 0.7, 0.2, 0.1, "lightgray");
@@ -79,9 +83,9 @@ scenes["skins"] = new Scene(
         createImage("player", 0.5, 0.7, 0.1, 0.1, "skins/" + getSkin(game.skin), { quadratic: true, centered: true });
         objects["player"].snip = [0, 0, 32, 32];
 
-        musicPlayer.src = "audio/menu-theme.mp3";
-        musicPlayer.volume = game.settings.music ? 1 : 0;
-        if (game.settings.music) musicPlayer.play();
+        wggjAudio.src = "audio/menu-theme.mp3";
+        wggjAudio.volume = game.settings.music ? 1 : 0;
+        if (game.settings.music) wggjAudio.play();
     },
     (tick) => {
         // Loop

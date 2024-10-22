@@ -1,5 +1,5 @@
-var gameVersion = "1.3.1";
-var newestVersion = 5;
+var gameVersion = "1.3.2";
+var newestVersion = 6;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -109,7 +109,7 @@ const patchnotes = {
             "- Changed shop background color",
             "- Code and rendering improvements",
         ],
-    "v1.3.1:":
+    "v1.3.1":
         [
             "The Gifted Bird Update",
             "",
@@ -132,6 +132,17 @@ const patchnotes = {
             "- Player: Added shop button in the top right",
             "- Shop: Added daily gift button",
         ],
+    "v1.3.2":
+        [
+            "- Implemented WGGJ",
+            "- Added a donate button",
+            "-> Skins:",
+            "- Added 4 new skins (12 total)",
+            "- Medibird, 24 Coins",
+            "- Sleepy Man, 30 Coins",
+            "- Heart, 20 Coins",
+            "- Diamond, 100 Coins",
+        ],
 }
 
 scenes["patchnotes"] = new Scene(
@@ -139,13 +150,13 @@ scenes["patchnotes"] = new Scene(
         // Init
         createSquare("bg", 0, 0, 1, 1, "green");
 
-        createText("header", 0.5, 0.1, "Patch notes", "black", 80);
+        createText("header", 0.5, 0.1, "Patch notes", { size: 80 });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             loadScene("mainmenu");
         });
-        createText("buttonText", 0.5, 0.95, "Back", "black", 40);
+        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         // Top navigation
         createSquare("topBgSquare", 0.1, 0.1, 0.8, 0.1, "darkgray");
@@ -155,18 +166,18 @@ scenes["patchnotes"] = new Scene(
             if (selectedVersion > 0) selectedVersion -= 1;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
         });
-        createText("goLeftText", 0.125, 0.185, "<", "black", 60);
+        createText("goLeftText", 0.125, 0.185, "<", { size: 60 });
 
         createButton("goRight", 0.85, 0.1, 0.05, 0.1, "button", () => {
             if (selectedVersion < newestVersion) selectedVersion += 1;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
         });
-        createText("goRightText", 0.875, 0.185, ">", "black", 60);
+        createText("goRightText", 0.875, 0.185, ">", { size: 60 });
 
-        createText("versionText", 0.5, 0.185, "Version v" + gameVersion, "black", 40);
+        createText("versionText", 0.5, 0.185, "Version v" + gameVersion, { size: 40 });
 
         for (vtc = 0; vtc < 32; vtc++) {
-            createText("text" + vtc, 0.1125, 0.225 + (0.02 * vtc), "", "black", 20, "left");
+            createText("text" + vtc, 0.1125, 0.225 + (0.02 * vtc), "", { size: 20, align: "left" });
         }
     },
     (tick) => {

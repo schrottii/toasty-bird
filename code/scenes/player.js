@@ -16,7 +16,7 @@ scenes["player"] = new Scene(
             save();
             loadScene("mainmenu");
         });
-        createText("buttonText", 0.5, 0.95, "Back", "black", 40);
+        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         // Shop
         createButton("shopbutton", 0.95, 0, 0.1, 0.1, "whiteShop", () => {
@@ -25,11 +25,11 @@ scenes["player"] = new Scene(
 
         // Meeeeeeeee
         createSquare("meBg", 0.05, 0.16, 0.2, 0.615, "#006800");
-        createText("meText", 0.15, 0.15, "Your skin", "lightgray", 24, "center")
+        createText("meText", 0.15, 0.15, "Your skin", { color: "lightgray", size: 24 });
 
         createImage("playerskin", 0.15, 0.175, 0.4, 0.4, "skins/" + getSkin(game.skin), { quadratic: true, centered: true });
         objects["playerskin"].snip = [0, 0, 32, 32];
-        createText("playerskinName", 0.15, 0.65, "", "white", 32, "center")
+        createText("playerskinName", 0.15, 0.65, "", { color: "white", size: 20 });
 
         // Bottom
 
@@ -42,11 +42,11 @@ scenes["player"] = new Scene(
             playerUpdate = "Imported the game!";
         }, { quadratic: true, centered: true });
 
-        createText("playerUpdate", 0.15, 0.925, "", "white", 20, "center")
+        createText("playerUpdate", 0.15, 0.925, "", { color: "white", size: 20 });
 
         // Skills
         createSquare("skillsBg", 0.275, 0.16, 0.08, 0.615, "#006800");
-        createText("skillsText", 0.315, 0.15, "Skills", "lightgray", 24, "center")
+        createText("skillsText", 0.315, 0.15, "Skills", { color: "lightgray", size: 24 });
 
         createImage("skillsListBg0", 0.315, 0.225, 0.1, 0.1, "invBg", { quadratic: true, centered: true });
         createImage("skillsListPic0", 0.315, 0.225, 0.1, 0.1, "", { quadratic: true, centered: true, power: false });
@@ -66,22 +66,22 @@ scenes["player"] = new Scene(
                     playerUpdate = "Skill selected!";
                 }
             }, { quadratic: true, centered: true, power: false, inv: inv });
-            createText("inv" + inv + "Txt", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), "", "white", 10, "center");
+            createText("inv" + inv + "Txt", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), "", { color: "white", size: 10 });
         }
 
         createButton("invSel1", 0.4, 0.11, 0.15, 0.05, "#25571a", () => {
             inventoryMode = "skins";
         })
-        createText("invSelText1", 0.475, 0.135, "Skins", "white", 20, "center");
+        createText("invSelText1", 0.475, 0.135, "Skins", { color: "white", size: 20 });
         
         createButton("invSel2", 0.6, 0.11, 0.15, 0.05, "#25571a", () => {
             inventoryMode = "skills";
         })
-        createText("invSelText2", 0.675, 0.135, "Skills", "white", 20, "center");
+        createText("invSelText2", 0.675, 0.135, "Skills", { color: "white", size: 20 });
 
-        musicPlayer.src = "audio/menu-theme.mp3";
-        musicPlayer.volume = game.settings.music ? 1 : 0;
-        if (game.settings.music) musicPlayer.play();
+        wggjAudio.src = "audio/menu-theme.mp3";
+        wggjAudio.volume = game.settings.music ? 1 : 0;
+        if (game.settings.music) wggjAudio.play();
     },
     (tick) => {
         // Loop

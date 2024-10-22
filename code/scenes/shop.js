@@ -12,16 +12,16 @@ scenes["shop"] = new Scene(
         // Init
         createSquare("bg", 0, 0, 1, 1, "green");
 
-        createText("header", 0.5, 0.1, "Shop", "black", 80);
+        createText("header", 0.5, 0.1, "Shop", { size: 80 });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             save();
             loadScene("mainmenu");
         });
-        createText("buttonText", 0.5, 0.95, "Back", "black", 40);
+        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
-        createText("coinText", 0.5, 0.15, "0 Coins", "orange", 40);
+        createText("coinText", 0.5, 0.15, "0 Coins", { color: "orange", size: 40 });
 
         // Daily Gift
         createButton("dailygift", 0.95, 0, 0.1, 0.1, "whiteGift", () => {
@@ -54,8 +54,8 @@ scenes["shop"] = new Scene(
         }, { quadratic: true, centered: true, id: ski });
         objects["skin0"].snip = [0, 0, 32, 32];
 
-        createText("skinname0", 0.2, 0.4, "...", "black", 32, "center");
-        createText("skintext0", 0.2, 0.433, "...", "black", 24, "center");
+        createText("skinname0", 0.2, 0.4, "...", { size: 32 });
+        createText("skintext0", 0.2, 0.433, "...", { size: 24 });
 
         // skin 2
         ski = (ski + 1) % skins.length;
@@ -64,8 +64,8 @@ scenes["shop"] = new Scene(
         }, { quadratic: true, centered: true, id: ski });
         objects["skin1"].snip = [0, 0, 32, 32];
 
-        createText("skinname1", 0.8, 0.4, "...", "black", 32, "center");
-        createText("skintext1", 0.8, 0.433, "...", "black", 24, "center");
+        createText("skinname1", 0.8, 0.4, "...", { size: 32 });
+        createText("skintext1", 0.8, 0.433, "...", { size: 24 });
 
         // skin 3
         ski = (ski * 33) % skins.length;
@@ -74,8 +74,8 @@ scenes["shop"] = new Scene(
         }, { quadratic: true, centered: true, id: ski });
         objects["skin2"].snip = [0, 0, 32, 32];
 
-        createText("skinname2", 0.2, 0.7, "...", "black", 32, "center");
-        createText("skintext2", 0.2, 0.733, "...", "black", 24, "center");
+        createText("skinname2", 0.2, 0.7, "...", { size: 32 });
+        createText("skintext2", 0.2, 0.733, "...", { size: 24 });
 
         // skill
         ski = ski % skills.length;
@@ -83,14 +83,14 @@ scenes["shop"] = new Scene(
             getSkill(objects[me].config.id).buy();
         }, { quadratic: true, centered: true, id: skills[ski].ID });
 
-        createText("skillname0", 0.8, 0.7, "...", "black", 32, "center");
-        createText("skilltext0", 0.8, 0.733, "...", "black", 24, "center");
-        createText("skilldesc0", 0.975, 0.8, "...", "black", 20, "right");
+        createText("skillname0", 0.8, 0.7, "...", { size: 32 });
+        createText("skilltext0", 0.8, 0.733, "...", { size: 24 });
+        createText("skilldesc0", 0.975, 0.8, "...", { size: 20, align: "right" });
 
         // music
-        musicPlayer.src = "audio/toasty-shop.mp3";
-        musicPlayer.volume = game.settings.music ? 1 : 0;
-        if (game.settings.music) musicPlayer.play();
+        wggjAudio.src = "audio/toasty-shop.mp3";
+        wggjAudio.volume = game.settings.music ? 1 : 0;
+        if (game.settings.music) wggjAudio.play();
     },
     (tick) => {
         // Loop
