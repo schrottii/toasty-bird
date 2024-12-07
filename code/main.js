@@ -1,7 +1,6 @@
 // Game made by Schrottii - don't steal or cheat
 
 images = {
-    placeholder: "sosnog.png",
     gameLogo: "toasty-bird-by-tpot.png",
     logo: "logo.png",
     button: "button.png",
@@ -9,6 +8,7 @@ images = {
     invBg: "invBg.png",
     import: "import.png",
     export: "export.png",
+    pause: "pause.png",
 
     // skins
     "skins/player": "skins/player.png",
@@ -23,6 +23,14 @@ images = {
     "skins/plane": "skins/plane.png",
     "skins/arrow": "skins/arrow.png",
     "skins/tomato": "skins/tomato.png",
+    "skins/medibird": "skins/medibird.png",
+    "skins/sleepy-man": "skins/sleepy-man.png",
+    "skins/heart": "skins/heart.png",
+    "skins/diamond": "skins/diamond.png",
+    "skins/cat1": "skins/cat1.png",
+    "skins/cat2": "skins/cat2.png",
+    "skins/cat3": "skins/cat3.png",
+    "skins/cat4": "skins/cat4.png",
 
     // skills
     "skills/faststart": "skills/faststart.png",
@@ -34,6 +42,8 @@ images = {
     menuground2: "menu-ground2.png",
     clouds: "clouds.png",
     coin: "coin.png",
+    boom: "boom.png",
+    boom2: "boom2.png",
 
     pipeUp: "pipe-up.png",
     pipeDown: "pipe-down.png",
@@ -50,6 +60,15 @@ GAMENAME = "Toasty Bird";
 FONT = "Joystix";
 wggjLoadImages();
 wggjLoop();
+
+document.addEventListener('keydown', event => {
+    if (event.code === 'Space') {
+        jump();
+    }
+    if (event.code === 'KeyP') {
+        pause();
+    }
+});
 
 function isMobile() {
     if (game.settings.device == "pc") return false;

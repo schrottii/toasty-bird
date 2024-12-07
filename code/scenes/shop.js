@@ -24,7 +24,7 @@ scenes["shop"] = new Scene(
         createText("coinText", 0.5, 0.15, "0 Coins", { color: "orange", size: 40 });
 
         // Daily Gift
-        createButton("dailygift", 0.95, 0, 0.1, 0.1, "whiteGift", () => {
+        createButton("dailygift", 0.8, 0, 0.1, 0.1, "whiteGift", () => {
             let bob = new Date();
             let today = bob.getUTCFullYear() + "0" + bob.getUTCMonth() + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
             if (parseInt(game.lastGift) < parseInt(today)) {

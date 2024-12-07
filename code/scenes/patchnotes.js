@@ -1,5 +1,5 @@
-var gameVersion = "1.3.2";
-var newestVersion = 6;
+var gameVersion = "1.4";
+var newestVersion = 7;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -16,9 +16,11 @@ const patchnotes = {
             "- Added 3 white buttons in the main menu",
             "  (server, patch notes, website)",
             "- Replaced the server button with settings",
+
             "-> Settings:",
             "- New Setting: Music (ON/OFF)",
             "- New Setting: Device (Automatic/Mobile/Pc)",
+
             "-> Other:",
             "- Added game logo made by tpot",
             "- Halfed pipe speed on mobile",
@@ -34,22 +36,26 @@ const patchnotes = {
             "- Added 4 skins (default + 3 new)",
             "- Coins are used to buy skins",
             "- One coin appears every 50th pipe",
+
             "-> Shop:",
             "- Added the shop menu!",
             "- Here two skins can be bought per day",
             "- Offers rotate every day UTC midnight",
             "- Added a new song (shop theme)",
+
             "-> Main menu:",
             "- Added skins button",
             "- Increased width of buttons",
             "- Update version is now lower on mobile",
             "- Moved tpot's logo",
+
             "-> Patch notes menu:",
             "- Reduced space between lines to increase",
             "lines per page from 16 to a whopping 32",
             "- Increased width for mobile readability",
             "- Sections are now bigger",
             "- Normal text is now indented",
+
             "-> Space support:",
             "- Space bar can now also be used to jump",
             "- It can be held to keep jumping",
@@ -63,14 +69,17 @@ const patchnotes = {
             "- Added a second row for the new skins",
             "- Added skin names",
             "- Skin names are visible in the selection",
+
             "-> Shop:",
             "- Skin names are also visible here",
             "- Skins in the shop are now animated to offer",
             "a better preview",
             "- Added a gray background",
+
             "-> Stats:",
             "- Added Total Coins stat",
             "- Added Skins stat (e. g. 1/8)",
+
             "-> Other:",
             "- Update names are now shown in patch notes",
             "(e. g. The More Skin Update)",
@@ -87,14 +96,17 @@ const patchnotes = {
             "- The right side has the inventory",
             "- Here many Skins or Skills can be shown",
             "at once and be selected",
+
             "-> Skills:",
             "- New feature: Skills",
             "- They can provide passive boosts",
             "- 1 Skill can be equipped at once",
             "- Added 4 Skills, 1 of each rarity",
+
             "-> Shop:",
             "- Expanded shop, 2 -> 3 skins",
             "- Added 1 skill offer",
+
             "-> Main menu:",
             "- Changed the buttons:",
             "Play, Stats, Settings, Skins ->",
@@ -102,6 +114,7 @@ const patchnotes = {
             "- Centered game logos",
             "- Added a fourth white button for stats",
             "- Moved white buttons even more to the left",
+
             "-> Other:",
             "- Added 4 new skins",
             "- Buying a skin now saves the game",
@@ -117,9 +130,11 @@ const patchnotes = {
             "- Added the daily gift",
             "- Can be claimed in the shop once per day",
             "- Contains 5 coins",
+
             "-> Skill Balance:",
             "- Gold Digger: Increased chance from 10% to 20%",
             "- Adjusted skill prices",
+
             "-> Skill prices:",
             "- Reduced prices:",
             "- Common: 50 -> 25",
@@ -127,6 +142,7 @@ const patchnotes = {
             "- Rare: 250 -> 100",
             "- Epic: 400 -> 200",
             "- No refunds.",
+
             "-> Other:",
             "- Shop now displays skill description",
             "- Player: Added shop button in the top right",
@@ -136,12 +152,34 @@ const patchnotes = {
         [
             "- Implemented WGGJ",
             "- Added a donate button",
+
             "-> Skins:",
-            "- Added 4 new skins (12 total)",
+            "- Added 4 new skins (16 total)",
             "- Medibird, 24 Coins",
             "- Sleepy Man, 30 Coins",
             "- Heart, 20 Coins",
             "- Diamond, 100 Coins",
+        ],
+    "v1.4":
+        [
+            "Stop The Cats Update",
+            "",
+            "-> Skins:",
+            "- Added 4 new skins (20 total)",
+            "- Cat 1, 20 Coins",
+            "- Cat 2, 20 Coins",
+            "- Cat 3, 20 Coins",
+            "- Cat 4, 20 Coins",
+
+            "-> Play:",
+            "- Added a Pause button (top right)",
+            "- Game can also be paused by pressing P",
+            "- Equipped Skill is now shown (top left)",
+
+            "-> Other:",
+            "- Updated WGGJ from v1.0 to v1.1",
+            "- Improved text scaling/sizes",
+            "- Minor improvements to the Player scene",
         ],
 }
 

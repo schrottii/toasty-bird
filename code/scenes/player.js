@@ -42,7 +42,7 @@ scenes["player"] = new Scene(
             playerUpdate = "Imported the game!";
         }, { quadratic: true, centered: true });
 
-        createText("playerUpdate", 0.15, 0.925, "", { color: "white", size: 20 });
+        createText("playerUpdate", 0.15, 0.95, "", { color: "white", size: 16 });
 
         // Skills
         createSquare("skillsBg", 0.275, 0.16, 0.08, 0.615, "#006800");
@@ -126,9 +126,9 @@ scenes["player"] = new Scene(
             if (inventoryMode == "skins") {
                 if (inv < skins.length) {
                     objects["inv" + inv + "Con"].power = true;
-                    objects["inv" + inv + "Con"].image = game.skins.includes(inv) ? "skins/" + getSkin(inv) : "unknown";
-                    objects["inv" + inv + "Con"].snip = [0, groundAnimation >= 0.5 && game.skins.includes(inv) ? 32 : 0, 32, 32];
-                    objects["inv" + inv + "Txt"].text = game.skins.includes(inv) ? getSkinName(inv) : "locked";
+                    objects["inv" + inv + "Con"].image = hasSkin(inv) ? "skins/" + getSkin(inv) : "unknown";
+                    objects["inv" + inv + "Con"].snip = [0, groundAnimation >= 0.5 && hasSkin(inv) ? 32 : 0, 32, 32];
+                    objects["inv" + inv + "Txt"].text = hasSkin(inv) ? getSkinName(inv) : "locked";
                 }
                 else {
                     objects["inv" + inv + "Con"].power = false;
@@ -155,6 +155,9 @@ scenes["player"] = new Scene(
             objects["playerskin"].y = 0.4;
             objects["buttonExport"].w = objects["buttonExport"].h = 0.05;
             objects["buttonImport"].w = objects["buttonImport"].h = 0.05;
+
+            objects["skillsListBg0"].w = objects["skillsListBg0"].h = 0.033;
+            objects["skillsListPic0"].w = objects["skillsListPic0"].h = 0.033;
         }
     }
 );
