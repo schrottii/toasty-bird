@@ -176,6 +176,11 @@ const patchnotes = {
             "- Game can also be paused by pressing P",
             "- Equipped Skill is now shown (top left)",
 
+            "-> Death Effect:",
+            "- Added a death effect",
+            "- Appears when the bird crashes",
+            "- Is animated",
+
             "-> Other:",
             "- Updated WGGJ from v1.0 to v1.1",
             "- Improved text scaling/sizes",
