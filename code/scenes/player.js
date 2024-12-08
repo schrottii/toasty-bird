@@ -58,12 +58,20 @@ scenes["player"] = new Scene(
             createImage("inv" + inv + "Bg", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), 0.1, 0.1, "invBg", { quadratic: true, centered: true });
             createButton("inv" + inv + "Con", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), 0.1, 0.1, "invBg", (me) => {
                 if (inventoryMode == "skins") {
-                    clickSkin(me.split("inv")[1].split("Con")[0]);
-                    playerUpdate = "Skin selected!";
+                    let ID = parseInt(me.split("inv")[1].split("Con")[0]);
+                    clickSkin(ID);
+                    if (hasSkin(ID)) {
+                        playerUpdate = "Skin selected!";
+                    }
+                    else playerUpdate = "Locked!";
                 }
                 if (inventoryMode == "skills") {
-                    getSkill(parseInt(me.split("inv")[1].split("Con")[0]) + 1).select();
-                    playerUpdate = "Skill selected!";
+                    let ID = parseInt(me.split("inv")[1].split("Con")[0]) + 1;
+                    if (getSkill(ID).isOwned()) {
+                        playerUpdate = "Skill selected!";
+                        getSkill(ID).select();
+                    }
+                    else playerUpdate = "Locked!";
                 }
             }, { quadratic: true, centered: true, power: false, inv: inv });
             createText("inv" + inv + "Txt", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), "", { color: "white", size: 10 });

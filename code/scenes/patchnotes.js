@@ -186,6 +186,20 @@ const patchnotes = {
             "- Improved text scaling/sizes",
             "- Minor improvements to the Player scene",
         ],
+    "v1.4.1":
+        [
+            "-> Major:",
+            "- Game now runs the same regardless of Hz/FPS",
+            "- Coins gathered this run are now displayed",
+            "- Increased the bird's fall speed",
+
+            "-> Minor:",
+            "- Stats: added amount of Skills",
+            "- When no Skill is equipped, the background is",
+            "no longer shown while playing",
+            `- Selecting a skin/skill you don't have now says`,
+            `"Locked!" rather than "Skin/Skill selected!"`,
+        ]
 }
 
 scenes["patchnotes"] = new Scene(

@@ -6,6 +6,7 @@ var pipesAmount = 0;
 var gameAcceleration = 1;
 var gameState = "running"; // running / lost / paused
 var points = 0;
+var coinsThisRun = 0;
 var justUnpaused = false;
 
 function jump(source = "") {
@@ -50,6 +51,8 @@ scenes["play"] = new Scene(
         createImage("menuground", 0, 0.85, 2, 0.1, "menuground");
 
         createText("pointsDisplay", 0.5, 0.1, "0 Points", { size: 40, align: "center", quadratic: true, foreground: true });
+        createText("coinsDisplay", 0.5, 0.15, "0 Coins", { size: 24, align: "center", quadratic: true, foreground: true });
+        objects["coinsDisplay"].power = false;
         createText("pauseDisplay", 0.5, 0.5, "Paused", { size: 40, align: "center", quadratic: true, foreground: true, power: false });
         objects["pauseDisplay"].power = false;
 
@@ -59,12 +62,15 @@ scenes["play"] = new Scene(
         // Skill
         createImage("skillsListBg0", 0.125, 0.05, 0.1, 0.1, "invBg", { quadratic: true, centered: true, foreground: true });
         createImage("skillsListPic0", 0.125, 0.05, 0.1, 0.1, "", { quadratic: true, centered: true, power: false, foreground: true });
-        if (game.selSkills[0] != 0) objects["skillsListPic0"].image = "skills/" + getSkill(game.selSkills[0]).getImage();
+        objects["skillsListBg0"].power = game.selSkills[0] != 0;
         objects["skillsListPic0"].power = game.selSkills[0] != 0;
+        if (game.selSkills[0] != 0) {
+            objects["skillsListPic0"].image = "skills/" + getSkill(game.selSkills[0]).getImage();
+        }
 
         // Player
         createImage("player", 0.1, 0.25, 0.1, 0.1, "skins/" + getSkin(game.skin), { quadratic: true, foreground: true });
-        objects.player.velocity = 0.003;
+        objects.player.velocity = 0.01;
         objects.player.rotatevelocity = 0.003;
         objects.player.upTicks = 0;
         objects.player.snip = [0, 0, 32, 32];
@@ -163,6 +169,7 @@ scenes["play"] = new Scene(
                         let amount = 1;
                         if (getSkill(2).isEquipped() && Math.random() >= 0.8) amount *= 2;
 
+                        coinsThisRun += amount;
                         game.coins += amount;
                         game.stats.totalcoins += amount;
                         game.stats.normalcoins += amount;
@@ -183,7 +190,7 @@ scenes["play"] = new Scene(
                 objects.player.upTicks -= 1 * (tick * 60);
 
                 if (objects.player.upTicks <= 0) {
-                    objects.player.velocity = 0.003;
+                    objects.player.velocity = 0.01;
                     objects.player.snip = [0, 0, 32, 32];
                 }
             }
@@ -223,6 +230,8 @@ scenes["play"] = new Scene(
 
         // Active no matter what
         objects["pointsDisplay"].text = points + " Points";
+        objects["coinsDisplay"].text = coinsThisRun + " Coins";
+        objects["coinsDisplay"].power = coinsThisRun > 0;
 
         // ...
     }

@@ -122,9 +122,9 @@ function onClick(e) {
     for (let c in objects) {
         if (objects[c] == undefined) continue;
         if (objects[c].onClick == undefined || objects[c].power == false) continue;
-
-        if (mouseX > (objects[c].centered ? objects[c].x - objects[c].w : objects[c].x) * wggjCanvasWidth && mouseY > objects[c].y * wggjCanvasHeight
-            && mouseX < (objects[c].x * wggjCanvasWidth) + (objects[c].quadratic ? objects[c].h * wggjCanvasHeight : objects[c].w * wggjCanvasWidth) && mouseY < (objects[c].y + objects[c].h) * wggjCanvasHeight) {
+        // EDITED
+        if (mouseX > (objects[c].centered ? objects[c].x * wggjCanvasWidth - (objects[c].quadratic ? objects[c].h * wggjCanvasHeight : objects[c].w * wggjCanvasWidth) / 2 : objects[c].x * wggjCanvasWidth) && mouseY > objects[c].y * wggjCanvasHeight
+            && mouseX < (objects[c].centered ? objects[c].x * wggjCanvasWidth - (objects[c].quadratic ? objects[c].h * wggjCanvasHeight : objects[c].w * wggjCanvasWidth) / 2 : objects[c].x * wggjCanvasWidth) + (objects[c].quadratic ? objects[c].h * wggjCanvasHeight : objects[c].w * wggjCanvasWidth) && mouseY < (objects[c].y + objects[c].h) * wggjCanvasHeight) {
             // is in the hitbox
             objects[c].onClick(c);
         }

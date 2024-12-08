@@ -25,6 +25,8 @@ scenes["mainmenu"] = new Scene(
             pipeSpawnTime = 1;
             gameAcceleration = 1;
             points = 0;
+            coinsThisRun = 0;
+
             gameState = "running";
             loadScene("play");
         });

@@ -44,6 +44,7 @@ scenes["stats"] = new Scene(
         createText("stat5", 0.5, 0.55, "stat", { size: 30 });
         createText("stat6", 0.5, 0.6, "stat", { size: 30 });
         createText("stat7", 0.5, 0.65, "stat", { size: 30 });
+        createText("stat8", 0.5, 0.7, "stat", { size: 30 });
     },
     (tick) => {
         // Loop
@@ -63,6 +64,7 @@ scenes["stats"] = new Scene(
         objects["stat5"].text = "Total Time: " + Math.floor(game.stats.totaltime / 1000);
         objects["stat6"].text = "Total Coins: " + game.stats.totalcoins;
         objects["stat7"].text = "Skins: " + game.skins.length + "/" + skins.length;
+        objects["stat8"].text = "Skills: " + game.skills.length + "/" + skills.length;
 
         objects["playerName"].text = game.name;
     }
