@@ -15,7 +15,7 @@ function jump(source = "") {
         return false;
     }
     // Jump!
-    if (objects.player.upTicks == 0 && gameState == "running") {
+    if (objects.player.upTicks <= 0 && gameState == "running") {
         objects.player.velocity = -0.008;
         objects.player.upTicks = getSkill(3).isEquipped() ? 16 : 24;
         objects.player.snip = [0, 32, 32, 32];
@@ -93,7 +93,7 @@ scenes["play"] = new Scene(
         // Loop
         if (gameState == "running") {
             // Active: Running / Playing
-            gameAcceleration = Math.min(8, gameAcceleration * 1.0001);
+            gameAcceleration = Math.min(8, gameAcceleration * (1 + 0.0001 * (tick * 60)));
 
             groundAnimation += tick;
             objects["menuground"].x -= tick / 4;
@@ -174,15 +174,15 @@ scenes["play"] = new Scene(
             }
 
             // Player falling
-            objects.player.y = Math.max(0, Math.min(0.825, objects.player.y + objects.player.velocity));
-            if (objects.player.upTicks < 1) {
-                objects.player.velocity += 0.00015;
+            objects.player.y = Math.max(0, Math.min(0.825, objects.player.y + objects.player.velocity * (tick * 60)));
+            if (objects.player.upTicks < 0) {
+                objects.player.velocity += 0.00015 * (tick * 60);
             }
             else {
-                objects.player.velocity -= 0.0003;
-                objects.player.upTicks -= 1;
+                objects.player.velocity -= 0.0003 * (tick * 60);
+                objects.player.upTicks -= 1 * (tick * 60);
 
-                if (objects.player.upTicks == 0) {
+                if (objects.player.upTicks <= 0) {
                     objects.player.velocity = 0.003;
                     objects.player.snip = [0, 0, 32, 32];
                 }

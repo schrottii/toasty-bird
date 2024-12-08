@@ -1,5 +1,5 @@
-var gameVersion = "1.4";
-var newestVersion = 7;
+var gameVersion = "1.4.1";
+var newestVersion = 8;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
