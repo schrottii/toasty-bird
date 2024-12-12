@@ -151,12 +151,12 @@ scenes["play"] = new Scene(
                     && objects.player.y >= thisPipe.y * 1.3 && objects.player.y <= thisPipe.y + (thisPipe.h * 0.7)) {
                     gameState = "lost";
 
+                    if (points > game.stats.highscore) game.stats.highscore = points;
+                    save();
+
                     createText("lostText", 0.5, 0.3, isMobile() ? "Score: " + points : "You lost! Score: " + points, { color: "red", size: 60 });
                     if (points > game.stats.highscore) createText("lostText2", 0.5, 0.42, "New Highscore!", { color: "yellow", size: 42 });
                     createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
-                        if (points > game.stats.highscore) game.stats.highscore = points;
-                        save();
-
                         loadScene("mainmenu")
                     });
                     createText("lostButtonText", 0.5, 0.85, "Continue", { size: 64 });
@@ -230,7 +230,7 @@ scenes["play"] = new Scene(
 
         // Active no matter what
         objects["pointsDisplay"].text = points + " Points";
-        objects["coinsDisplay"].text = coinsThisRun + " Coins";
+        objects["coinsDisplay"].text = coinsThisRun + " Coin" + (coinsThisRun > 1 ? "s" : "");
         objects["coinsDisplay"].power = coinsThisRun > 0;
 
         // ...

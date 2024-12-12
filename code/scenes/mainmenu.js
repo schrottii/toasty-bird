@@ -14,7 +14,7 @@ scenes["mainmenu"] = new Scene(
         createImage("gameLogo", 0.5, 0.1, 0.4, 0.4, "gameLogo", { quadratic: true, centered: true });
 
         createImage("logo", 0.5, 0, 0.4, 0.25, "logo", { quadratic: true, centered: true });
-        createText("version", 0.975, 0.8, "Version " + gameVersion, { size: 40, align: "right" });
+        createText("version", 0.975, 0.975, "Version " + gameVersion, { size: 40, align: "right" });
 
         // Play button
         createButton("playbutton", 0.3, 0.4, 0.4, 0.1, "button", () => {
@@ -92,7 +92,6 @@ scenes["mainmenu"] = new Scene(
         }
 
         if (isMobile()) {
-            objects["version"].y = 0.975;
             objects["wButtonText1"].y = 10;
             objects["wButtonText2"].y = 10;
             objects["wButtonText3"].y = 10;

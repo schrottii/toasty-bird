@@ -1,5 +1,5 @@
-var gameVersion = "1.4.1";
-var newestVersion = 8;
+var gameVersion = "1.4.2";
+var newestVersion = 9;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -199,7 +199,23 @@ const patchnotes = {
             "no longer shown while playing",
             `- Selecting a skin/skill you don't have now says`,
             `"Locked!" rather than "Skin/Skill selected!"`,
-        ]
+        ],
+    "v1.4.2":
+        [
+            "-> Buttons:",
+            "- New design for normal buttons",
+            "- New images for import and export buttons",
+
+            "-> Gameplay:",
+            "- Game is now saved the moment you die, instead",
+            "of when you click Continue",
+            "- Increased max. player name length from 8 to 12",
+
+            "-> Other:",
+            "- Coins this run learned what a singular is",
+            "- Shop: Added Daily Gift text",
+            "- Current version is now at the bottom on PC too",
+        ],
 }
 
 scenes["patchnotes"] = new Scene(

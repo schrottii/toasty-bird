@@ -38,6 +38,7 @@ scenes["shop"] = new Scene(
             }
             objects["dailygift"].image = "claimedGift";
         }, { quadratic: true });
+        createText("dailyGiftText", 0.825, 0.125, "Daily Gift", { color: "yellow", size: 24 });
 
         let bob = new Date();
         let today = bob.getUTCFullYear() + "0" + bob.getUTCMonth() + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());

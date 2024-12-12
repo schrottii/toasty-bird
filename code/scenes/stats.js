@@ -13,7 +13,7 @@ scenes["stats"] = new Scene(
         createText("header", 0.5, 0.2, "Stats", { size: 80 });
         createText("playerName", 0.5, 0.3, "Player", { size: 80 });
         createButton("playerNameButton", 0.75, 0.15, 0.05, 0.05, "button", () => {
-            let newName = prompt("New player name?", "Peter").slice(0, 8);
+            let newName = prompt("New player name?", "Peter").slice(0, 12);
             game.name = newName;
         });
         createText("playerNameButtonText", 0.775, 0.2, "*", { size: 40 });
