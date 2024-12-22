@@ -163,7 +163,8 @@ scenes["play"] = new Scene(
                     });
                     createText("lostButtonText", 0.5, 0.85, "Continue", { size: 64 });
                 }
-                else if (currentGameState == "running" && pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
+                // use gameState here, not currentGameState, cuz screw you
+                else if (gameState == "running" && pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
                     points += 1;
                     game.stats.totalpoints += 1;
                     game.stats.normalpoints += 1;
