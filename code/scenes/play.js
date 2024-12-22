@@ -34,7 +34,7 @@ function pause(source = "") {
         objects["pauseDisplay"].time = 0;
         gameState = "paused";
     }
-    else {
+    else if (gameState == "paused") {
         if (source == "click") justUnpaused = true;
 
         objects["pauseDisplay"].power = false;
@@ -97,7 +97,9 @@ scenes["play"] = new Scene(
     },
     (tick) => {
         // Loop
-        if (gameState == "running") {
+        let currentGameState = gameState; // to avoid mid-tick changes
+
+        if (currentGameState == "running") {
             // Active: Running / Playing
             gameAcceleration = Math.min(8, gameAcceleration * (1 + 0.0001 * (tick * 60)));
 
@@ -132,7 +134,7 @@ scenes["play"] = new Scene(
                 if (pipes[p] == undefined) continue;
 
                 let thisPipe = objects[pipes[p][0]];
-                if (gameState == "running" && !(getSkill(4).isEquipped() && objects.player.upTicks > 0)) {
+                if (currentGameState == "running" && !(getSkill(4).isEquipped() && objects.player.upTicks > 0)) {
                     pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
                     objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
                     if (objects["coin" + pipes[p][0].substr(4)] != undefined) objects["coin" + pipes[p][0].substr(4)].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
@@ -147,7 +149,7 @@ scenes["play"] = new Scene(
                 ctx.fillStyle = "black";
                 */
 
-                if (gameState == "running" && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)
+                if (currentGameState == "running" && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)
                     && objects.player.y >= thisPipe.y * 1.3 && objects.player.y <= thisPipe.y + (thisPipe.h * 0.7)) {
                     gameState = "lost";
 
@@ -161,7 +163,7 @@ scenes["play"] = new Scene(
                     });
                     createText("lostButtonText", 0.5, 0.85, "Continue", { size: 64 });
                 }
-                else if (gameState == "running" && pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
+                else if (currentGameState == "running" && pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
                     points += 1;
                     game.stats.totalpoints += 1;
                     game.stats.normalpoints += 1;
@@ -208,7 +210,7 @@ scenes["play"] = new Scene(
             }
 
         }
-        else if (gameState == "lost") {
+        else if (currentGameState == "lost") {
             // Active: Lost
             objects["playerDeath"].x = objects.player.x + 0.025;
             objects["playerDeath"].y = objects.player.y;
@@ -219,7 +221,7 @@ scenes["play"] = new Scene(
                 objects["playerDeath"].image = objects["playerDeath"].image == "boom" ? "boom2" : "boom";
             }
         }
-        else if (gameState == "paused") {
+        else if (currentGameState == "paused") {
             // Active: Paused
             objects["pauseDisplay"].time += tick;
             if (objects["pauseDisplay"].time > 0.5) {
