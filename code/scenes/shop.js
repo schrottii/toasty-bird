@@ -41,7 +41,7 @@ scenes["shop"] = new Scene(
         createText("dailyGiftText", 0.825, 0.125, "Daily Gift", { color: "yellow", size: 24 });
 
         let bob = new Date();
-        let today = bob.getUTCFullYear() + "0" + bob.getUTCMonth() + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
+        let today = bob.getUTCFullYear() + "0" + (bob.getUTCMonth() < 10 ? "0" + bob.getUTCMonth() : bob.getUTCMonth()) + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
         if (parseInt(game.lastGift) == parseInt(today)) objects["dailygift"].image = "claimedGift";
 
         createSquare("underyourskin", 0, 0.2, 1, 0.6, "#006800");
