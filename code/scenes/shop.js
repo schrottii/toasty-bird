@@ -26,7 +26,7 @@ scenes["shop"] = new Scene(
         // Daily Gift
         createButton("dailygift", 0.8, 0, 0.1, 0.1, "whiteGift", () => {
             let bob = new Date();
-            let today = bob.getUTCFullYear() + "0" + bob.getUTCMonth() + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
+            let today = bob.getUTCFullYear() + "0" + (bob.getUTCMonth() < 10 ? "0" + bob.getUTCMonth() : bob.getUTCMonth()) + (bob.getUTCDate() < 10 ? "0" + bob.getUTCDate() : bob.getUTCDate());
             if (parseInt(game.lastGift) < parseInt(today)) {
                 game.lastGift = today;
 
@@ -35,8 +35,8 @@ scenes["shop"] = new Scene(
                 game.coins += amount;
                 game.stats.totalcoins += amount;
                 game.stats.totalgifts += 1;
+                objects["dailygift"].image = "claimedGift";
             }
-            objects["dailygift"].image = "claimedGift";
         }, { quadratic: true });
         createText("dailyGiftText", 0.825, 0.125, "Daily Gift", { color: "yellow", size: 24 });
 
