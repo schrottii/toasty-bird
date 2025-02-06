@@ -69,7 +69,7 @@ scenes["play"] = new Scene(
         }
 
         // Player
-        createImage("player", 0.1, 0.25, 0.1, 0.1, "skins/" + getSkin(game.skin), { quadratic: true, foreground: true });
+        createImage("player", 0.1, 0.25, 0.1, 0.1, "skins/" + getSkin(game.skin).getImage(), { quadratic: true, foreground: true });
         objects.player.velocity = 0.01;
         objects.player.rotatevelocity = 0.003;
         objects.player.upTicks = 0;
