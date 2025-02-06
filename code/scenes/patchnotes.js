@@ -1,5 +1,5 @@
-var gameVersion = "1.4.2";
-var newestVersion = 9;
+var gameVersion = "1.5";
+var newestVersion = 10;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -216,6 +216,38 @@ const patchnotes = {
             "- Shop: Added Daily Gift text",
             "- Current version is now at the bottom on PC too",
         ],
+    "v1.5":
+        [
+            `
+Shopping Bird Update
+
+-> Shop:
+- Reworked the Shop design!
+- It now has a scrollable container
+- Sections: Skins, Tag Skins, Skills, Daily Gift
+- Added buy confirmations for skins
+- Skins: Reworked the semi-random skin selection
+- Added a fourth skin to the normal selection
+- Tagged Skins: Two skins of a certain tag
+- They only change every third day
+
+-> Skin Tags:
+- Skins can now have tags
+- For example Cat or Male
+- Used for the Tagged Skins shop section
+
+-> New Skins:
+- Added 4 new skins (24 total)
+- Flying Mouse, 20 Coins
+- Robot Bird, 30 Coins
+- Vampire, 30 Coins
+- Hammer Time, 50 Coins
+
+-> Other:
+- Made it a bit easier for me to add patch notes
+- Updated WGGJ from v1.1 to v1.2.1
+            `
+        ]
 }
 
 scenes["patchnotes"] = new Scene(
@@ -257,6 +289,11 @@ scenes["patchnotes"] = new Scene(
         // Loop
 
         let currentVersionText = patchnotes[Object.keys(patchnotes)[selectedVersion]];
+        if (currentVersionText.length == 1) {
+            currentVersionText = currentVersionText[0].split("\n");
+            currentVersionText.shift();
+        }
+
         for (vt = 0; vt < 32; vt++) {
             if (vt < currentVersionText.length) {
                 objects["text" + vt].text = currentVersionText[vt];

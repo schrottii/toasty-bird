@@ -59,8 +59,9 @@ scenes["player"] = new Scene(
             createButton("inv" + inv + "Con", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), 0.1, 0.1, "invBg", (me) => {
                 if (inventoryMode == "skins") {
                     let ID = parseInt(me.split("inv")[1].split("Con")[0]);
-                    clickSkin(ID);
-                    if (hasSkin(ID)) {
+                    getSkin(ID).selectSkin();
+
+                    if (getSkin(ID).isOwned()) {
                         playerUpdate = "Skin selected!";
                     }
                     else playerUpdate = "Locked!";
@@ -105,8 +106,8 @@ scenes["player"] = new Scene(
         // Updates
         objects["playerUpdate"].text = playerUpdate;
 
-        objects["playerskinName"].text = getSkinName(game.skin);
-        objects["playerskin"].image = "skins/" + getSkin(game.skin);
+        objects["playerskinName"].text = getSkin(game.skin).getName();
+        objects["playerskin"].image = "skins/" + getSkin(game.skin).getImage();
         objects["playerskin"].snip = [0, groundAnimation >= 0.5 ? 32 : 0, 32, 32];
 
         if (game.selSkills[0] != 0) objects["skillsListPic0"].image = "skills/" + getSkill(game.selSkills[0]).getImage();
@@ -134,9 +135,9 @@ scenes["player"] = new Scene(
             if (inventoryMode == "skins") {
                 if (inv < skins.length) {
                     objects["inv" + inv + "Con"].power = true;
-                    objects["inv" + inv + "Con"].image = hasSkin(inv) ? "skins/" + getSkin(inv) : "unknown";
-                    objects["inv" + inv + "Con"].snip = [0, groundAnimation >= 0.5 && hasSkin(inv) ? 32 : 0, 32, 32];
-                    objects["inv" + inv + "Txt"].text = hasSkin(inv) ? getSkinName(inv) : "locked";
+                    objects["inv" + inv + "Con"].image = getSkin(inv).isOwned() ? "skins/" + getSkin(inv).getImage() : "unknown";
+                    objects["inv" + inv + "Con"].snip = [0, groundAnimation >= 0.5 && getSkin(inv).isOwned() ? 32 : 0, 32, 32];
+                    objects["inv" + inv + "Txt"].text = getSkin(inv).isOwned() ? getSkin(inv).getName() : "locked";
                 }
                 else {
                     objects["inv" + inv + "Con"].power = false;

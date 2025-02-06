@@ -31,6 +31,10 @@ images = {
     "skins/cat2": "skins/cat2.png",
     "skins/cat3": "skins/cat3.png",
     "skins/cat4": "skins/cat4.png",
+    "skins/flyingmouse": "skins/flyingmouse.png",
+    "skins/robotbird": "skins/robotbird.png",
+    "skins/vampire": "skins/vampire.png",
+    "skins/hammer": "skins/hammer.png",
 
     // skills
     "skills/faststart": "skills/faststart.png",
@@ -106,7 +110,7 @@ function importGame() {
     }
 }
 
-function init() {
+function customWGGJInit() {
     let cachedGame = localStorage.getItem("TOASTYBIRD1");
     if (cachedGame != undefined) {
         game.loadFromSaveGame(JSON.parse(atob(cachedGame.slice(6))));
