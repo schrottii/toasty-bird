@@ -37,12 +37,12 @@ scenes["player"] = new Scene(
             exportGame();
             playerUpdate = "Exported the game!";
         }, { quadratic: true, centered: true });
-        createButton("buttonImport", 0.25, 0.875, 0.1, 0.1, "import", () => {
+        createButton("buttonImport", 0.11, 0.875, 0.1, 0.1, "import", () => {
             importGame();
             playerUpdate = "Imported the game!";
         }, { quadratic: true, centered: true });
 
-        createText("playerUpdate", 0.15, 0.95, "", { color: "white", size: 16 });
+        createText("playerUpdate", 0.15, 0.95, "", { color: "white", size: 16, align: "left" });
 
         // Skills
         createSquare("skillsBg", 0.275, 0.16, 0.08, 0.615, "#006800");

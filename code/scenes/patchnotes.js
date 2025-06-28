@@ -1,5 +1,5 @@
-var gameVersion = "1.5";
-var newestVersion = 10;
+var gameVersion = "1.5.1";
+var newestVersion = 11;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -247,7 +247,24 @@ Shopping Bird Update
 - Made it a bit easier for me to add patch notes
 - Updated WGGJ from v1.1 to v1.2.1
             `
-        ]
+        ],
+    "v1.5.1":
+        [
+            `
+-> New Skins:
+- Added 4 new skins (28 total)
+- Snake, 29 Coins
+- Queen Luna, 29 Coins
+- Ghost, 40 Coins
+- Cool Planet, 40 Coins
+
+-> Other:
+- Shop: Replaced coins text with image
+- Player: Moved import button next to export button
+- Patch notes: font size adjustments
+- Fixed time not ticking up bug
+            `
+        ],
 }
 
 scenes["patchnotes"] = new Scene(
@@ -255,7 +272,7 @@ scenes["patchnotes"] = new Scene(
         // Init
         createSquare("bg", 0, 0, 1, 1, "green");
 
-        createText("header", 0.5, 0.1, "Patch notes", { size: 80 });
+        createText("header", 0.5, 0.1, "Patch notes", { size: 64 });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
@@ -282,7 +299,7 @@ scenes["patchnotes"] = new Scene(
         createText("versionText", 0.5, 0.185, "Version v" + gameVersion, { size: 40 });
 
         for (vtc = 0; vtc < 32; vtc++) {
-            createText("text" + vtc, 0.1125, 0.225 + (0.02 * vtc), "", { size: 20, align: "left" });
+            createText("text" + vtc, 0.1125, 0.225 + (0.021 * vtc), "", { size: 15, align: "left", noScaling: true });
         }
     },
     (tick) => {

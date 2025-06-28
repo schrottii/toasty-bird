@@ -13,6 +13,7 @@ scenes["shop"] = new Scene(
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         createText("coinText", 0.9, 0.1, "0 Coins", { color: "orange", size: 40, align: "right" });
+        createImage("coinImage", 0.925, 0.05, 0.04, 0.05, "coin", { quadratic: true, centered: true });
 
         // Calculate Skins
         let bob = new Date();
@@ -140,7 +141,7 @@ scenes["shop"] = new Scene(
         groundAnimation += tick;
         if (groundAnimation > 2) groundAnimation = 0;
 
-        objects["coinText"].text = game.coins + " Coins";
+        objects["coinText"].text = game.coins;
 
         for (i = 0; i < 6; i++) {
             let thisSkin = objects["skin" + i].config.id;

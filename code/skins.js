@@ -83,7 +83,11 @@ var skins = [
     new Skin(20, "flyingmouse", "Flying Mouse", 20, 1.5),
     new Skin(21, "robotbird", "Robot Bird", 30, 1.5, { tags: ["bird", "robot"] }),
     new Skin(22, "vampire", "Vampire", 30, 1.5, { tags: ["male", "bird"] }),
-    new Skin(23, "hammer", "Hammer Time", 50, 1.5, { tags: ["criminal"]})
+    new Skin(23, "hammer", "Hammer Time", 50, 1.5, { tags: ["criminal"]}),
+    new Skin(24, "snake", "Snake", 29, 1.51, { tags: ["friend", "female"] }),
+    new Skin(25, "queenluna", "Queen Luna", 29, 1.51, { tags: ["cat", "female"] }),
+    new Skin(26, "ghost", "Ghost", 40, 1.51, { tags: ["criminal"] }),
+    new Skin(27, "coolplanet", "Cool Planet", 40, 1.51),
 ];
 
 var tags = {

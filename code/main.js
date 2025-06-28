@@ -35,6 +35,10 @@ images = {
     "skins/robotbird": "skins/robotbird.png",
     "skins/vampire": "skins/vampire.png",
     "skins/hammer": "skins/hammer.png",
+    "skins/snake": "skins/snake.png",
+    "skins/queenluna": "skins/queenluna.png",
+    "skins/ghost": "skins/ghost.png",
+    "skins/coolplanet": "skins/coolplanet.png",
 
     // skills
     "skills/faststart": "skills/faststart.png",
@@ -80,7 +84,7 @@ function isMobile() {
     return /Mobi/i.test(window.navigator.userAgent) || wggjCanvasWidth <= 480;
 }
 
-function loop(delta) {
+function customWGGJLoop(delta) {
     // The game's main loop
     game.stats.totaltime += delta;
 }
