@@ -3,17 +3,20 @@ scenes["shop"] = new Scene(
         // Init
         createSquare("bg", 0, 0, 1, 1, "green");
 
-        createText("header", 0.5, 0.1, "Shop", { size: 80 });
+        // Header
+        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
+        createText("header", 0.11, 0.09, "Shop", { size: 48, color: "darkgreen" });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
-            save();
-            loadScene("mainmenu");
+            audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu"); save();', 300);
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         createText("coinText", 0.9, 0.1, "0 Coins", { color: "orange", size: 40, align: "right" });
-        createImage("coinImage", 0.925, 0.05, 0.04, 0.05, "coin", { quadratic: true, centered: true });
+        createImage("coinImage", 0.925, 0.05, 0.05, 0.05, "coin", { quadratic: true, centered: true });
 
         // Calculate Skins
         let bob = new Date();
@@ -51,13 +54,15 @@ scenes["shop"] = new Scene(
             createButton("skin" + iS, 0.2 + (Math.floor(iS / 2) * 0.3), 0.2 + ((iS % 2) * 0.3), 0.15, 0.15, "unknown", (me) => {
                 getSkin(objects[me].config.id).buySkin();
             }, { quadratic: true, centered: true, id: 1 + Math.ceil(Math.PI * ski * Math.pow(ski + 4, iS)) % (skins.length - 1) });
+            createImage("skincheck" + iS, 0.2 + (Math.floor(iS / 2) * 0.3), 0.2 + ((iS % 2) * 0.3), 0.05, 0.05, "check",
+                { quadratic: true, centered: true, });
 
             objects["skin" + iS].snip = [0, 0, 32, 32];
 
             createText("skinname" + iS, 0.2 + (Math.floor(iS / 2) * 0.3), 0.4 + ((iS % 2) * 0.3), "...", { size: 32 });
             createText("skintext" + iS, 0.2 + (Math.floor(iS / 2) * 0.3), 0.433 + ((iS % 2) * 0.3), "...", { size: 24 });
 
-            objects["shopScroll"].children.push("skin" + iS, "skinname" + iS, "skintext" + iS);
+            objects["shopScroll"].children.push("skin" + iS, "skincheck" + iS, "skinname" + iS, "skintext" + iS);
         }
 
         let currentTag = Object.keys(tags)[Math.ceil(new Date().getUTCDate() / 3) % Object.keys(tags).length];
@@ -70,13 +75,16 @@ scenes["shop"] = new Scene(
             createButton("skin" + iS, 0.85 + ((iS - 4) * 0.3), 0.35, 0.15, 0.15, "unknown", (me) => {
                 getSkin(objects[me].config.id).buySkin();
             }, { quadratic: true, centered: true, id: possibleSkins[Math.ceil(Math.PI * ski * Math.pow(ski + 4, iS)) % possibleSkins.length] });
+            createImage("skincheck" + iS, 0.85 + ((iS - 4) * 0.3), 0.35, 0.05, 0.05, "check",
+                { quadratic: true, centered: true, });
+
             if (possibleSkins.length > 1) possibleSkins.splice(Math.ceil(Math.PI * ski * Math.pow(ski + 4, iS)) % possibleSkins.length, 1); // avoid duplicates
             objects["skin" + iS].snip = [0, 0, 32, 32];
 
             createText("skinname" + iS, 0.85 + ((iS - 4) * 0.3), 0.4 + 0.15, "...", { size: 32 });
             createText("skintext" + iS, 0.85 + ((iS - 4) * 0.3), 0.433 + 0.15, "...", { size: 24 });
 
-            objects["shopScroll"].children.push("skin" + iS, "skinname" + iS, "skintext" + iS);
+            objects["shopScroll"].children.push("skin" + iS, "skincheck" + iS, "skinname" + iS, "skintext" + iS);
         }
 
         // skill
@@ -131,10 +139,11 @@ scenes["shop"] = new Scene(
 
         objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyButtonText"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyCancelButtonText"].power = objects["confirmBuyImage"].power = false;
 
-        // music
-        wggjAudio.src = "audio/toasty-shop.mp3";
-        wggjAudio.volume = game.settings.music ? 1 : 0;
-        if (game.settings.music) wggjAudio.play();
+        audioPlayMusic("shop");
+
+        // transition fade
+        createImage("fade", 0, 0, 1, 1, "fade");
+        createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
@@ -146,7 +155,8 @@ scenes["shop"] = new Scene(
         for (i = 0; i < 6; i++) {
             let thisSkin = objects["skin" + i].config.id;
 
-            objects["skin" + i].image = !getSkin(thisSkin).isOwned() ? "skins/" + getSkin(thisSkin).getImage() : "unknown";
+            objects["skin" + i].image = /*!getSkin(thisSkin).isOwned() ?*/ "skins/" + getSkin(thisSkin).getImage();// : "unknown";
+            objects["skincheck" + i].power = getSkin(thisSkin).isOwned() ? true : false;
             objects["skin" + i].snip = [0, groundAnimation >= 1 ? 32 : 0, 32, 32];
 
             if (getSkin(thisSkin).isOwned()) objects["skintext" + i].text = "Bought!";

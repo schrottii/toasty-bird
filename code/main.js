@@ -3,8 +3,13 @@
 images = {
     gameLogo: "toasty-bird-by-tpot.png",
     logo: "logo.png",
+
     button: "button.png",
+    title: "title.png",
     unknown: "unknown.png",
+    check: "check.png",
+    fade: "fade.png",
+
     invBg: "invBg.png",
     import: "import.png",
     export: "export.png",
@@ -45,6 +50,7 @@ images = {
     "skills/golddigger": "skills/golddigger.png",
     "skills/youngfeathers": "skills/youngfeathers.png",
     "skills/carefuljumper": "skills/carefuljumper.png",
+    "skills/ballbird": "skills/ballbird.png",
 
     menuground: "menu-ground.png",
     menuground2: "menu-ground2.png",
@@ -63,10 +69,20 @@ images = {
     whiteShop: "shop.png",
     whiteGift: "gift.png",
     claimedGift: "gift2.png",
-}
-GAMENAME = "Toasty Bird";
-FONT = "Joystix";
+};
+
+audio = {
+    "menu": "menu-theme.mp3",
+    "playing": "toasty-bird.mp3",
+    "shop": "toasty-shop.mp3",
+
+    "click": "448086__breviceps__normal-click.wav",
+};
+
+wggj.config.gameName = "Toasty Bird";
+wggj.config.font = "Joystix";
 wggjLoadImages();
+wggjLoadAudio();
 wggjLoop();
 
 document.addEventListener('keydown', event => {
@@ -81,7 +97,7 @@ document.addEventListener('keydown', event => {
 function isMobile() {
     if (game.settings.device == "pc") return false;
     if (game.settings.device == "mobile") return true;
-    return /Mobi/i.test(window.navigator.userAgent) || wggjCanvasWidth <= 480;
+    return /Mobi/i.test(window.navigator.userAgent) || wggj.canvas.w <= 480;
 }
 
 function customWGGJLoop(delta) {
@@ -91,6 +107,16 @@ function customWGGJLoop(delta) {
 
 function save() {
     localStorage.setItem("TOASTYBIRD1", "toasty" + btoa(JSON.stringify(game)));
+
+    if (objects["saved"] == undefined) {
+        createText("saved", 0.9, 1, "Saved", { size: 28, color: "green" });
+    }
+    else {
+        objects["saved"].y = 1;
+        objects["saved"].alpha = 1;
+    }
+
+    createAnimation("savedAni", "saved", (t, d) => { t.y -= 0.2 * d; t.alpha -= 0.5 * d }, 2.5, true);
 }
 
 function exportGame() {

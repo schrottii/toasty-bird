@@ -10,7 +10,10 @@ scenes["stats"] = new Scene(
         createImage("menuground", 0, 0.8, 2, 0.1, "menuground");
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
-        createText("header", 0.5, 0.2, "Stats", { size: 80 });
+        // Header
+        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
+        createText("header", 0.11, 0.09, "Stats", { size: 48, color: "darkgreen" });
+
         createText("playerName", 0.5, 0.3, "Player", { size: 80 });
         createButton("playerNameButton", 0.75, 0.15, 0.05, 0.05, "button", () => {
             let newName = prompt("New player name?", "Peter").slice(0, 12);
@@ -20,22 +23,29 @@ scenes["stats"] = new Scene(
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
-            loadScene("mainmenu");
+            audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu"); save();', 300);
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         // Export button
+        createButton("buttonExport", 0.2, 0.7, 0.1, 0.1, "export", () => {
+            exportGame();
+        }, { quadratic: true });
         createButton("exportbutton", 0.25, 0.7, 0.2, 0.1, "button", () => {
             exportGame();
         });
         createText("buttonText2", 0.35, 0.775, "Export", { size: 40 });
 
         // Import button
+        createButton("buttonImport", 0.5, 0.7, 0.1, 0.1, "import", () => {
+            importGame();
+        }, { quadratic: true });
         createButton("importbutton", 0.55, 0.7, 0.2, 0.1, "button", () => {
             importGame();
         });
         createText("buttonText3", 0.65, 0.775, "Import", { size: 40 });
-
 
         createText("stat1", 0.5, 0.35, "stat", { size: 30 });
         createText("stat2", 0.5, 0.4, "stat", { size: 30 });
@@ -45,6 +55,10 @@ scenes["stats"] = new Scene(
         createText("stat6", 0.5, 0.6, "stat", { size: 30 });
         createText("stat7", 0.5, 0.65, "stat", { size: 30 });
         createText("stat8", 0.5, 0.7, "stat", { size: 30 });
+
+        // transition fade
+        createImage("fade", 0, 0, 1, 1, "fade");
+        createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop

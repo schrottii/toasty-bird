@@ -29,7 +29,10 @@ class SaveGame {
         }
         this.settings = {
             music: true,
+            sounds: true,
             device: "automatic",
+            birdRotation: true,
+            hitboxes: false
         }
     }
     loadFromSaveGame(sg) {

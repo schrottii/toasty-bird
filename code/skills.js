@@ -110,4 +110,5 @@ var skills = [
     new Skill(2, 2, 0, "Gold Digger", "golddigger", "Coins have a 20% chance of being worth 2x"),
     new Skill(3, 3, 0, "Young Feathers", "youngfeathers", "Jumps are smaller"),
     new Skill(4, 4, 0, "Careful Jumper", "carefuljumper", "Jumping causes a temporary slowdown"),
+    new Skill(5, 4, 0, "Ball Bird", "ballbird", "Change gravity instead of jumping"),
 ];

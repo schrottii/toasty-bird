@@ -1,5 +1,5 @@
-var gameVersion = "1.5.1";
-var newestVersion = 11;
+var gameVersion = "1.6";
+var newestVersion = 12;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -265,14 +265,49 @@ Shopping Bird Update
 - Fixed time not ticking up bug
             `
         ],
-}
+    "v1.6":
+        [
+            `
+-> Skills:
+- New Epic Skill: Ball Bird
+- Updated all 4 old skill images
+
+-> Changes:
+- Added fade animations between scenes
+- Moved headers to top left with new design
+- Added text when game is saved
+- Main menu: Changed donate button appearance
+- Shop: bought skins are no longer replaced with ?, instead a checkmark is shown on them
+
+-> Play:
+- Jumps are faster now (20% less duration, 25% more base velocity)
+- Bird rotates back to normal after death (animated)
+- Reduced lowest height (0.825 -> 0.81)
+
+-> Player:
+- Added header
+- Removed import and export buttons, moved to stats
+
+-> Settings:
+- New Setting: Sounds
+- New Setting: Bird Rotation (still enabled by default)
+- Toggling music now immediately applies
+
+-> Other:
+- Added sound for clicking buttons
+- Closing stats now saves
+- Updated WGGJ from v1.2.1 to v1.5
+`]
+};
 
 scenes["patchnotes"] = new Scene(
     () => {
         // Init
         createSquare("bg", 0, 0, 1, 1, "green");
 
-        createText("header", 0.5, 0.1, "Patch notes", { size: 64 });
+        // Header
+        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
+        createText("header", 0.11, 0.09, "Patch notes", { size: 36, color: "darkgreen" });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
@@ -285,12 +320,14 @@ scenes["patchnotes"] = new Scene(
         createSquare("midBgSquare", 0.1, 0.2, 0.8, 0.65, "gray");
 
         createButton("goLeft", 0.1, 0.1, 0.05, 0.1, "button", () => {
+            audioPlaySound("click");
             if (selectedVersion > 0) selectedVersion -= 1;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
         });
         createText("goLeftText", 0.125, 0.185, "<", { size: 60 });
 
         createButton("goRight", 0.85, 0.1, 0.05, 0.1, "button", () => {
+            audioPlaySound("click");
             if (selectedVersion < newestVersion) selectedVersion += 1;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
         });

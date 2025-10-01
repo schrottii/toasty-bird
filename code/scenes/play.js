@@ -8,26 +8,40 @@ var gameState = "running"; // running / lost / paused
 var points = 0;
 var coinsThisRun = 0;
 var justUnpaused = false;
+var mobilePipes = false;
 
 function jump(source = "") {
-    if (currentScene != "play") return false;
+    if (wggj.canvas.currentScene != "play") return false;
     if (source == "click" && justUnpaused == true) {
         justUnpaused = false;
         return false;
     }
     // Jump!
-    if (objects.player.upTicks <= 0 && gameState == "running") {
-        objects.player.velocity = -0.008;
-        objects.player.upTicks = getSkill(3).isEquipped() ? 16 : 24;
-        objects.player.snip = [0, 32, 32, 32];
+    if (objects.player.upTicks <= 0.001 && gameState == "running") {
+        if (!getSkill(5).isEquipped()) {
+            objects.player.velocity = -0.01;
+            objects.player.upTicks = getSkill(3).isEquipped() ? 10 : 20;
+            objects.player.snip = [0, 32, 32, 32];
 
-        game.stats.totaljumps += 1;
-        game.stats.normaljumps += 1;
+            game.stats.totaljumps += 1;
+            game.stats.normaljumps += 1;
+        }
+        else {
+            if (objects.player.velocity > 0) {
+                objects.player.velocity = -0.01;
+                objects.player.upTicks = 0.001;
+            }
+            else {
+                objects.player.velocity = 0.01;
+                objects.player.upTicks = 0;
+            }
+            objects.player.snip[1] = (objects.player.snip[1] == 0) ? 32 : 0;
+        }
     }
 }
 
 function pause(source = "") {
-    if (currentScene != "play") return false;
+    if (wggj.canvas.currentScene != "play") return false;
     // Pause!
     if (gameState == "running") {
         objects["pauseDisplay"].power = true;
@@ -45,7 +59,7 @@ function pause(source = "") {
 scenes["play"] = new Scene(
     () => {
         // Init
-        createSquare("bg", 0, 0, 1, 1, "lightblue");
+        if (!game.settings.hitboxes) createSquare("bg", 0, 0, 1, 1, "lightblue");
 
         createImage("menuground2", 0, 0.95, 1, 0.1, "menuground2", { quadratic: false, foreground: true });
         createImage("menuground", 0, 0.85, 2, 0.1, "menuground");
@@ -91,9 +105,9 @@ scenes["play"] = new Scene(
         createImage("cloud4", 2.4, 0.35, 0.2, 0.2, "clouds", { quadratic: true });
         objects["cloud4"].snip = [0, 96, 64, 32];
 
-        wggjAudio.src = "audio/toasty-bird.mp3";
-        wggjAudio.volume = game.settings.music ? 1 : 0;
-        if (game.settings.music) wggjAudio.play();
+        mobilePipes = isMobile() ? 2 : 1;
+
+        audioPlayMusic("playing");
     },
     (tick) => {
         // Loop
@@ -130,44 +144,51 @@ scenes["play"] = new Scene(
             }
 
             // Pipes movement & collision
-            for (p = pipes.length - 12; p < pipes.length; p++) {
+            for (let p = pipes.length - 12; p < pipes.length; p++) {
                 if (pipes[p] == undefined) continue;
 
                 let thisPipe = objects[pipes[p][0]];
                 if (currentGameState == "running" && !(getSkill(4).isEquipped() && objects.player.upTicks > 0)) {
-                    pipes[p][1] -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
-                    objects[pipes[p][0]].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
-                    if (objects["coin" + pipes[p][0].substr(4)] != undefined) objects["coin" + pipes[p][0].substr(4)].x -= gameAcceleration * tick / 4 * (isMobile() ? 2 : 1);
+                    pipes[p][1] -= gameAcceleration * tick / 4 * mobilePipes;
+                    thisPipe.x -= gameAcceleration * tick / 4 * mobilePipes;
+                    if (objects["coin" + pipes[p][0].substr(4)] != undefined) objects["coin" + pipes[p][0].substr(4)].x -= gameAcceleration * tick / 4 * mobilePipes;
                 }
 
+                // show hitboxes (disable bg as well)
+                if (game.settings.hitboxes) {
+                    wggjCTX.fillStyle = "red";
+                    wggjCTX.fillRect(wggj.canvas.w * thisPipe.x, wggj.canvas.h * thisPipe.y * 1.3, wggj.canvas.w * (thisPipe.w / 4), wggj.canvas.h * (thisPipe.h * 0.7 - thisPipe.y * 1.4 + thisPipe.y * 1));
+                    wggjCTX.fillRect(wggj.canvas.w * objects.player.x, wggj.canvas.h * objects.player.y, wggj.canvas.w * objects.player.w / 2, wggj.canvas.h * objects.player.h);
+                    wggjCTX.fillStyle = "black";
+                }
+                
                 // Player-Pipe Collision
-
-                /*
-                ctx.fillStyle = "red"; // show hitboxes (disable bg as well)
-                ctx.fillRect(width * thisPipe.x, height * thisPipe.y * 1.3, width * (thisPipe.w / 4), height * (thisPipe.h * 0.7 - thisPipe.y * 1.4 + thisPipe.y * 1));
-                ctx.fillRect(width * objects.player.x, height * objects.player.y, width * objects.player.w, height * objects.player.h);
-                ctx.fillStyle = "black";
-                */
-
                 if (currentGameState == "running" && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)
                     && objects.player.y >= thisPipe.y * 1.3 && objects.player.y <= thisPipe.y + (thisPipe.h * 0.7)) {
+                    // you hit it and DIED
                     gameState = "lost";
 
                     if (points > game.stats.highscore) game.stats.highscore = points;
                     save();
 
+                    if (objects["player"].rotate > 0) createAnimation("deathRotation", "player", (t, d) => t.rotate = Math.max(0, t.rotate - 0.1 * d), 2, true);
+                    else createAnimation("deathRotation", "player", (t, d) => t.rotate = Math.min(0, t.rotate + 0.1 * d), 2, true);
+                    
                     createText("lostText", 0.5, 0.3, isMobile() ? "Score: " + points : "You lost! Score: " + points, { color: "red", size: 60 });
                     if (points > game.stats.highscore) createText("lostText2", 0.5, 0.42, "New Highscore!", { color: "yellow", size: 42 });
                     createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
                         loadScene("mainmenu")
                     });
                     createText("lostButtonText", 0.5, 0.85, "Continue", { size: 64 });
+                    return;
                 }
                 // use gameState here, not currentGameState, cuz screw you
                 else if (gameState == "running" && pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
+                    // go through a hoop and gain ca$h
                     points += 1;
                     game.stats.totalpoints += 1;
                     game.stats.normalpoints += 1;
+
                     if (objects["coin" + (parseInt(pipes[p][0].substr(4)) + 1)] != undefined) {
                         let amount = 1;
                         if (getSkill(2).isEquipped() && Math.random() >= 0.8) amount *= 2;
@@ -183,14 +204,19 @@ scenes["play"] = new Scene(
                 }
             }
 
+            // despawn pipes
+            if (pipes.length > 50) pipes.shift();
+
             // Player falling
-            objects.player.y = Math.max(0, Math.min(0.825, objects.player.y + objects.player.velocity * (tick * 60)));
+            objects.player.y = Math.max(0, Math.min(0.81, objects.player.y + objects.player.velocity * (tick * 60)));
             if (objects.player.upTicks < 0) {
+                // fall
                 objects.player.velocity += 0.00015 * (tick * 60);
             }
             else {
+                // jump
                 objects.player.velocity -= 0.0003 * (tick * 60);
-                objects.player.upTicks -= 1 * (tick * 60);
+                if (!getSkill(5).isEquipped()) objects.player.upTicks -= 1 * (tick * 60);
 
                 if (objects.player.upTicks <= 0) {
                     objects.player.velocity = 0.01;
@@ -198,8 +224,7 @@ scenes["play"] = new Scene(
                 }
             }
             objects.player.rotatevelocity = (objects.player.rotatevelocity * 0.9) + (objects.player.velocity * 0.1);
-            objects.player.rotate = Math.max(-0.2, Math.min(0.2, -objects.player.rotatevelocity * 12));
-
+            if (game.settings.birdRotation) objects.player.rotate = Math.max(-0.2, Math.min(0.2, -objects.player.rotatevelocity * 12));
 
             // Clouds
             for (i = 1; i < 5; i++) {
@@ -235,7 +260,5 @@ scenes["play"] = new Scene(
         objects["pointsDisplay"].text = points + " Points";
         objects["coinsDisplay"].text = coinsThisRun + " Coin" + (coinsThisRun > 1 ? "s" : "");
         objects["coinsDisplay"].power = coinsThisRun > 0;
-
-        // ...
     }
 );

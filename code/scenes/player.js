@@ -11,16 +11,23 @@ scenes["player"] = new Scene(
         createImage("menuground", 0, 0.8, 2, 0.1, "menuground");
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
+        // Header
+        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
+        createText("header", 0.11, 0.09, "Player", { size: 48, color: "darkgreen" });
+
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
-            save();
-            loadScene("mainmenu");
+            audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu"); save();', 300);
         });
         createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
 
         // Shop
         createButton("shopbutton", 0.95, 0, 0.1, 0.1, "whiteShop", () => {
-            loadScene("shop");
+            audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("shop")', 300);
         }, { quadratic: true });
 
         // Meeeeeeeee
@@ -32,16 +39,6 @@ scenes["player"] = new Scene(
         createText("playerskinName", 0.15, 0.65, "", { color: "white", size: 20 });
 
         // Bottom
-
-        createButton("buttonExport", 0.05, 0.875, 0.1, 0.1, "export", () => {
-            exportGame();
-            playerUpdate = "Exported the game!";
-        }, { quadratic: true, centered: true });
-        createButton("buttonImport", 0.11, 0.875, 0.1, 0.1, "import", () => {
-            importGame();
-            playerUpdate = "Imported the game!";
-        }, { quadratic: true, centered: true });
-
         createText("playerUpdate", 0.15, 0.95, "", { color: "white", size: 16, align: "left" });
 
         // Skills
@@ -88,9 +85,11 @@ scenes["player"] = new Scene(
         })
         createText("invSelText2", 0.675, 0.135, "Skills", { color: "white", size: 20 });
 
-        wggjAudio.src = "audio/menu-theme.mp3";
-        wggjAudio.volume = game.settings.music ? 1 : 0;
-        if (game.settings.music) wggjAudio.play();
+        audioPlayMusic("menu");
+
+        // transition fade
+        createImage("fade", 0, 0, 1, 1, "fade");
+        createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
