@@ -1,5 +1,5 @@
-var gameVersion = "1.6";
-var newestVersion = 12;
+var gameVersion = "1.7";
+var newestVersion = 13;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -297,6 +297,38 @@ Shopping Bird Update
 - Added sound for clicking buttons
 - Closing stats now saves
 - Updated WGGJ from v1.2.1 to v1.5
+`],
+    "v1.7":
+        [
+            `
+-> Play:
+- Reworked how the bird rotates, it is entirely visual now
+- Added player name and mode name to the top left
+- Pause: added buttons for resume and return to main menu
+- Animated Coins
+- Points display no longer uses plural for 1 point xd
+
+-> New Skins:
+- Added 3 new skins (31 total)
+- Balnoom, 14 Coins
+- Kiwiara, 14 Coins
+- Record Breaker, 100 Coins
+
+-> Player:
+- Added confirmation for equipping a skin, with hitbox
+- also for skills, with description
+
+-> Shop:
+- Added "New Skins" section
+- Only exists if the update adds new skins
+- It picks a random skin from the update every day
+- Replaced all skin/skill coin texts with coin images
+
+-> Other:
+- Added normal gamemode time stat (not tracked before)
+- Changed mobile detection from 500 to 640
+- Code improvements
+- Updated WGGJ from v1.5 to v1.6
 `]
 };
 

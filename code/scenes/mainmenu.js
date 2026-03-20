@@ -3,6 +3,8 @@ var groundAnimation = 0;
 scenes["mainmenu"] = new Scene(
     () => {
         // Init
+        gamemode = "";
+
         createSquare("bg", 0, 0, 1, 1, "green");
 
         createImage("menuground2", 0, 0.9, 1, 0.1, "menuground2");
@@ -19,15 +21,11 @@ scenes["mainmenu"] = new Scene(
         // Play button
         createButton("playbutton", 0.3, 0.4, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
-            game.stats.normalplays += 1;
-            game.stats.totalplays += 1;
 
-            pipes = [];
-            pipeSpawnTime = 1;
-            gameAcceleration = 1;
-            points = 0;
-            coinsThisRun = 0;
+            currentRun = new GameRun();
 
+            gamemode = "normal";
+            game.increaseStat("plays", 1);
             gameState = "running";
             loadScene("play");
         });
@@ -97,6 +95,13 @@ scenes["mainmenu"] = new Scene(
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+
+        if (isMobile()) {
+            objects["wButtonText1"].y = 10;
+            objects["wButtonText2"].y = 10;
+            objects["wButtonText3"].y = 10;
+            objects["wButtonText4"].y = 10;
+        }
     },
     (tick) => {
         // Loop
@@ -107,13 +112,6 @@ scenes["mainmenu"] = new Scene(
             groundAnimation = 0;
             objects["menuground"].x = 0;
             objects["menuground3"].x = 0;
-        }
-
-        if (isMobile()) {
-            objects["wButtonText1"].y = 10;
-            objects["wButtonText2"].y = 10;
-            objects["wButtonText3"].y = 10;
-            objects["wButtonText4"].y = 10;
         }
     }
 );

@@ -44,6 +44,9 @@ images = {
     "skins/queenluna": "skins/queenluna.png",
     "skins/ghost": "skins/ghost.png",
     "skins/coolplanet": "skins/coolplanet.png",
+    "skins/balnoom": "skins/balnoom.png",
+    "skins/kiwi": "skins/kiwi.png",
+    "skins/recordbreaker": "skins/recordbreaker.png",
 
     // skills
     "skills/faststart": "skills/faststart.png",
@@ -56,6 +59,7 @@ images = {
     menuground2: "menu-ground2.png",
     clouds: "clouds.png",
     coin: "coin.png",
+    coin_animation: "coin_animation.png",
     boom: "boom.png",
     boom2: "boom2.png",
 
@@ -97,12 +101,12 @@ document.addEventListener('keydown', event => {
 function isMobile() {
     if (game.settings.device == "pc") return false;
     if (game.settings.device == "mobile") return true;
-    return /Mobi/i.test(window.navigator.userAgent) || wggj.canvas.w <= 480;
+    return /Mobi/i.test(window.navigator.userAgent) || wggj.canvas.w <= 640;
 }
 
 function customWGGJLoop(delta) {
     // The game's main loop
-    game.stats.totaltime += delta;
+    game.increaseStat("time", delta);;
 }
 
 function save() {

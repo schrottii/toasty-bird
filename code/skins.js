@@ -43,16 +43,27 @@ class Skin {
                 save();
             }
             else if (objects["confirmBuyButton"] != undefined) {
+                objects["confirmBuyButton"].config.skillID = -1;
                 objects["confirmBuyButton"].config.skinID = this.ID;
                 objects["confirmBuyImage"].image = "skins/" + this.getImage();
-                objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyButtonText"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyCancelButtonText"].power = objects["confirmBuyImage"].power = true;
+                toggleShopConfirm(true);
             }
         }
     }
 
-    selectSkin() {
+    selectSkin(confirm = false) {
         if (this.isOwned()) {
-            game.skin = this.ID;
+            if (confirm) {
+                game.skin = this.ID;
+            }
+            else {
+                objects["confirmBuyButton"].config.skillID = -1;
+                objects["confirmBuyButton"].config.skinID = this.ID;
+                objects["confirmBuyImage"].image = "skins/" + this.getImage();
+                objects["confirmBuyText"].text = this.getName();
+                objects["confirmBuyText2"].text = "";
+                togglePlayerConfirm(true);
+            }
         }
     }
 }
@@ -88,6 +99,9 @@ var skins = [
     new Skin(25, "queenluna", "Queen Luna", 29, 1.51, { tags: ["cat", "female"] }),
     new Skin(26, "ghost", "Ghost", 40, 1.51, { tags: ["criminal"] }),
     new Skin(27, "coolplanet", "Cool Planet", 40, 1.51),
+    new Skin(28, "balnoom", "Balnoom", 14, 1.7, { tags: ["cat", "female", "friend"] }),
+    new Skin(29, "kiwi", "Kiwiara", 14, 1.7, { tags: ["female", "friend", "food", "bird"] }),
+    new Skin(30, "recordbreaker", "Record Breaker", 100, 1.7),
 ];
 
 var tags = {

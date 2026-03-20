@@ -1,4 +1,5 @@
 // Game made by Schrottii - don't steal or cheat
+var gamemode = "";
 
 class SaveGame {
     new() {
@@ -18,13 +19,14 @@ class SaveGame {
             normalplays: 0,
             normaljumps: 0,
             normalcoins: 0,
+            normaltime: 0,
 
             totalpoints: 0,
             totalplays: 0,
             totaljumps: 0,
             totalcoins: 0,
-
             totaltime: 0,
+
             totalgifts: 0,
         }
         this.settings = {
@@ -35,6 +37,7 @@ class SaveGame {
             hitboxes: false
         }
     }
+
     loadFromSaveGame(sg) {
         this.id = sg.id;
         this.name = sg.name;
@@ -50,6 +53,35 @@ class SaveGame {
         this.skins = Object.assign([], tempEmptyStats.skins, sg.skins);
         this.skills = Object.assign([], tempEmptyStats.skills, sg.skills);
         this.selSkills = Object.assign([], tempEmptyStats.selSkills, sg.selSkills);
+    }
+
+    increaseStat(stat, amount, mode = gamemode) {
+        if (["points", "plays", "jumps", "coins", "time"].includes(stat)) {
+            this.stats["total" + stat] += amount;
+            if (mode != "") this.stats[mode + stat] += amount;
+
+            /*
+            if (stat == "points") {
+                if (mode == "normal")
+            }
+            */
+        }
+    }
+
+    setHighscore(points, mode = gamemode) {
+        if (mode == "normal") {
+            if (points > this.stats.highscore) {
+                this.stats.highscore = points;
+                return true;
+            }
+        }
+        else {
+            if (points > this.stats[mode + "hi"]) {
+                this.stats[mode + "hi"] = points;
+                return true;
+            }
+        }
+        return false;
     }
 }
 

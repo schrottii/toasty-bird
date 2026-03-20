@@ -74,6 +74,11 @@ scenes["settings"] = new Scene(
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+
+        if (isMobile()) {
+            objects["buttonExport"].w = objects["buttonExport"].h = 0.05;
+            objects["buttonImport"].w = objects["buttonImport"].h = 0.05;
+        }
     },
     (tick) => {
         // Loop

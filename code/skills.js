@@ -76,24 +76,43 @@ class Skill {
         return game.selSkills[0] == this.ID || game.selSkills[1] == this.ID;
     }
 
-    select() {
+    select(confirm = false) {
         if (this.isOwned()) {
-            if (this.type == 0) {
-                // infinite skill 0 1
-                game.selSkills[0] = this.ID;
+            if (confirm) {
+                if (this.type == 0) {
+                    // infinite skill 0 1
+                    game.selSkills[0] = this.ID;
+                }
+                if (this.type == 1) {
+                    // finite skill 2 3 4 5
+                    game.selSkills[2] = this.ID;
+                }
             }
-            if (this.type == 1) {
-                // finite skill 2 3 4 5
-                game.selSkills[2] = this.ID;
+            else {
+                objects["confirmBuyButton"].config.skinID = -1;
+                objects["confirmBuyButton"].config.skillID = this.ID;
+                objects["confirmBuyImage"].image = "skills/" + this.getImage();
+                objects["confirmBuyText"].text = this.getName();
+                objects["confirmBuyText2"].text = this.getDesc();
+                togglePlayerConfirm(true);
             }
         }
     }
 
-    buy() {
+    buy(confirmBuying = false) {
         if (game.coins >= this.getPrice() && !this.isOwned()) {
-            game.coins -= this.getPrice();
-            game.skills.push(this.ID);
-            save();
+            console.log(this.ID)
+            if (confirmBuying) {
+                game.coins -= this.getPrice();
+                game.skills.push(this.ID);
+                save();
+            }
+            else if (objects["confirmBuyButton"] != undefined) {
+                objects["confirmBuyButton"].config.skinID = -1;
+                objects["confirmBuyButton"].config.skillID = this.ID;
+                objects["confirmBuyImage"].image = "skills/" + this.getImage();
+                toggleShopConfirm(true);
+            }
         }
     }
 }

@@ -1,6 +1,10 @@
 var inventoryMode = "skins";
 var playerUpdate = "";
 
+function togglePlayerConfirm(state) {
+    setTimeout(() => objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyButtonText"].power = objects["confirmBuyText"].power = objects["confirmBuyText2"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyCancelButtonText"].power = objects["confirmBuyImage"].power = objects["confirmBuyImageBG"].power = state, 20);
+}
+
 scenes["player"] = new Scene(
     () => {
         // Init
@@ -39,7 +43,7 @@ scenes["player"] = new Scene(
         createText("playerskinName", 0.15, 0.65, "", { color: "white", size: 20 });
 
         // Bottom
-        createText("playerUpdate", 0.15, 0.95, "", { color: "white", size: 16, align: "left" });
+        createText("playerUpdate", 0.05, 0.95, "", { color: "white", size: 16, align: "left" });
 
         // Skills
         createSquare("skillsBg", 0.275, 0.16, 0.08, 0.615, "#006800");
@@ -85,11 +89,46 @@ scenes["player"] = new Scene(
         })
         createText("invSelText2", 0.675, 0.135, "Skills", { color: "white", size: 20 });
 
+        // equip confirmation
+        createSquare("confirmBuyBg", 0.1, 0.2, 0.8, 0.6, "brown", { power: false });
+        createText("confirmBuyHeader", 0.5, 0.3, "Do you want to equip this?", { size: 32, power: false });
+        createImage("confirmBuyImageBG", 0.5, 0.4, 0.15, 0.15, "fade", { centered: true, quadratic: true, power: false });
+        createImage("confirmBuyImage", 0.5, 0.4, 0.15, 0.15, "skins/default", { centered: true, quadratic: true, power: false });
+        objects["confirmBuyImage"].snip = [0, 0, 32, 32];
+        createText("confirmBuyText", 0.5, 0.35, "", { size: 24, power: false });
+        createText("confirmBuyText2", 0.5, 0.6, "", { size: 20, power: false });
+
+        createButton("confirmBuyButton", 0.25, 0.7, 0.2, 0.1, "button", () => {
+            togglePlayerConfirm(false);
+            if (objects["confirmBuyButton"].config.skinID != -1) getSkin(objects["confirmBuyButton"].config.skinID).selectSkin(true);
+            else if (objects["confirmBuyButton"].config.skillID != -1) getSkill(objects["confirmBuyButton"].config.skillID).select(true);
+        }, { power: false });
+        createText("confirmBuyButtonText", 0.35, 0.775, "YES", { size: 20, power: false });
+        createButton("confirmBuyCancelButton", 0.55, 0.7, 0.2, 0.1, "button", () => {
+            togglePlayerConfirm(false);
+        }, { power: false });
+        createText("confirmBuyCancelButtonText", 0.65, 0.775, "NO", { size: 20, power: false });
+
         audioPlayMusic("menu");
 
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+
+        if (isMobile()) {
+            objects["playerskin"].w = objects["playerskin"].h = 0.1;
+            objects["playerskin"].y = 0.4;
+
+            objects["skillsListBg0"].w = objects["skillsListBg0"].h = 0.033;
+            objects["skillsListPic0"].w = objects["skillsListPic0"].h = 0.033;
+        }
+
+        if (isMobile()) {
+            for (let inv = 0; inv < 35; inv++) {
+                objects["inv" + inv + "Bg"].w = objects["inv" + inv + "Bg"].h = 0.033;
+                objects["inv" + inv + "Con"].w = objects["inv" + inv + "Con"].h = 0.033;
+            }
+        }
     },
     (tick) => {
         // Loop
@@ -126,11 +165,6 @@ scenes["player"] = new Scene(
             objects["inv" + inv + "Txt"].text = "";
             objects["inv" + inv + "Txt"].color = "white";
 
-            if (isMobile()) {
-                objects["inv" + inv + "Bg"].w = objects["inv" + inv + "Bg"].h = 0.033;
-                objects["inv" + inv + "Con"].w = objects["inv" + inv + "Con"].h = 0.033;
-            }
-
             if (inventoryMode == "skins") {
                 if (inv < skins.length) {
                     objects["inv" + inv + "Con"].power = true;
@@ -156,16 +190,6 @@ scenes["player"] = new Scene(
                     objects["inv" + inv + "Con"].power = false;
                 }
             }
-        }
-
-        if (isMobile()) {
-            objects["playerskin"].w = objects["playerskin"].h = 0.1;
-            objects["playerskin"].y = 0.4;
-            objects["buttonExport"].w = objects["buttonExport"].h = 0.05;
-            objects["buttonImport"].w = objects["buttonImport"].h = 0.05;
-
-            objects["skillsListBg0"].w = objects["skillsListBg0"].h = 0.033;
-            objects["skillsListPic0"].w = objects["skillsListPic0"].h = 0.033;
         }
     }
 );
