@@ -67,6 +67,20 @@ scenes["settings"] = new Scene(
         });
         createText("settingText4", 0.5, 0.725, "?", { size: 40 });
 
+        // legal blurb
+        createButton("legal1", 0, 0.7, 0.2, 0.1, "button", () => {
+            audioPlaySound("click");
+            window.open("LICENSE.md");
+        }, { aText: { text: "LICENSE", size: 24 } });
+        createButton("legal2", 0, 0.8, 0.2, 0.1, "button", () => {
+            audioPlaySound("click");
+            window.open("TOS.md");
+        }, { aText: { text: "TERMS OF SERVICE", size: 16 } });
+        createButton("legal3", 0, 0.9, 0.2, 0.1, "button", () => {
+            audioPlaySound("click");
+            window.open("PRIVACY.md");
+        }, { aText: { text: "PRIVACY POLICY", size: 16 } });
+
         // Init
         updateSettings();
 
