@@ -13,13 +13,13 @@ scenes["mainmenu"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // by tpot
-        createImage("gameLogo", 0.5, 0.1, 0.4, 0.4, "gameLogo", { quadratic: true, centered: true });
+        createImage("gameLogo", 0.4, 0, 0.2, 0.2, "gameLogo", { quadratic: true, centered: true });
+        createImage("logo", 0.6, 0, 0.2, 0.2, "logo", { quadratic: true, centered: true });
 
-        createImage("logo", 0.5, 0, 0.4, 0.25, "logo", { quadratic: true, centered: true });
-        createText("version", 0.975, 0.975, "Version " + gameVersion, { size: 40, align: "right" });
+        createText("version", 0.975, 0.8, "Version " + gameVersion, { size: 40, align: "right" });
 
         // Play button
-        createButton("playbutton", 0.3, 0.4, 0.4, 0.1, "button", () => {
+        createButton("playbutton", 0.3, 0.2, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
 
             currentRun = new GameRun();
@@ -28,32 +28,30 @@ scenes["mainmenu"] = new Scene(
             game.increaseStat("plays", 1);
             gameState = "running";
             loadScene("play");
-        });
-        createText("buttonText1", 0.5, 0.475, "Play", { size: 40 });
+        }, { aText: { text: "Play", size: 40 } });
 
         // Stats button
-        createButton("playerbutton", 0.3, 0.525, 0.4, 0.1, "button", () => {
+        createButton("playerbutton", 0.3, 0.325, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("player")', 300);
-        });
-        createText("buttonText2", 0.5, 0.6, "Player", { size: 40 });
+        }, { aText: { text: "Player", size: 40 } });
 
         // Skins button
-        createButton("shopbutton", 0.3, 0.65, 0.4, 0.1, "button", () => {
+        createButton("shopbutton", 0.3, 0.45, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("shop")', 300);
-        });
-        createText("buttonText3", 0.5, 0.725, "Shop", { size: 40 });
+        }, { aText: { text: "Shop", size: 40 } });
 
         // Settings button
-        createButton("settingsbutton", 0.3, 0.775, 0.4, 0.1, "button", () => {
+        createButton("settingsbutton", 0.3, 0.575, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("settings")', 300);
-        });
-        createText("buttonText4", 0.5, 0.85, "Settings", { size: 40 });
+        }, { aText: { text: "Settings", size: 40 } });
+
+
         
         // Left Icons
         createButton("serverbutton", 0.02, 0.35, 0.08, 0.08, "whiteDiscord", () => {
@@ -82,10 +80,35 @@ scenes["mainmenu"] = new Scene(
         }, { quadratic: true });
         createText("wButtonText4", 0.06, 0.71, "Stats", { color: "white", size: 32, align: "left" });
 
-        createButton("donateButton", 0.05, 0.875, 0.2, 0.1, "button", () => {
+
+
+        // bottom icons
+        createButton("bottomButton1", 0.01, 0.91, 0.18, 0.08, "whiteWebsite", () => {
             audioPlaySound("click");
             window.open("https://ko-fi.com/Y8Y2XMZX1");
-        }, { aText: { text: "Donate", size: 40 } });
+        }, { aText: { text: "Website", size: 24 } });
+
+        createButton("bottomButton2", 0.21, 0.91, 0.18, 0.08, "whiteDiscord", () => {
+            audioPlaySound("click");
+            window.open("https://ko-fi.com/Y8Y2XMZX1");
+        }, { aText: { text: "Discord", size: 24 } });
+
+        createButton("bottomButton3", 0.41, 0.91, 0.18, 0.08, "button", () => {
+            audioPlaySound("click");
+            window.open("https://ko-fi.com/Y8Y2XMZX1");
+        }, { aText: { text: "YouTube", size: 24 } });
+
+        createButton("bottomButton4", 0.61, 0.91, 0.18, 0.08, "button", () => {
+            audioPlaySound("click");
+            window.open("https://ko-fi.com/Y8Y2XMZX1");
+        }, { aText: { text: "Social media", size: 16 } });
+
+        createButton("bottomButton5", 0.81, 0.91, 0.18, 0.08, "button", () => {
+            audioPlaySound("click");
+            window.open("https://ko-fi.com/Y8Y2XMZX1");
+        }, { aText: { text: "Donate", size: 24 } });
+
+
 
         audioChangeVolume("music", game.settings.music);
         audioChangeVolume("sounds", game.settings.sounds);
