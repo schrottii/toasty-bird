@@ -349,6 +349,9 @@ Shopping Bird Update
 `,
     "v1.8":
         `
+-> Player:
+- Massively improved design on mobile (different skins/skills grid, moved text & more)
+
 -> Patch notes:
 - Patch notes are now scrollable (vertically useful for long updates, horizontally on mobile, or for this specific line :p)
 - Changed colors

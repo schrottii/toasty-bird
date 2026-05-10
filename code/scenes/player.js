@@ -8,6 +8,8 @@ function togglePlayerConfirm(state) {
 scenes["player"] = new Scene(
     () => {
         // Init
+        let mob = isMobile();
+
         createSquare("bg", 0, 0, 1, 1, "green");
 
         createImage("menuground2", 0, 0.9, 1, 0.1, "menuground2");
@@ -27,7 +29,7 @@ scenes["player"] = new Scene(
         }, { aText: { text: "Back", size: 40 } });
 
         // Shop
-        createButton("shopbutton", 0.95, 0, 0.1, 0.1, "whiteShop", () => {
+        createButton("shopbutton", mob ? 0.75 : 0.95, 0, 0.1, 0.1, "whiteShop", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("shop")', 300);
@@ -35,28 +37,34 @@ scenes["player"] = new Scene(
 
         // Meeeeeeeee
         createSquare("meBg", 0.05, 0.16, 0.2, 0.615, "#006800");
-        createText("meText", 0.15, 0.15, "Your skin", { color: "lightgray", size: 24 });
+        createText("meText", 0.15, 0.15, "Your skin", { color: "lightgray", size: mob ? 16 : 24 });
 
-        createImage("playerskin", 0.15, 0.175, 0.4, 0.4, "skins/" + getSkin(game.skin), { quadratic: true, centered: true });
+        createImage("playerskin", 0.15, 0.175, mob ? 0.1 : 0.4, mob ? 0.1 : 0.4, "skins/" + getSkin(game.skin), { quadratic: true, centered: true });
         objects["playerskin"].snip = [0, 0, 32, 32];
-        createText("playerskinName", 0.15, 0.65, "", { color: "white", size: 20 });
+        createText("playerskinName", 0.15, mob ? 0.35 : 0.65, "", { color: "white", size: 20 });
 
         // Bottom
         createText("playerUpdate", 0.05, 0.95, "", { color: "white", size: 16, align: "left" });
 
         // Skills
         createSquare("skillsBg", 0.275, 0.16, 0.08, 0.615, "#006800");
-        createText("skillsText", 0.315, 0.15, "Skills", { color: "lightgray", size: 24 });
+        createText("skillsText", 0.315, 0.15, "Skills", { color: "lightgray", size: mob ? 16 : 24 });
 
-        createImage("skillsListBg0", 0.315, 0.225, 0.1, 0.1, "invBg", { quadratic: true, centered: true });
-        createImage("skillsListPic0", 0.315, 0.225, 0.1, 0.1, "", { quadratic: true, centered: true, power: false });
+        let skillSize = mob ? 0.05 : 0.1;
+        createImage("skillsListBg0", 0.315, 0.225, skillSize, skillSize, "invBg", { quadratic: true, centered: true });
+        createImage("skillsListPic0", 0.315, 0.225, skillSize, skillSize, "", { quadratic: true, centered: true, power: false });
 
         // Inventory
         createSquare("invBg", 0.4, 0.16, 0.55, 0.615, "#25571a");
 
+        let perRow = mob ? 5 : 7;
+        let Xsize = mob ? 0.12 : 0.075;
+        let Xwidth = mob ? 0.06 : 0.1;
+        let Yheight = mob ? 0.08 : 0.12;
+
         for (inv = 0; inv < 35; inv++) {
-            createImage("inv" + inv + "Bg", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), 0.1, 0.1, "invBg", { quadratic: true, centered: true });
-            createButton("inv" + inv + "Con", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), 0.1, 0.1, "invBg", (me) => {
+            createImage("inv" + inv + "Bg", 0.45 + Xsize * (inv % perRow), 0.175 + Yheight * Math.floor(inv / perRow), Xwidth, Xwidth, "invBg", { quadratic: true, centered: true });
+            createButton("inv" + inv + "Con", 0.45 + Xsize * (inv % perRow), 0.175 + Yheight * Math.floor(inv / perRow), Xwidth, Xwidth, "invBg", (me) => {
                 if (inventoryMode == "skins") {
                     let ID = parseInt(me.split("inv")[1].split("Con")[0]);
                     getSkin(ID).selectSkin();
@@ -75,7 +83,7 @@ scenes["player"] = new Scene(
                     else playerUpdate = "Locked!";
                 }
             }, { quadratic: true, centered: true, power: false, inv: inv });
-            createText("inv" + inv + "Txt", 0.45 + 0.075 * (inv % 7), 0.175 + 0.12 * Math.floor(inv / 7), "", { color: "white", size: 10 });
+            createText("inv" + inv + "Txt", 0.45 + Xsize * (inv % perRow), 0.175 + Yheight * Math.floor(inv / perRow), "", { color: "white", size: 12 });
         }
 
         createButton("invSel1", 0.4, 0.11, 0.15, 0.05, "#25571a", () => {
@@ -112,6 +120,7 @@ scenes["player"] = new Scene(
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
 
+        /*
         if (isMobile()) {
             objects["playerskin"].w = objects["playerskin"].h = 0.1;
             objects["playerskin"].y = 0.4;
@@ -126,6 +135,7 @@ scenes["player"] = new Scene(
                 objects["inv" + inv + "Con"].w = objects["inv" + inv + "Con"].h = 0.033;
             }
         }
+        */
     },
     (tick) => {
         // Loop
