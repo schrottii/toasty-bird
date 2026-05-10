@@ -224,8 +224,7 @@ scenes["play"] = new Scene(
                     if (isHighscore) createText("lostText2", 0.5, 0.42, "New Highscore!", { color: "yellow", size: 42 });
                     createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
                         loadScene("mainmenu");
-                    });
-                    createText("lostButtonText", 0.5, 0.85, "Continue", { size: 64 });
+                    }, { aText: { text: "Continue", size: 64 } });
                     return;
                 }
                 // use gameState here, not currentGameState, cuz screw you

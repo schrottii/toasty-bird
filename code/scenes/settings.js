@@ -16,16 +16,15 @@ scenes["settings"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
-        createText("header", 0.11, 0.09, "Settings", { size: 48, color: "darkgreen" });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Settings", size: 48, color: "darkgreen" } });
+        objects["header"].init();
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu"); save();', 300);
-        });
-        createText("buttonText", 0.5, 0.95, "Save", { size: 40 });
+        }, { aText: { text: "Save", size: 40 } });
 
         // Settings
         createButton("setting1", 0.3, 0.2, 0.4, 0.1, "button", () => {

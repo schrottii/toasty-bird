@@ -2,7 +2,7 @@ var inventoryMode = "skins";
 var playerUpdate = "";
 
 function togglePlayerConfirm(state) {
-    setTimeout(() => objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyButtonText"].power = objects["confirmBuyText"].power = objects["confirmBuyText2"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyCancelButtonText"].power = objects["confirmBuyImage"].power = objects["confirmBuyImageBG"].power = state, 20);
+    setTimeout(() => objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyText"].power = objects["confirmBuyText2"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyImage"].power = objects["confirmBuyImageBG"].power = state, 20);
 }
 
 scenes["player"] = new Scene(
@@ -16,16 +16,15 @@ scenes["player"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
-        createText("header", 0.11, 0.09, "Player", { size: 48, color: "darkgreen" });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Player", size: 48, color: "darkgreen" } });
+        objects["header"].init();
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu"); save();', 300);
-        });
-        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
+        }, { aText: { text: "Back", size: 40 } });
 
         // Shop
         createButton("shopbutton", 0.95, 0, 0.1, 0.1, "whiteShop", () => {
@@ -102,12 +101,10 @@ scenes["player"] = new Scene(
             togglePlayerConfirm(false);
             if (objects["confirmBuyButton"].config.skinID != -1) getSkin(objects["confirmBuyButton"].config.skinID).selectSkin(true);
             else if (objects["confirmBuyButton"].config.skillID != -1) getSkill(objects["confirmBuyButton"].config.skillID).select(true);
-        }, { power: false });
-        createText("confirmBuyButtonText", 0.35, 0.775, "YES", { size: 20, power: false });
+        }, { aText: { text: "YES", size: 20 }, power: false });
         createButton("confirmBuyCancelButton", 0.55, 0.7, 0.2, 0.1, "button", () => {
             togglePlayerConfirm(false);
-        }, { power: false });
-        createText("confirmBuyCancelButtonText", 0.65, 0.775, "NO", { size: 20, power: false });
+        }, { aText: { text: "NO", size: 20 }, power: false });
 
         audioPlayMusic("menu");
 

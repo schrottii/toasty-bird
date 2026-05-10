@@ -85,8 +85,7 @@ scenes["mainmenu"] = new Scene(
         createButton("donateButton", 0.05, 0.875, 0.2, 0.1, "button", () => {
             audioPlaySound("click");
             window.open("https://ko-fi.com/Y8Y2XMZX1");
-        })
-        createText("donateText", 0.15, 0.875 + 0.1 * 2 / 3, "Donate", { color: "black", size: 40 });
+        }, { aText: { text: "Donate", size: 40 } });
 
         audioChangeVolume("music", game.settings.music);
         audioChangeVolume("sounds", game.settings.sounds);

@@ -353,6 +353,7 @@ Shopping Bird Update
 - Patch notes are now scrollable (vertically useful for long updates, horizontally on mobile, or for this specific line :p)
 - Changed colors
 - Added dark theme
+- Added missing transition fade
 - Code changes and performance improvements
 
 -> Other:
@@ -368,12 +369,14 @@ scenes["patchnotes"] = new Scene(
         createSquare("bg", 0, 0, 1, 1, "darkgreen");
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Patch notes", size: 36, color: "darkgreen" } });
-        objects["headerBg"].init();
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Patch notes", size: 32, color: "darkgreen" } });
+        objects["header"].init();
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
-            loadScene("mainmenu");
+            audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu");', 300);
         }, { aText: { text: "Back", size: 40 } });
 
         // dark mode button
@@ -390,7 +393,7 @@ scenes["patchnotes"] = new Scene(
                 objects["versionText"].color = "black";
                 objects["patchNotes"].color = "black";
             }
-        }, { aText: { text: "Dark Mode", size: 40 } });
+        }, { aText: { text: "Dark Mode", size: 32 } });
 
         // Top navigation
         createSquare("topBgSquare", 0.1, 0.1, 0.8, 0.1, "gray");
@@ -434,6 +437,10 @@ scenes["patchnotes"] = new Scene(
         */
 
         patchNotesUpdated = false;
+
+        // transition fade
+        createImage("fade", 0, 0, 1, 1, "fade");
+        createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
