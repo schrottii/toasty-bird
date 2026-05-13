@@ -366,6 +366,7 @@ Shopping Bird Update
 - Code changes and performance improvements
 
 -> Other:
+- Shop: added disappearing coin animation when opening the Daily Gift
 - Added Balnoom license, ToS and privacy policy
 - They can be accessed from Settings
 - Updated WGGJ from v1.6 to v1.7
@@ -438,7 +439,7 @@ scenes["patchnotes"] = new Scene(
 
         createSmartText("patchNotes", 0.1125, 0.25, "", { size: 20, align: "left", noScaling: true });
         createContainer("patchNotesScroll", 0.1, 0.2, 0.8, 0.65,
-            { YScroll: true, YScrollMod: 4, YLimit: [0.001, 0], XScroll: true, XLimit: [0.001, 0] },
+            { YScroll: true, YScrollMod: 2, YLimit: [0.001, 0], XScroll: true, XLimit: [0.001, 0] },
             ["patchNotes"]);
 
         /*

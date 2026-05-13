@@ -63,8 +63,10 @@ scenes["shop"] = new Scene(
 
             createSquare("scrosecGiftBG", 2 + extraX, 0.15, 0.3, 0.6, "#048B04"),
             createText("scrosecGiftTXT", 2 + 0.3 / 2 + extraX, 0.15, "Daily Gift", { size: 40 }),
-            "dailygift", "dailyGiftText",
+            "dailygift", "dailyGiftText", "dailyGiftAnicoin"
         ]);
+
+
 
         // the offers
 
@@ -129,6 +131,8 @@ scenes["shop"] = new Scene(
             objects["shopScroll"].children.push("skin6", "skincheck6", "skinname6", "skintext6");
         }
 
+
+
         // skill
         ski = ski % skills.length;
         createButton("skill0", 1.45 + extraX, 0.35, isMobile() ? 0.1 : 0.2, isMobile() ? 0.1 : 0.2, "unknown", (me) => {
@@ -140,6 +144,8 @@ scenes["shop"] = new Scene(
         createSmartText("skilltext0", 1.65 + extraX, 0.725, "...", { size: 24, images: { coin: "coinImage" } });
         createText("skilldesc0", 1.55 + extraX, 0.5, "...", { size: 20, align: "left" });
         createText("skilldesc0b", 1.55 + extraX, 0.54, "...", { size: 20, align: "left" });
+
+
 
         // Daily Gift
         createButton("dailygift", 2.15 + extraX, 0.3, 0.15, 0.15, "whiteGift", () => {
@@ -153,15 +159,27 @@ scenes["shop"] = new Scene(
                 game.coins += amount;
                 game.stats.totalcoins += amount;
                 game.stats.totalgifts += 1;
+
                 objects["dailygift"].image = "claimedGift";
                 objects["dailyGiftText"].text = "Come back tomorrow!";
+
+                objects["dailyGiftAnicoin"].power = true;
+                objects["dailyGiftAnicoin"].alpha = 1;
+                createAnimation("gift_animation", "dailyGiftAnicoin", (t, d) => { t.y -= 0.15 * d; t.alpha -= 0.5 * d; t.w -= 0.05 * d; t.h -= 0.05 * d; }, 5, true);
             }
         }, { quadratic: true, centered: true });
         createText("dailyGiftText", 2.15 + extraX, 0.7, "Click to claim!", { color: "yellow", size: isMobile() ? 16 : 24 });
+
+        // update daily gift
         if (parseInt(game.lastGift) == parseInt(today)) {
             objects["dailygift"].image = "claimedGift";
             objects["dailyGiftText"].text = "Come back tomorrow!";
         }
+
+        // animation
+        createImage("dailyGiftAnicoin", 2.15 + extraX, 0.3, 0.15, 0.15, "coin", { power: false, quadratic: true, centered: true });
+
+
 
         // buy confirmation
         createSquare("confirmBuyBg", 0.1, 0.2, 0.8, 0.6, "brown", { power: false });
