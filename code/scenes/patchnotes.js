@@ -349,7 +349,13 @@ Shopping Bird Update
 `,
     "v1.8":
         `
+-> Main menu:
+- Changed buttons on the left
+- Moved game logo and name
+- Added button for Idle Bird mode
+
 -> Player:
+- Is now named after the player's name
 - Massively improved design on mobile (different skins/skills grid, moved text & more)
 
 -> Patch notes:
@@ -360,6 +366,8 @@ Shopping Bird Update
 - Code changes and performance improvements
 
 -> Other:
+- Added Balnoom license, ToS and privacy policy
+- They can be accessed from Settings
 - Updated WGGJ from v1.6 to v1.7
 `
 };

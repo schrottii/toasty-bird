@@ -18,7 +18,7 @@ scenes["player"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // Header
-        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Player", size: 48, color: "darkgreen" } });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: game.name, size: 40, color: "darkgreen" } });
         objects["header"].init();
 
         // Back button
