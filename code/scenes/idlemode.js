@@ -1,4 +1,4 @@
-var idleModeHowToPlay = `Press play to start a run like normal. You get one coin for every pipe passed. Based on your attempt that got furthest, points are generated every second. Both can be spent on upgrades. Prestige to get real coins and a permanent buff.`;
+var idleModeHowToPlay = `Press play to start a run like normal. You get one coin for every pipe passed.\nBased on your attempt that got furthest, points are generated every second. Both can be spent on upgrades.\nPrestige to get real coins and a permanent buff.`;
 
 scenes["idlemode"] = new Scene(
     () => {
@@ -11,7 +11,7 @@ scenes["idlemode"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // Header
-        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Idle Mode", size: 48, color: "darkgreen" } });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Idle Bird", size: 48, color: "darkgreen" } });
         objects["header"].init();
 
         // Back button
@@ -35,39 +35,46 @@ scenes["idlemode"] = new Scene(
         // upgrades
         createText("upgradesHeader", 0.1, 0.4, "Upgrades", { size: isMobile() ? 24 : 40 });
         createSmartText("pointDisplay", 0.3, 0.4, "1 i{coin}", { size: 32, images: { coin: createImage("coinImage", 0.925, 0.05, 0.05, 0.05, "coin") }});
-        createSquare("upgradesUnderLine", 0.025, 0.4, 0.35, 0.005, "red");
+        createSquare("upgradesUnderLine", 0.025, 0.4, 0.3, 0.005, "red");
+        let imgsiz = isMobile() ? 0.05 : 0.1;
 
         for (let u = 0; u < 3; u++) {
             createSquare("upg" + u + "bg3", 0.02, 0.45 + u * 0.15, 0.3 + 0.005, 0.125 + 0.01, "black");
             createSquare("upg" + u + "bg", 0.02, 0.45 + u * 0.15, 0.3, 0.125, "#007F0E");
             createSquare("upg" + u + "bg2", 0.02, 0.45 + (0.125 / 2) + u * 0.15, 0.3, 0.125 / 2, "#006B00");
-            createText("upg" + u + "name", 0.025, 0.475 + u * 0.15, "namee", { align: "left", size: 20, color: "white" });
+
+            createText("upg" + u + "name", 0.025, 0.475 + u * 0.15, "upgrade name", { align: "left", size: 24, color: "white" });
             createText("upg" + u + "lvl", 0.025, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
             createSmartText("upg" + u + "cost", 0.275, 0.575 + u * 0.15, "10 i{coin}", { align: "right", size: 20, color: "white", images: { coin: "coinImage" } });
+
+            createImage("upg" + u + "img", 0.27, 0.45 + u * 0.15, imgsiz, imgsiz, "gameLogo", { centered: true, quadratic: true });
         }
 
         // point upgrades
-        createText("pupgradesHeader", 0.55, 0.4, "Point Upgrades", { size: isMobile() ? 24 : 40 });
-        createSquare("pupgradesUnderLine", 0.425, 0.4, 0.35, 0.005, "red");
+        createText("pupgradesHeader", 0.525, 0.4, "Point Upgrades", { size: isMobile() ? 24 : 40 });
+        createSquare("pupgradesUnderLine", 0.375, 0.4, 0.3, 0.005, "red");
 
         for (let u = 0; u < 3; u++) {
-            createSquare("pupg" + u + "bg3", 0.42, 0.45 + u * 0.15, 0.3 + 0.005, 0.125 + 0.01, "black");
-            createSquare("pupg" + u + "bg", 0.42, 0.45 + u * 0.15, 0.3, 0.125, "#007F0E");
-            createSquare("pupg" + u + "bg2", 0.42, 0.45 + (0.125 / 2) + u * 0.15, 0.3, 0.125 / 2, "#006B00");
-            createText("pupg" + u + "name", 0.425, 0.475 + u * 0.15, "namee", { align: "left", size: 20, color: "white" });
-            createText("pupg" + u + "lvl", 0.425, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
-            createText("upg" + u + "cost", 0.675, 0.575 + u * 0.15, "10P", { align: "right", size: 20, color: "white" });
+            createSquare("pupg" + u + "bg3", 0.37, 0.45 + u * 0.15, 0.3 + 0.005, 0.125 + 0.01, "black");
+            createSquare("pupg" + u + "bg", 0.37, 0.45 + u * 0.15, 0.3, 0.125, "#007F0E");
+            createSquare("pupg" + u + "bg2", 0.37, 0.45 + (0.125 / 2) + u * 0.15, 0.3, 0.125 / 2, "#006B00");
+
+            createText("pupg" + u + "name", 0.375, 0.475 + u * 0.15, "upgrade name", { align: "left", size: 24, color: "white" });
+            createText("pupg" + u + "lvl", 0.375, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
+            createText("pupg" + u + "cost", 0.625, 0.575 + u * 0.15, "10P", { align: "right", size: 20, color: "white" });
+
+            createImage("pupg" + u + "img", 0.62, 0.45 + u * 0.15, imgsiz, imgsiz, "gameLogo", { centered: true, quadratic: true });
         }
 
         // buttons
         createButton("button1", 0.1, 0.2, 0.2, 0.1, "button", () => { }, { aText: { text: "Play", size: 40 }});
         //createButton("button2", 0.4, 0.2, 0.2, 0.1, "button", () => { }, { aText: { text: "Play", size: 40 }});
-        createButton("button3", 0.7, 0.2, 0.2, 0.1, "button", () => { }, { aText: { text: "End run", size: 40 }});
+        createButton("button3", 0.7, 0.2, 0.2, 0.1, "button", () => { }, { aText: { text: "Prestige", size: 40 }});
 
         // how it works
-        createText("howToPlayHeader", 0.88, 0.4, "how to play", { size: isMobile() ? 16 : 24 });
-        createSquare("howToPlayBG", 0.78, 0.4, 0.2, 0.4, "gray");
-        createSmartText("howToPlayText", 0.78, 0.425, idleModeHowToPlay, { align: "left", size: 20, color: "white", autoLinebreak: isMobile() ? 10 : 24, maxW: 0.2 });
+        createText("howToPlayHeader", 0.83, 0.4, "how to play", { size: isMobile() ? 16 : 24 });
+        createSquare("howToPlayBG", 0.68, 0.4, 0.3, 0.39, "gray");
+        createSmartText("howToPlayText", 0.68, 0.425, idleModeHowToPlay, { align: "left", size: 20, color: "white", autoLinebreak: isMobile() ? 15 : 32, maxW: 0.3 });
 
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
