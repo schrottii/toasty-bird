@@ -1,5 +1,16 @@
 var groundAnimation = 0;
 
+function groundAnimationLoop(tick) {
+    groundAnimation += 0.5 * tick;
+    objects["menuground"].x -= 0.5 * tick;
+    if (objects["menuground3"]) objects["menuground3"].x -= 0.5 * tick;
+    if (groundAnimation >= 0.5) {
+        groundAnimation -= 0.25;
+        objects["menuground"].x += 0.25;
+        if (objects["menuground3"]) objects["menuground3"].x += 0.25;
+    }
+}
+
 scenes["mainmenu"] = new Scene(
     () => {
         // Init
@@ -33,6 +44,8 @@ scenes["mainmenu"] = new Scene(
         // Play button
         createButton("idlebirdbuttonbutton", 0.3, 0.325, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("idlemode")', 300);
         }, { aText: { text: "Idle Bird", size: 40 } });
 
         // Stats button
@@ -124,6 +137,7 @@ scenes["mainmenu"] = new Scene(
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        groundAnimation = 0;
 
         if (isMobile()) {
             objects["wButtonText1"].y = 10;
@@ -134,13 +148,6 @@ scenes["mainmenu"] = new Scene(
     },
     (tick) => {
         // Loop
-        groundAnimation += tick;
-        objects["menuground"].x -= tick;
-        objects["menuground3"].x -= tick;
-        if (groundAnimation >= 1) {
-            groundAnimation = 0;
-            objects["menuground"].x = 0;
-            objects["menuground3"].x = 0;
-        }
+        groundAnimationLoop(tick);
     }
 );

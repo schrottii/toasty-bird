@@ -139,6 +139,7 @@ scenes["play"] = new Scene(
         mobilePipes = isMobile() ? 2 : 1;
 
         audioPlayMusic("playing");
+        groundAnimation = 0;
     },
     (tick) => {
         // Loop
@@ -148,13 +149,7 @@ scenes["play"] = new Scene(
             // Active: Running / Playing
             currentRun.acceleration = Math.min(8, currentRun.acceleration * (1 + 0.0001 * (tick * 60)));
 
-            groundAnimation += tick;
-            objects["menuground"].x -= tick / 4;
-            if (groundAnimation >= 1) {
-                groundAnimation = 0;
-                objects["menuground"].x = 0;
-            }
-
+            groundAnimationLoop(tick / 2);
 
             // Pipes spawning
             if (!(getSkill(4).isEquipped() && objects.player.upTicks > 0)) currentRun.pipesSpawnTime -= tick;

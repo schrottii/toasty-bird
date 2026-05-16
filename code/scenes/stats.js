@@ -57,17 +57,11 @@ scenes["stats"] = new Scene(
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        groundAnimation = 0;
     },
     (tick) => {
         // Loop
-        groundAnimation += tick;
-        objects["menuground"].x -= tick;
-        objects["menuground3"].x -= tick;
-        if (groundAnimation >= 1) {
-            groundAnimation = 0;
-            objects["menuground"].x = 0;
-            objects["menuground3"].x = 0;
-        }
+        groundAnimationLoop(tick);
 
         objects["stat1"].text = "Highscore: " + game.stats.highscore;
         objects["stat2"].text = "Total Plays: " + game.stats.totalplays;

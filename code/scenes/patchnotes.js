@@ -366,9 +366,10 @@ Shopping Bird Update
 - Code changes and performance improvements
 
 -> Other:
-- Shop: added disappearing coin animation when opening the Daily Gift
 - Added Balnoom license, ToS and privacy policy
 - They can be accessed from Settings
+- Shop: added disappearing coin animation when opening the Daily Gift
+- Updated ground animations
 - Updated WGGJ from v1.6 to v1.7
 `
 };
