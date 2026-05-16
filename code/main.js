@@ -57,6 +57,7 @@ images = {
 
     menuground: "menu-ground.png",
     menuground2: "menu-ground2.png",
+    menuground3: "menu-ground3.png",
     clouds: "clouds.png",
     coin: "coin.png",
     coin_animation: "coin_animation.png",

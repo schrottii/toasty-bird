@@ -21,7 +21,7 @@ scenes["mainmenu"] = new Scene(
         createImage("menuground2", 0, 0.9, 1, 0.1, "menuground2");
 
         createImage("menuground", 0, 0.8, 2, 0.1, "menuground");
-        createImage("menuground3", 0, 0, 2, 0.1, "menuground");
+        createImage("menuground3", 0, 0, 2, 0.1, "menuground3");
 
         // by tpot
         createImage("gameLogo", 0.4, 0, 0.2, 0.2, "gameLogo", { quadratic: true, centered: true });
