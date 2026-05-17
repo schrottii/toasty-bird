@@ -41,10 +41,18 @@ scenes["mainmenu"] = new Scene(
             loadScene("play");
         }, { aText: { text: "Play", size: 40 } });
 
-        // Play button
+        // Idle mode button
         createButton("idlebirdbuttonbutton", 0.3, 0.325, 0.4, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+
+            if (game.idlemode.active == false) {
+                // starts a new run!
+                game.newIdleMode(game.idlemode.goldenfeathers);
+                game.idlemode.active = true;
+                game.stats.totalimruns++;
+            }
+
             setTimeout('loadScene("idlemode")', 300);
         }, { aText: { text: "Idle Bird", size: 40 } });
 

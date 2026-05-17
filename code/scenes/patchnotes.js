@@ -351,8 +351,8 @@ Shopping Bird Update
         `
 -> Music: 
 - 2 new songs:
-- Lazy Feathers (idle mode)
-- For All The Birds (idle mode: play)
+- Lazy Feathers (idle bird)
+- For All The Birds (idle bird: play)
 - Renamed existing songs:
 - Toasty Menu -> Nest Rest
 - Toasty Main -> Toasty Flight

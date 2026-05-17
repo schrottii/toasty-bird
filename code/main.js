@@ -64,6 +64,9 @@ images = {
     boom: "boom.png",
     boom2: "boom2.png",
 
+    feather: "idlemode/feather.png",
+    goldenfeather: "idlemode/goldenfeather.png",
+
     pipeUp: "pipe-up.png",
     pipeDown: "pipe-down.png",
 
