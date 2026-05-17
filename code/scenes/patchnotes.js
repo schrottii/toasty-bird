@@ -349,6 +349,15 @@ Shopping Bird Update
 `,
     "v1.8":
         `
+-> Music: 
+- 2 new songs:
+- Lazy Feathers (idle mode)
+- For All The Birds (idle mode: play)
+- Renamed existing songs:
+- Toasty Menu -> Nest Rest
+- Toasty Main -> Toasty Flight
+- Toasty Shop (remains unchanged)
+
 -> Main menu:
 - Changed buttons on the left
 - Moved game logo and name

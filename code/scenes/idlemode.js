@@ -76,6 +76,8 @@ scenes["idlemode"] = new Scene(
         createSquare("howToPlayBG", 0.68, 0.4, 0.3, 0.39, "gray");
         createSmartText("howToPlayText", 0.68, 0.425, idleModeHowToPlay, { align: "left", size: 20, color: "white", autoLinebreak: isMobile() ? 15 : 32, maxW: 0.3 });
 
+        audioPlayMusic("idlemode");
+
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);

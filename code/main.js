@@ -77,11 +77,13 @@ images = {
 };
 
 audio = {
-    "menu": "menu-theme.mp3",
-    "playing": "toasty-bird.mp3",
-    "shop": "toasty-shop.mp3",
+    "menu": "music/Nest Rest.mp3",
+    "playing": "music/Toasty Flight.mp3",
+    "shop": "music/Toasty Shop.mp3",
+    "idlemode": "music/Lazy Feathers.mp3",
+    "idlemode_playing": "music/For All The Birds.mp3",
 
-    "click": "448086__breviceps__normal-click.wav",
+    "click": "sounds/448086__breviceps__normal-click.wav",
 };
 
 wggj.config.gameName = "Toasty Bird";
