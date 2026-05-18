@@ -182,13 +182,13 @@ scenes["play"] = new Scene(
                 currentRun.pipesAmount += 1;
 
                 // coin spawning
-                if (currentRun.mode == "normal" && (currentRun.playerPoints + (getSkill(1).isEquipped() ? 10 : 0)) % 50 == 47) {
+                if (gamemode == "normal" && (currentRun.playerPoints + (getSkill(1).isEquipped() ? 10 : 0)) % 50 == 47) {
                     createImage("coin" + currentRun.pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "coin_animation", { quadratic: true });
                     objects["coin" + currentRun.pipesAmount].snip = [0, 0, 32, 32];
                     objects["coin" + currentRun.pipesAmount].aniTime = 0;
                     currentRun.coins.push(currentRun.pipesAmount);
                 }
-                if (currentRun.mode == "idlemode" && Math.random() >= 0.9) {
+                if (gamemode == "idlemode" && Math.random() >= 0.9) {
                     createImage("coin" + currentRun.pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "feather", { quadratic: true });
                     //objects["coin" + currentRun.pipesAmount].snip = [0, 0, 32, 32];
                     //objects["coin" + currentRun.pipesAmount].aniTime = 0;
@@ -201,7 +201,7 @@ scenes["play"] = new Scene(
                 currentRun.pipesAmount += 1;
             }
 
-            if (currentRun.mode == "normal") { // feathers not animated for now
+            if (gamemode == "normal") { // feathers not animated for now
                 for (let c of currentRun.coins) {
                     if (objects["coin" + c] != undefined) {
                         objects["coin" + c].aniTime += tick;
@@ -236,14 +236,23 @@ scenes["play"] = new Scene(
                 if (currentGameState == "running" && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)
                     && objects.player.y >= thisPipe.y * 1.3 && objects.player.y <= thisPipe.y + (thisPipe.h * 0.7)) {
                     // you hit it and DIED
-                    currentRun.state = "lost";
+                    currentRun.state = "lost"; // causes this code area to be executed only once (as it requires "running")
 
                     let isHighscore = game.setHighscore(currentRun.playerPoints);
                     save();
 
+                    // idle mode
+                    if (gamemode == "idlemode") {
+                        console.log(game.idlemode.pointprod);
+                        game.idlemode.pointprod = Math.max(game.idlemode.pointprod, currentRun.playerPoints);
+                        console.log(game.idlemode.pointprod);
+                    }
+
+                    // rotate animation
                     if (objects["player"].rotate > 0) createAnimation("deathRotation", "player", (t, d) => t.rotate = Math.max(0, t.rotate - 90 * d), 5, true);
                     else createAnimation("deathRotation", "player", (t, d) => t.rotate = Math.min(0, t.rotate + 90 * d), 5, true);
-                    
+
+                    // game over text
                     createText("lostText", 0.5, 0.3, isMobile() ? "Score: " + currentRun.playerPoints : "You lost! Score: " + currentRun.playerPoints, { color: "red", size: 60 });
                     if (isHighscore) createText("lostText2", 0.5, 0.42, "New Highscore!", { color: "yellow", size: 42 });
                     createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
@@ -262,8 +271,11 @@ scenes["play"] = new Scene(
                         if (getSkill(2).isEquipped() && Math.random() >= 0.8) amount *= 2;
 
                         currentRun.playerCoins += amount;
-                        game.coins += amount;
                         game.increaseStat("coins", 1);
+
+                        if (gamemode == "normal") game.coins += amount;
+                        if (gamemode == "idlemode") game.idlemode.feathers += amount;
+                        if (gamemode == "idlemode") game.stats.totalimfeathers += amount;
                     }
 
                     currentRun.pipes[p][2] = true;

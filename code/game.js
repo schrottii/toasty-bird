@@ -23,6 +23,12 @@ class SaveGame {
             normalcoins: 0,
             normaltime: 0,
 
+            idlemodehi: 0,
+            idlemodepoints: 0,
+            idlemodeplays: 0,
+            idlemodejumps: 0,
+            idlemodetime: 0,
+
             totalpoints: 0,
             totalplays: 0,
             totaljumps: 0,
@@ -54,7 +60,7 @@ class SaveGame {
             totalpoints: 0, // within this run, so it includes the spent ones
 
             feathers: 0,
-            totalfeathers: 0,
+            totalfeathers: 0, // also within run
 
             goldenfeathers: goldenfeathers,
 

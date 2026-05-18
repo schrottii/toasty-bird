@@ -7,6 +7,8 @@ Both can be spent on upgrades.
 Prestige to get real coins and
 golden feathers.`;
 
+var idleModeProdTime = 1;
+
 class Upgrade {
     constructor(id, name, description, cost, maxLevel) {
         this.id = id;
@@ -121,9 +123,19 @@ scenes["idlemode"] = new Scene(
         // Loop
         groundAnimationLoop(tick);
 
+        // update info texts
         objects["runInfo1"].text = "Run #" + game.stats.totalimruns;
         objects["runInfo2"].text = "Points: " + game.idlemode.points;
         objects["runInfo3"].text = game.idlemode.pointprod + "/s";
         objects["runInfo4"].text = game.idlemode.goldenfeathers + " i{goldenfeather}";
+
+        // give points
+        idleModeProdTime -= tick;
+        if (idleModeProdTime < 0) {
+            idleModeProdTime += 1;
+            game.idlemode.points += game.idlemode.pointprod;
+            game.idlemode.totalpoints += game.idlemode.pointprod;
+            game.stats.totalimpoints += game.stats.totalimpoints;
+        }
     }
 );
