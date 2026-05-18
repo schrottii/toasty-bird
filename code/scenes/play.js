@@ -13,10 +13,29 @@ class GameRun {
 
         this.playerPoints = 0;
         this.playerCoins = 0;
+
+        this.state = ""; // running / lost / paused
+    }
+
+    startRun(mode = undefined) {
+        if (mode !== undefined) gamemode = mode;
+        game.increaseStat("plays", 1);
+        this.state = "running";
+        loadScene("play");
+    }
+
+    getModeName() {
+        switch (gamemode) {
+            case "normal":
+                return "Normal Mode";
+            case "idlemode":
+                return "Idle Mode";
+            default:
+                return "???";
+        }
     }
 }
 
-var gameState = "running"; // running / lost / paused
 var justUnpaused = false;
 var mobilePipes = false;
 
@@ -27,7 +46,7 @@ function jump(source = "") {
         return false;
     }
     // Jump!
-    if (objects.player.upTicks <= 0.001 && gameState == "running") {
+    if (objects.player.upTicks <= 0.001 && currentRun.state == "running") {
         if (!getSkill(5).isEquipped()) {
             objects.player.velocity = -0.01;
             objects.player.upTicks = getSkill(3).isEquipped() ? 10 : 20;
@@ -52,21 +71,21 @@ function jump(source = "") {
 function pause(source = "") {
     if (wggj.canvas.currentScene != "play") return false;
 
-    if (gameState == "running") {
+    if (currentRun.state == "running") {
         // Pause!
         objects["pauseButtonA"].power = objects["pauseButtonAtxt"].power = objects["pauseButtonB"].power = objects["pauseButtonBtxt"].power = true;
         objects["pauseDisplay"].power = true;
         objects["pauseDisplay"].time = 0;
 
-        gameState = "paused";
+        currentRun.state = "paused";
     }
-    else if (gameState == "paused") {
+    else if (currentRun.state == "paused") {
         // Unpause
         if (source == "click") justUnpaused = true;
 
         objects["pauseButtonA"].power = objects["pauseButtonAtxt"].power = objects["pauseButtonB"].power = objects["pauseButtonBtxt"].power = false;
         objects["pauseDisplay"].power = false;
-        gameState = "running";
+        currentRun.state = "running";
     }
 }
 
@@ -100,7 +119,7 @@ scenes["play"] = new Scene(
         createSquare("top2", 0, 0, 0.12 - (0.05 * wggj.canvas.h / wggj.canvas.w), 0.0475 + 0.0125, "#005B00", { foreground: true });
         createSquare("top1", 0, 0, 0.175, 0.0475, "#006800", { foreground: true });
         createText("topPlayerName", 0.005, 0.03, game.name, { align: "left", size: 20, foreground: true });
-        createText("topModeName", 0.005, 0.05, "Normal Mode", { align: "left", size: 16, foreground: true });
+        createText("topModeName", 0.005, 0.05, currentRun.getModeName(), { align: "left", size: 16, foreground: true });
 
         // Skill (left)
         createImage("skillsListBg0", 0.125, 0.05, 0.1, 0.1, "invBg", { quadratic: true, centered: true, foreground: true });
@@ -138,12 +157,13 @@ scenes["play"] = new Scene(
 
         mobilePipes = isMobile() ? 2 : 1;
 
-        audioPlayMusic("playing");
+        if (gamemode == "normal") audioPlayMusic("playing");
+        if (gamemode == "idlemode") audioPlayMusic("idlemode_playing");
         groundAnimation = 0;
     },
     (tick) => {
         // Loop
-        let currentGameState = gameState; // to avoid mid-tick changes
+        let currentGameState = currentRun.state; // to avoid mid-tick changes
 
         if (currentGameState == "running") {
             // Active: Running / Playing
@@ -161,10 +181,17 @@ scenes["play"] = new Scene(
                 createImage("pipe" + currentRun.pipesAmount, 1.2, spawnY, 0.2, 0.6, "pipeUp", { quadratic: true });
                 currentRun.pipesAmount += 1;
 
-                if ((currentRun.playerPoints + (getSkill(1).isEquipped() ? 10 : 0)) % 50 == 47) {
+                // coin spawning
+                if (currentRun.mode == "normal" && (currentRun.playerPoints + (getSkill(1).isEquipped() ? 10 : 0)) % 50 == 47) {
                     createImage("coin" + currentRun.pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "coin_animation", { quadratic: true });
                     objects["coin" + currentRun.pipesAmount].snip = [0, 0, 32, 32];
                     objects["coin" + currentRun.pipesAmount].aniTime = 0;
+                    currentRun.coins.push(currentRun.pipesAmount);
+                }
+                if (currentRun.mode == "idlemode" && Math.random() >= 0.9) {
+                    createImage("coin" + currentRun.pipesAmount, 1.2, spawnY - 0.15, 0.2, 0.2, "feather", { quadratic: true });
+                    //objects["coin" + currentRun.pipesAmount].snip = [0, 0, 32, 32];
+                    //objects["coin" + currentRun.pipesAmount].aniTime = 0;
                     currentRun.coins.push(currentRun.pipesAmount);
                 }
 
@@ -174,12 +201,14 @@ scenes["play"] = new Scene(
                 currentRun.pipesAmount += 1;
             }
 
-            for (let c of currentRun.coins) {
-                if (objects["coin" + c] != undefined) {
-                    objects["coin" + c].aniTime += tick;
-                    if (objects["coin" + c].aniTime >= 0.25) {
-                        objects["coin" + c].aniTime -= 0.25;
-                        objects["coin" + c].snip[0] = (objects["coin" + c].snip[0] + 32) % 128;
+            if (currentRun.mode == "normal") { // feathers not animated for now
+                for (let c of currentRun.coins) {
+                    if (objects["coin" + c] != undefined) {
+                        objects["coin" + c].aniTime += tick;
+                        if (objects["coin" + c].aniTime >= 0.25) {
+                            objects["coin" + c].aniTime -= 0.25;
+                            objects["coin" + c].snip[0] = (objects["coin" + c].snip[0] + 32) % 128;
+                        }
                     }
                 }
             }
@@ -207,7 +236,7 @@ scenes["play"] = new Scene(
                 if (currentGameState == "running" && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)
                     && objects.player.y >= thisPipe.y * 1.3 && objects.player.y <= thisPipe.y + (thisPipe.h * 0.7)) {
                     // you hit it and DIED
-                    gameState = "lost";
+                    currentRun.state = "lost";
 
                     let isHighscore = game.setHighscore(currentRun.playerPoints);
                     save();
@@ -223,7 +252,7 @@ scenes["play"] = new Scene(
                     return;
                 }
                 // use gameState here, not currentGameState, cuz screw you
-                else if (gameState == "running" && currentRun.pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
+                else if (currentRun.state == "running" && currentRun.pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
                     // go through a hoop and gain ca$h
                     currentRun.playerPoints += 1;
                     game.increaseStat("points", 1);

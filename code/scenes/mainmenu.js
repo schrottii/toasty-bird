@@ -34,11 +34,7 @@ scenes["mainmenu"] = new Scene(
             audioPlaySound("click");
 
             currentRun = new GameRun();
-
-            gamemode = "normal";
-            game.increaseStat("plays", 1);
-            gameState = "running";
-            loadScene("play");
+            currentRun.startRun("normal");
         }, { aText: { text: "Play", size: 40 } });
 
         // Idle mode button
