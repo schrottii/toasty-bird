@@ -10,45 +10,155 @@ golden feathers.`;
 var idleModeProdTime = 1;
 
 class Upgrade {
-    constructor(id, name, description, cost, maxLevel) {
+    constructor(id, name, img, description, price, effect, config) {
         this.id = id;
         this.name = name;
+        this.img = img;
         this.description = description;
-        this.cost = cost;
-        this.maxLevel = maxLevel;
+        this.price = price;
+        this.effect = effect;
+
+        this.currency = "";
+
+        this.config = config;
+        this.maxLevel = config.maxLevel;
     }
 
     getLevel() {
         return game.idlemode.upgrades[this.id] != undefined ? Math.min(this.maxLevel == 0 ? 1e9 : this.maxLevel, game.idlemode.upgrades[this.id]) : 0;
     }
 
+    setLevel() {
+
+    }
+
+    getMaxLevel() {
+        if (this.maxLevel == undefined) return 1e9;
+        return this.maxLevel;
+    }
+
+    getEffect() {
+        return this.effect(this.getLevel());
+    }
+
+    getCurrentPrice() {
+        return Math.ceil(this.price(this.getLevel()));
+    }
+
+    buy() {
+        let cost = this.getCurrentPrice();
+        if (game.idlemode[this.currency] >= cost) {
+            game.idlemode[this.currency] -= cost;
+            this.setLevel(this.getLevel() + 1);
+        }
+    }
+
     createObjects(u, x) {
+        let n = "upg" + this.id;
         let imgsiz = isMobile() ? 0.05 : 0.1;
 
-        createSquare("upg" + this.id + "bg3", 0.02 + x, 0.45 + u * 0.15, 0.3 + 0.005, 0.125 + 0.01, "black");
-        createSquare("upg" + this.id + "bg", 0.02 + x, 0.45 + u * 0.15, 0.3, 0.125, "#007F0E");
-        createSquare("upg" + this.id + "bg2", 0.02 + x, 0.45 + (0.125 / 2) + u * 0.15, 0.3, 0.125 / 2, "#006B00");
+        createSquare(n + "bg3", 0.02 + x, 0.45 + u * 0.15, 0.3 + 0.005, 0.125 + 0.01, "black");
+        createSquare(n + "bg", 0.02 + x, 0.45 + u * 0.15, 0.3, 0.125, "#007F0E");
+        createSquare(n + "bg2", 0.02 + x, 0.45 + (0.125 / 2) + u * 0.15, 0.3, 0.125 / 2, "#006B00");
 
-        createText("upg" + this.id + "name", 0.025 + x, 0.475 + u * 0.15, "upgrade name", { align: "left", size: 24, color: "white" });
-        createText("upg" + this.id + "lvl", 0.025 + x, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
-        createSmartText("upg" + this.id + "cost", 0.275 + x, 0.575 + u * 0.15, "10i{coin}", { align: "right", size: 20, color: "white", images: { coin: "featherImage" } });
+        createText(n + "name", 0.025 + x, 0.475 + u * 0.15, "upgrade name", { align: "left", size: 24, color: "white" });
+        createText(n + "lvl", 0.025 + x, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
+        createSmartText(n + "price", 0.275 + x, 0.575 + u * 0.15, "10i{coin}", { align: "right", size: 20, color: "white", images: { coin: "featherImage" } });
 
-        createImage("upg" + this.id + "img", 0.27 + x, 0.45 + u * 0.15, imgsiz, imgsiz, "gameLogo", { centered: true, quadratic: true });
+        createButton(n + "buybtn",
+            isMobile() ? 0.02 + x : 0.13 + x,
+            0.525 + u * 0.15,
+            isMobile() ? 0.1 : 0.07, isMobile() ? 0.03 : 0.05,
+            "button", () => { this.buy(); }, { aText: { text: "Buy", size: 20 } });
+
+        if (this.img != "" && this.img != undefined) createImage(n + "img", 0.27 + x, 0.45 + u * 0.15, imgsiz, imgsiz, this.img, { centered: true, quadratic: true });
     }
 
     renderObjects() {
+        let n = "upg" + this.id;
 
+        objects[n + "name"].text = this.name;
+        objects[n + "lvl"].text = this.getLevel() + (this.getMaxLevel() != 1e9 ? "/" + this.getMaxLevel() : "");
+        objects[n + "price"].text = this.getCurrentPrice() + "i{coin}";
+
+        objects[n + "buybtn"].power = this.getLevel() < this.getMaxLevel();
     }
 }
 
-const upgrades = [
-    new Upgrade("morePoints", "More Points", "Get more points", (l) => 10 + 5 * l * Math.pow(1.01, l), 100),
-    new Upgrade("1", "More Points", "Get more points", (l) => 10 + 5 * l * Math.pow(1.01, l), 100),
-    new Upgrade("2", "More Points", "Get more points", (l) => 10 + 5 * l * Math.pow(1.01, l), 100),
-    new Upgrade("3", "More Points", "Get more points", (l) => 10 + 5 * l * Math.pow(1.01, l), 100),
-    new Upgrade("4", "More Points", "Get more points", (l) => 10 + 5 * l * Math.pow(1.01, l), 100),
-    new Upgrade("5", "More Points", "Get more points", (l) => 10 + 5 * l * Math.pow(1.01, l), 100)
-];
+class FeatherUpgrade extends Upgrade {
+    constructor(id, name, img, description, price, effect, config) {
+        super(id, name, img, description, price, effect, config);
+
+        // upgrade type specifics
+        this.currency = "feather";
+    }
+
+    getLevel() {
+        if (game.idlemode.pointupgrades[this.id] != undefined) {
+            return Math.min(game.idlemode.pointupgrades[this.id], this.getMaxLevel());
+        }
+        return 0;
+    }
+
+    setLevel(x) {
+        if (game.idlemode.pointupgrades[this.id] == undefined) {
+            game.idlemode.pointupgrades[this.id] = x;
+        }
+        game.idlemode.pointupgrades[this.id] = x;
+    }
+}
+
+class PointUpgrade extends Upgrade {
+    constructor(id, name, img, description, price, effect, config) {
+        super(id, name, img, description, price, effect, config);
+
+        // upgrade type specifics
+        this.currency = "points";
+    }
+
+    getLevel() {
+        if (game.idlemode.featherupgrades[this.id] != undefined) {
+            return Math.min(game.idlemode.featherupgrades[this.id], this.getMaxLevel());
+        }
+        return 0;
+    }
+
+    setLevel(x) {
+        if (game.idlemode.featherupgrades[this.id] == undefined) {
+            game.idlemode.featherupgrades[this.id] = x;
+        }
+        game.idlemode.featherupgrades[this.id] = x;
+    }
+}
+
+const upgrades = {
+    pointupgrades: {
+        morePoints: new PointUpgrade("morePoints", "More Points", "", "Get more points",
+            (l) => 100 + 100 * l * Math.pow(1.05, l), (l) => 1 + 0.01 * l,
+            { maxLevel: 100 }),
+        /*
+        aa: new PointUpgrade("1", "More Points", "", "Get more points",
+            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
+            { maxLevel: 100 }),
+        aa: new PointUpgrade("2", "More Points", "", "Get more points",
+            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
+            { maxLevel: 100 }),
+            */
+    },
+    featherupgrades: {
+        fastStart: new FeatherUpgrade("fastStart", "Fast Start", "", "Begin with +1 point",
+            (l) => 1 + l, (l) => l,
+            { maxLevel: 10 }),
+        /*
+        aa: new FeatherUpgrade("4", "More Points", "", "Get more points",
+            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
+            { maxLevel: 100 }),
+        aa: new FeatherUpgrade("5", "More Points", "", "Get more points",
+            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
+            { maxLevel: 100 })
+            */
+    }
+};
 
 scenes["idlemode"] = new Scene(
     () => {
@@ -87,16 +197,19 @@ scenes["idlemode"] = new Scene(
         createSmartText("pointDisplay", 0.3, 0.4, "1 i{coin}", { size: 32, images: { coin: createImage("featherImage", 0.925, 0.05, 0.05, 0.05, "feather") }});
         createSquare("upgradesUnderLine", 0.025, 0.4, 0.3, 0.005, "red");
 
-        for (let u = 0; u < 3; u++) {
-            upgrades[u].createObjects(u, 0);
+        let i = 0;
+        for (let u in upgrades.featherupgrades) {
+            upgrades.featherupgrades[u].createObjects(i, 0);
+            i++;
         }
 
         // point upgrades
         createText("pupgradesHeader", 0.525, 0.4, "Point Upgrades", { size: isMobile() ? 24 : 40 });
         createSquare("pupgradesUnderLine", 0.375, 0.4, 0.3, 0.005, "red");
 
-        for (let u = 3; u < 6; u++) {
-            upgrades[u].createObjects(u - 3, 0.35);
+        i = 0;
+        for (let u in upgrades.pointupgrades) {
+            upgrades.pointupgrades[u].createObjects(i, 0.35);
         }
 
         // buttons
@@ -126,16 +239,29 @@ scenes["idlemode"] = new Scene(
         // update info texts
         objects["runInfo1"].text = "Run #" + game.stats.totalimruns;
         objects["runInfo2"].text = "Points: " + game.idlemode.points;
-        objects["runInfo3"].text = game.idlemode.pointprod + "/s";
         objects["runInfo4"].text = game.idlemode.goldenfeathers + " i{goldenfeather}";
+
+        objects["pointDisplay"].text = game.idlemode.feathers + "i{coin}";
+
+        // update upgrades
+        for (let u in upgrades.featherupgrades) {
+            upgrades.featherupgrades[u].renderObjects();
+        }
+        for (let u in upgrades.pointupgrades) {
+            upgrades.pointupgrades[u].renderObjects();
+        }
 
         // give points
         idleModeProdTime -= tick;
         if (idleModeProdTime < 0) {
             idleModeProdTime += 1;
-            game.idlemode.points += game.idlemode.pointprod;
-            game.idlemode.totalpoints += game.idlemode.pointprod;
-            game.stats.totalimpoints += game.stats.totalimpoints;
+
+            let prod = Math.ceil(game.idlemode.pointprod * upgrades.pointupgrades.morePoints.getEffect());
+            objects["runInfo3"].text = prod + "/s";
+
+            game.idlemode.points += prod;
+            game.idlemode.totalpoints += prod;
+            game.stats.totalimpoints += prod;
         }
     }
 );

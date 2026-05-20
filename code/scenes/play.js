@@ -34,6 +34,17 @@ class GameRun {
                 return "???";
         }
     }
+
+    returnScene() {
+        switch (gamemode) {
+            case "normal":
+                return "mainmenu";
+            case "idlemode":
+                return "idlemode";
+            default:
+                return "mainmenu";
+        }
+    }
 }
 
 var justUnpaused = false;
@@ -108,7 +119,7 @@ scenes["play"] = new Scene(
         createButton("pauseButtonB", 0.7, 0.777, 0.2, 0.1, "button", () => {
             game.setHighscore(currentRun.playerPoints);
             save();
-            loadScene("mainmenu");
+            loadScene(currentRun.returnScene());
         }, { centered: true, foreground: true, power: false });
         createText("pauseButtonBtxt", 0.7, 0.777 + 0.067, "Return to main menu", { size: 20, centered: true, foreground: true, power: false });
 
@@ -243,9 +254,7 @@ scenes["play"] = new Scene(
 
                     // idle mode
                     if (gamemode == "idlemode") {
-                        console.log(game.idlemode.pointprod);
                         game.idlemode.pointprod = Math.max(game.idlemode.pointprod, currentRun.playerPoints);
-                        console.log(game.idlemode.pointprod);
                     }
 
                     // rotate animation
@@ -256,15 +265,18 @@ scenes["play"] = new Scene(
                     createText("lostText", 0.5, 0.3, isMobile() ? "Score: " + currentRun.playerPoints : "You lost! Score: " + currentRun.playerPoints, { color: "red", size: 60 });
                     if (isHighscore) createText("lostText2", 0.5, 0.42, "New Highscore!", { color: "yellow", size: 42 });
                     createButton("lostButton", 0.3, 0.7, 0.4, 0.2, "button", () => {
-                        loadScene("mainmenu");
+                        loadScene(currentRun.returnScene());
                     }, { aText: { text: "Continue", size: 64 } });
                     return;
                 }
                 // use gameState here, not currentGameState, cuz screw you
                 else if (currentRun.state == "running" && currentRun.pipes[p][2] == false && objects.player.x + (objects.player.w / 2) >= thisPipe.x && objects.player.x <= thisPipe.x + (thisPipe.w / 4)) {
                     // go through a hoop and gain ca$h
-                    currentRun.playerPoints += 1;
-                    game.increaseStat("points", 1);
+                    let pointAmount = 1;
+                    if (gamemode == "idlemode" && currentRun.playerPoints == 0) pointAmount += upgrades.featherupgrades.fastStart.getEffect();
+
+                    currentRun.playerPoints += pointAmount;
+                    game.increaseStat("points", pointAmount);
 
                     if (objects["coin" + (parseInt(currentRun.pipes[p][0].substr(4)) + 1)] != undefined) {
                         let amount = 1;
