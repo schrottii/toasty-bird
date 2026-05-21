@@ -16,16 +16,15 @@ scenes["settings"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
-        createText("header", 0.11, 0.09, "Settings", { size: 48, color: "darkgreen" });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Settings", size: 48, color: "darkgreen" } });
+        objects["header"].init();
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu"); save();', 300);
-        });
-        createText("buttonText", 0.5, 0.95, "Save", { size: 40 });
+        }, { aText: { text: "Save", size: 40 } });
 
         // Settings
         createButton("setting1", 0.3, 0.2, 0.4, 0.1, "button", () => {
@@ -68,12 +67,27 @@ scenes["settings"] = new Scene(
         });
         createText("settingText4", 0.5, 0.725, "?", { size: 40 });
 
+        // legal blurb
+        createButton("legal1", 0, 0.7, 0.2, 0.1, "button", () => {
+            audioPlaySound("click");
+            window.open("LICENSE.md");
+        }, { aText: { text: "LICENSE", size: 24 } });
+        createButton("legal2", 0, 0.8, 0.2, 0.1, "button", () => {
+            audioPlaySound("click");
+            window.open("TOS.md");
+        }, { aText: { text: "TERMS OF SERVICE", size: 16 } });
+        createButton("legal3", 0, 0.9, 0.2, 0.1, "button", () => {
+            audioPlaySound("click");
+            window.open("PRIVACY.md");
+        }, { aText: { text: "PRIVACY POLICY", size: 16 } });
+
         // Init
         updateSettings();
 
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        groundAnimation = 0;
 
         if (isMobile()) {
             objects["buttonExport"].w = objects["buttonExport"].h = 0.05;
@@ -82,14 +96,7 @@ scenes["settings"] = new Scene(
     },
     (tick) => {
         // Loop
-        groundAnimation += tick;
-        objects["menuground"].x -= tick;
-        objects["menuground3"].x -= tick;
-        if (groundAnimation >= 1) {
-            groundAnimation = 0;
-            objects["menuground"].x = 0;
-            objects["menuground3"].x = 0;
-        }
+        groundAnimationLoop(tick);
 
     }
 );

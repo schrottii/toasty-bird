@@ -13,6 +13,8 @@ class SaveGame {
         this.selSkills = [0, 0, 0, 0, 0, 0];
         this.lastGift = "0";
 
+        this.newIdleMode(0);
+
         this.stats = {
             highscore: 0,
             normalpoints: 0,
@@ -21,6 +23,12 @@ class SaveGame {
             normalcoins: 0,
             normaltime: 0,
 
+            idlemodehi: 0,
+            idlemodepoints: 0,
+            idlemodeplays: 0,
+            idlemodejumps: 0,
+            idlemodetime: 0,
+
             totalpoints: 0,
             totalplays: 0,
             totaljumps: 0,
@@ -28,13 +36,42 @@ class SaveGame {
             totaltime: 0,
 
             totalgifts: 0,
+
+            totalimruns: 0,
+            totalimpoints: 0,
+            totalimfeathers: 0,
+            totalimgoldenfeathers: 0,
+            totalimautojumps: 0,
+            totalimcoins: 0
         }
+
         this.settings = {
             music: true,
             sounds: true,
             device: "automatic",
             birdRotation: true,
             hitboxes: false
+        }
+    }
+
+    newIdleMode(goldenfeathers = 0) {
+        this.idlemode = {
+            active: false,
+            points: 0,
+            pointprod: 0,
+            totalpoints: 0, // within this run, so it includes the spent ones
+
+            feathers: 0,
+            totalfeathers: 0, // also within run
+
+            goldenfeathers: goldenfeathers,
+
+            pointupgrades: {
+
+            },
+            featherupgrades: {
+
+            }
         }
     }
 
@@ -46,13 +83,16 @@ class SaveGame {
         this.coins = sg.coins != undefined ? sg.coins : 0;
         this.lastGift = sg.lastGift != undefined ? sg.lastGift : "0";
 
-        let tempEmptyStats = new SaveGame();
-        tempEmptyStats.new();
-        this.stats = Object.assign({}, tempEmptyStats.stats, sg.stats);
-        this.settings = Object.assign({}, tempEmptyStats.settings, sg.settings);
-        this.skins = Object.assign([], tempEmptyStats.skins, sg.skins);
-        this.skills = Object.assign([], tempEmptyStats.skills, sg.skills);
-        this.selSkills = Object.assign([], tempEmptyStats.selSkills, sg.selSkills);
+        let tempty = new SaveGame();
+        tempty.new();
+
+        this.skins = Object.assign([], tempty.skins, sg.skins);
+        this.skills = Object.assign([], tempty.skills, sg.skills);
+        this.selSkills = Object.assign([], tempty.selSkills, sg.selSkills);
+
+        this.idlemode = Object.assign({}, tempty.idlemode, sg.idlemode);
+        this.stats = Object.assign({}, tempty.stats, sg.stats);
+        this.settings = Object.assign({}, tempty.settings, sg.settings);
     }
 
     increaseStat(stat, amount, mode = gamemode) {

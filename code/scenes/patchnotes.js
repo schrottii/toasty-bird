@@ -1,5 +1,5 @@
-var gameVersion = "1.7";
-var newestVersion = 13;
+var gameVersion = "1.8";
+var newestVersion = 14;
 var selectedVersion = newestVersion;
 
 const patchnotes = {
@@ -17,10 +17,12 @@ const patchnotes = {
             "  (server, patch notes, website)",
             "- Replaced the server button with settings",
 
+            "",
             "-> Settings:",
             "- New Setting: Music (ON/OFF)",
             "- New Setting: Device (Automatic/Mobile/Pc)",
 
+            "",
             "-> Other:",
             "- Added game logo made by tpot",
             "- Halfed pipe speed on mobile",
@@ -37,18 +39,21 @@ const patchnotes = {
             "- Coins are used to buy skins",
             "- One coin appears every 50th pipe",
 
+            "",
             "-> Shop:",
             "- Added the shop menu!",
             "- Here two skins can be bought per day",
             "- Offers rotate every day UTC midnight",
             "- Added a new song (shop theme)",
 
+            "",
             "-> Main menu:",
             "- Added skins button",
             "- Increased width of buttons",
             "- Update version is now lower on mobile",
             "- Moved tpot's logo",
 
+            "",
             "-> Patch notes menu:",
             "- Reduced space between lines to increase",
             "lines per page from 16 to a whopping 32",
@@ -56,6 +61,7 @@ const patchnotes = {
             "- Sections are now bigger",
             "- Normal text is now indented",
 
+            "",
             "-> Space support:",
             "- Space bar can now also be used to jump",
             "- It can be held to keep jumping",
@@ -70,16 +76,19 @@ const patchnotes = {
             "- Added skin names",
             "- Skin names are visible in the selection",
 
+            "",
             "-> Shop:",
             "- Skin names are also visible here",
             "- Skins in the shop are now animated to offer",
             "a better preview",
             "- Added a gray background",
 
+            "",
             "-> Stats:",
             "- Added Total Coins stat",
             "- Added Skins stat (e. g. 1/8)",
 
+            "",
             "-> Other:",
             "- Update names are now shown in patch notes",
             "(e. g. The More Skin Update)",
@@ -97,16 +106,19 @@ const patchnotes = {
             "- Here many Skins or Skills can be shown",
             "at once and be selected",
 
+            "",
             "-> Skills:",
             "- New feature: Skills",
             "- They can provide passive boosts",
             "- 1 Skill can be equipped at once",
             "- Added 4 Skills, 1 of each rarity",
 
+            "",
             "-> Shop:",
             "- Expanded shop, 2 -> 3 skins",
             "- Added 1 skill offer",
 
+            "",
             "-> Main menu:",
             "- Changed the buttons:",
             "Play, Stats, Settings, Skins ->",
@@ -115,6 +127,7 @@ const patchnotes = {
             "- Added a fourth white button for stats",
             "- Moved white buttons even more to the left",
 
+            "",
             "-> Other:",
             "- Added 4 new skins",
             "- Buying a skin now saves the game",
@@ -131,10 +144,12 @@ const patchnotes = {
             "- Can be claimed in the shop once per day",
             "- Contains 5 coins",
 
+            "",
             "-> Skill Balance:",
             "- Gold Digger: Increased chance from 10% to 20%",
             "- Adjusted skill prices",
 
+            "",
             "-> Skill prices:",
             "- Reduced prices:",
             "- Common: 50 -> 25",
@@ -143,6 +158,7 @@ const patchnotes = {
             "- Epic: 400 -> 200",
             "- No refunds.",
 
+            "",
             "-> Other:",
             "- Shop now displays skill description",
             "- Player: Added shop button in the top right",
@@ -153,6 +169,7 @@ const patchnotes = {
             "- Implemented WGGJ",
             "- Added a donate button",
 
+            "",
             "-> Skins:",
             "- Added 4 new skins (16 total)",
             "- Medibird, 24 Coins",
@@ -171,16 +188,19 @@ const patchnotes = {
             "- Cat 3, 20 Coins",
             "- Cat 4, 20 Coins",
 
+            "",
             "-> Play:",
             "- Added a Pause button (top right)",
             "- Game can also be paused by pressing P",
             "- Equipped Skill is now shown (top left)",
 
+            "",
             "-> Death Effect:",
             "- Added a death effect",
             "- Appears when the bird crashes",
             "- Is animated",
 
+            "",
             "-> Other:",
             "- Updated WGGJ from v1.0 to v1.1",
             "- Improved text scaling/sizes",
@@ -193,6 +213,7 @@ const patchnotes = {
             "- Coins gathered this run are now displayed",
             "- Increased the bird's fall speed",
 
+            "",
             "-> Minor:",
             "- Stats: added amount of Skills",
             "- When no Skill is equipped, the background is",
@@ -206,19 +227,20 @@ const patchnotes = {
             "- New design for normal buttons",
             "- New images for import and export buttons",
 
+            "",
             "-> Gameplay:",
             "- Game is now saved the moment you die, instead",
             "of when you click Continue",
             "- Increased max. player name length from 8 to 12",
 
+            "",
             "-> Other:",
             "- Coins this run learned what a singular is",
             "- Shop: Added Daily Gift text",
             "- Current version is now at the bottom on PC too",
         ],
     "v1.5":
-        [
-            `
+        `
 Shopping Bird Update
 
 -> Shop:
@@ -246,11 +268,9 @@ Shopping Bird Update
 -> Other:
 - Made it a bit easier for me to add patch notes
 - Updated WGGJ from v1.1 to v1.2.1
-            `
-        ],
+            `,
     "v1.5.1":
-        [
-            `
+        `
 -> New Skins:
 - Added 4 new skins (28 total)
 - Snake, 29 Coins
@@ -263,11 +283,9 @@ Shopping Bird Update
 - Player: Moved import button next to export button
 - Patch notes: font size adjustments
 - Fixed time not ticking up bug
-            `
-        ],
+            `,
     "v1.6":
-        [
-            `
+        `
 -> Skills:
 - New Epic Skill: Ball Bird
 - Updated all 4 old skill images
@@ -297,10 +315,9 @@ Shopping Bird Update
 - Added sound for clicking buttons
 - Closing stats now saves
 - Updated WGGJ from v1.2.1 to v1.5
-`],
+`,
     "v1.7":
-        [
-            `
+        `
 -> Play:
 - Reworked how the bird rotates, it is entirely visual now
 - Added player name and mode name to the top left
@@ -329,72 +346,183 @@ Shopping Bird Update
 - Changed mobile detection from 500 to 640
 - Code improvements
 - Updated WGGJ from v1.5 to v1.6
-`]
+`,
+    "v1.8":
+        `
+-> Idle Bird
+- Major new idle game-like feature
+- Play normal runs within it to increase point production (based on highscore)
+- Skins can be used normally, Skills are disabled entirely
+- Instead of Coins, Feathers spawn (10% chance every pair of pipes)
+
+- There are upgrades for Points and for Feathers:
+- More Points (max. 100): costs Points, increases point production by 1% every level (= max. x2)
+- Springs (max. 50): costs Points, first level enables automatic jumping, further levels reduce the cooldown (0.7s - 0.2s)
+- Fast Start (max. 100): costs Feathers, after making it through the first pipe, one point is applied for every level
+- Pipe Research (max. 10): costs Feathers, first level enables height adjustment based on the upcoming pair of pipes,
+- also displayed in the top left (yellow = just right, red = too high, blue = too low),
+- further levels make it easier to stay out of the red and blue areas
+
+- When having at least 100 Feathers (at the same time), Prestige becomes available
+- Prestige resets almost everything in Idle Mode (doesn't reset: Golden Feathers, stats) and gives Golden Feathers and real Coins (for shop)
+- Golden Feathers formula: log2(current points) OR current feathers / 4, whatever is lower
+- Coins formula: log2(current points * 6) OR total feathers / 2 OR base point prod (highscore) / 10, whatever is lowest
+- Every Golden Feather increases point production by +1%
+
+- There is a help text on the right side to explain the basics of the mode
+- Run number, points, point production, and Golden Feathers are displayed at the top
+- 2 new songs (Lazy Feathers and For All The Birds) can be heard here
+- UI gets adjusted when playing in portrait mode, but landscape is preferred (especially for text readability)
+- More content (such as Golden Feather upgrades or balance changes) may come in future updates
+
+-> Music: 
+- 2 new songs:
+- Lazy Feathers (idle bird)
+- For All The Birds (idle bird: play)
+- Renamed existing songs:
+- Toasty Menu -> Nest Rest
+- Toasty Main -> Toasty Flight
+- Toasty Shop (remains unchanged)
+
+-> Main menu:
+- Changed buttons on the left
+- Moved game logo and name
+- Added button for Idle Bird mode
+
+-> Player:
+- Is now named after the player's name
+- Massively improved design on mobile (different skins/skills grid, moved text & more)
+
+-> Patch notes:
+- Patch notes are now scrollable (vertically useful for long updates, horizontally on mobile, or for this specific line :p)
+- Changed colors
+- Added dark theme
+- Added missing transition fade
+- Code changes and performance improvements
+
+-> Other:
+- Added Balnoom license, ToS and privacy policy
+- They can be accessed from Settings
+- Shop: added disappearing coin animation when opening the Daily Gift
+- Updated ground animations
+- Updated WGGJ from v1.6 to v1.7
+`
 };
+
+var patchNotesUpdated = false;
 
 scenes["patchnotes"] = new Scene(
     () => {
         // Init
-        createSquare("bg", 0, 0, 1, 1, "green");
+        createSquare("bg", 0, 0, 1, 1, "darkgreen");
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
-        createText("header", 0.11, 0.09, "Patch notes", { size: 36, color: "darkgreen" });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Patch notes", size: 32, color: "darkgreen" } });
+        objects["header"].init();
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
-            loadScene("mainmenu");
-        });
-        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
+            audioPlaySound("click");
+            createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu");', 300);
+        }, { aText: { text: "Back", size: 40 } });
+
+        // dark mode button
+        createButton("darkmodebutton", 0.8, 0.01, 0.2, 0.1, "button", () => {
+            if (objects["topBgSquare"].color === "gray") {
+                objects["topBgSquare"].color = "darkslategray";
+                objects["midBgSquare"].color = "rgb(7, 7, 7)";
+                objects["versionText"].color = "white";
+                objects["patchNotes"].color = "rgb(214, 214, 214)";
+            }
+            else {
+                objects["topBgSquare"].color = "gray";
+                objects["midBgSquare"].color = "lightgray";
+                objects["versionText"].color = "black";
+                objects["patchNotes"].color = "black";
+            }
+        }, { aText: { text: "Dark Mode", size: 32 } });
 
         // Top navigation
-        createSquare("topBgSquare", 0.1, 0.1, 0.8, 0.1, "darkgray");
-        createSquare("midBgSquare", 0.1, 0.2, 0.8, 0.65, "gray");
+        createSquare("topBgSquare", 0.1, 0.1, 0.8, 0.1, "gray");
+        createSquare("midBgSquare", 0.1, 0.2, 0.8, 0.65, "lightgray");
 
         createButton("goLeft", 0.1, 0.1, 0.05, 0.1, "button", () => {
             audioPlaySound("click");
             if (selectedVersion > 0) selectedVersion -= 1;
+
+            if (selectedVersion <= 0) objects["goLeft"].power = false;
+            objects["goRight"].power = true;
+
+            patchNotesUpdated = false;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
-        });
-        createText("goLeftText", 0.125, 0.185, "<", { size: 60 });
+        }, { aText: { text: "<", size: 60 }});
 
         createButton("goRight", 0.85, 0.1, 0.05, 0.1, "button", () => {
             audioPlaySound("click");
             if (selectedVersion < newestVersion) selectedVersion += 1;
+
+            if (selectedVersion >= newestVersion) objects["goRight"].power = false;
+            objects["goLeft"].power = true;
+
+            patchNotesUpdated = false;
             objects["versionText"].text = "Version " + Object.keys(patchnotes)[selectedVersion];
-        });
-        createText("goRightText", 0.875, 0.185, ">", { size: 60 });
+        }, { aText: { text: ">", size: 60 }, power: false });
+
+
 
         createText("versionText", 0.5, 0.185, "Version v" + gameVersion, { size: 40 });
 
+        createSmartText("patchNotes", 0.1125, 0.25, "", { size: 20, align: "left", noScaling: true });
+        createContainer("patchNotesScroll", 0.1, 0.2, 0.8, 0.65,
+            { YScroll: true, YScrollMod: 2, YLimit: [0.001, 0], XScroll: true, XLimit: [0.001, 0] },
+            ["patchNotes"]);
+
+        /*
         for (vtc = 0; vtc < 32; vtc++) {
             createText("text" + vtc, 0.1125, 0.225 + (0.021 * vtc), "", { size: 15, align: "left", noScaling: true });
         }
+        */
+
+        patchNotesUpdated = false;
+
+        // transition fade
+        createImage("fade", 0, 0, 1, 1, "fade");
+        createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
 
-        let currentVersionText = patchnotes[Object.keys(patchnotes)[selectedVersion]];
-        if (currentVersionText.length == 1) {
-            currentVersionText = currentVersionText[0].split("\n");
-            currentVersionText.shift();
-        }
+        // only performed when needed for good performance
+        if (patchNotesUpdated === false) {
+            let currentVersionText = patchnotes[Object.keys(patchnotes)[selectedVersion]];
+            let amount = 0;
 
-        for (vt = 0; vt < 32; vt++) {
-            if (vt < currentVersionText.length) {
-                objects["text" + vt].text = currentVersionText[vt];
-                if (objects["text" + vt].text.substr(0, 2) == "->") {
-                    objects["text" + vt].fontSize = 24;
-                    objects["text" + vt].x = 0.1125;
-                }
-                else {
-                    objects["text" + vt].fontSize = 20;
-                    objects["text" + vt].x = 0.125;
-                }
+            // converts non- ["", "", ""] formats to work the same
+            if (typeof (currentVersionText) === "string" && currentVersionText.length == 1) {
+                // handles [``] format
+                currentVersionText = currentVersionText[0];
+                currentVersionText.shift();
+                amount = currentVersionText.split("\n").length - 1;
+            }
+            else if (typeof (currentVersionText) === "string") {
+                // handles `` format
+                amount = currentVersionText.split("\n").length - 1;
             }
             else {
-                objects["text" + vt].text = "";
+                let text = currentVersionText;
+                currentVersionText = "";
+                for (let row of text) {
+                    currentVersionText += row + "\n";
+                }
+                amount = text.length;
             }
+
+            objects["patchNotes"].text = currentVersionText;
+            objects["patchNotesScroll"].YLimit[1] = (amount * 0.05) - 0.99;
+            objects["patchNotesScroll"].scrolledY = 0;
+
+            patchNotesUpdated = true;
         }
     }
 );

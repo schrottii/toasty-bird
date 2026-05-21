@@ -55,13 +55,25 @@ images = {
     "skills/carefuljumper": "skills/carefuljumper.png",
     "skills/ballbird": "skills/ballbird.png",
 
+    // upgrades
+    "upgrades/morePoints": "upgrades/morePoints.png",
+    "upgrades/springs": "upgrades/springs.png",
+    "upgrades/pipeResearch": "upgrades/pipeResearch.png",
+    "upgrades/fastStart": "upgrades/fastStart.png",
+
+    // other
     menuground: "menu-ground.png",
     menuground2: "menu-ground2.png",
+    menuground3: "menu-ground3.png",
     clouds: "clouds.png",
     coin: "coin.png",
     coin_animation: "coin_animation.png",
     boom: "boom.png",
     boom2: "boom2.png",
+
+    feather: "idlemode/feather.png",
+    goldenfeather: "idlemode/goldenfeather.png",
+    points: "points.png",
 
     pipeUp: "pipe-up.png",
     pipeDown: "pipe-down.png",
@@ -76,11 +88,13 @@ images = {
 };
 
 audio = {
-    "menu": "menu-theme.mp3",
-    "playing": "toasty-bird.mp3",
-    "shop": "toasty-shop.mp3",
+    "menu": "music/Nest Rest.mp3",
+    "playing": "music/Toasty Flight.mp3",
+    "shop": "music/Toasty Shop.mp3",
+    "idlemode": "music/Lazy Feathers.mp3",
+    "idlemode_playing": "music/For All The Birds.mp3",
 
-    "click": "448086__breviceps__normal-click.wav",
+    "click": "sounds/448086__breviceps__normal-click.wav",
 };
 
 wggj.config.gameName = "Toasty Bird";

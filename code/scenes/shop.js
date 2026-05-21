@@ -1,5 +1,5 @@
 function toggleShopConfirm(state) {
-    setTimeout(() => objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyButtonText"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyCancelButtonText"].power = objects["confirmBuyImage"].power = state);
+    setTimeout(() => objects["confirmBuyBg"].power = objects["confirmBuyHeader"].power = objects["confirmBuyButton"].power = objects["confirmBuyCancelButton"].power = objects["confirmBuyImage"].power = state);
 }
 
 scenes["shop"] = new Scene(
@@ -26,16 +26,15 @@ scenes["shop"] = new Scene(
         }
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
-        createText("header", 0.11, 0.09, "Shop", { size: 48, color: "darkgreen" });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Shop", size: 48, color: "darkgreen" } });
+        objects["header"].init();
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu"); save();', 300);
-        });
-        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
+        }, { aText: { text: "Back", size: 40 } });
 
         createSmartText("coinText", 0.9, 0.1, "0 Coins", { color: "orange", size: 40, align: "right", images: { coin: createImage("coinImage", 0.925, 0.05, 0.05, 0.05, "coin")} });
         //createImage("coinImage", 0.925, 0.05, 0.05, 0.05, "coin", { quadratic: true, centered: true });
@@ -64,8 +63,10 @@ scenes["shop"] = new Scene(
 
             createSquare("scrosecGiftBG", 2 + extraX, 0.15, 0.3, 0.6, "#048B04"),
             createText("scrosecGiftTXT", 2 + 0.3 / 2 + extraX, 0.15, "Daily Gift", { size: 40 }),
-            "dailygift", "dailyGiftText",
+            "dailygift", "dailyGiftText", "dailyGiftAnicoin"
         ]);
+
+
 
         // the offers
 
@@ -130,6 +131,8 @@ scenes["shop"] = new Scene(
             objects["shopScroll"].children.push("skin6", "skincheck6", "skinname6", "skintext6");
         }
 
+
+
         // skill
         ski = ski % skills.length;
         createButton("skill0", 1.45 + extraX, 0.35, isMobile() ? 0.1 : 0.2, isMobile() ? 0.1 : 0.2, "unknown", (me) => {
@@ -141,6 +144,8 @@ scenes["shop"] = new Scene(
         createSmartText("skilltext0", 1.65 + extraX, 0.725, "...", { size: 24, images: { coin: "coinImage" } });
         createText("skilldesc0", 1.55 + extraX, 0.5, "...", { size: 20, align: "left" });
         createText("skilldesc0b", 1.55 + extraX, 0.54, "...", { size: 20, align: "left" });
+
+
 
         // Daily Gift
         createButton("dailygift", 2.15 + extraX, 0.3, 0.15, 0.15, "whiteGift", () => {
@@ -154,15 +159,27 @@ scenes["shop"] = new Scene(
                 game.coins += amount;
                 game.stats.totalcoins += amount;
                 game.stats.totalgifts += 1;
+
                 objects["dailygift"].image = "claimedGift";
                 objects["dailyGiftText"].text = "Come back tomorrow!";
+
+                objects["dailyGiftAnicoin"].power = true;
+                objects["dailyGiftAnicoin"].alpha = 1;
+                createAnimation("gift_animation", "dailyGiftAnicoin", (t, d) => { t.y -= 0.15 * d; t.alpha -= 0.5 * d; t.w -= 0.05 * d; t.h -= 0.05 * d; }, 5, true);
             }
         }, { quadratic: true, centered: true });
         createText("dailyGiftText", 2.15 + extraX, 0.7, "Click to claim!", { color: "yellow", size: isMobile() ? 16 : 24 });
+
+        // update daily gift
         if (parseInt(game.lastGift) == parseInt(today)) {
             objects["dailygift"].image = "claimedGift";
             objects["dailyGiftText"].text = "Come back tomorrow!";
         }
+
+        // animation
+        createImage("dailyGiftAnicoin", 2.15 + extraX, 0.3, 0.15, 0.15, "coin", { power: false, quadratic: true, centered: true });
+
+
 
         // buy confirmation
         createSquare("confirmBuyBg", 0.1, 0.2, 0.8, 0.6, "brown", { power: false });
@@ -174,12 +191,10 @@ scenes["shop"] = new Scene(
             toggleShopConfirm(false);
             if (objects["confirmBuyButton"].config.skinID != -1) getSkin(objects["confirmBuyButton"].config.skinID).buySkin(true);
             else if (objects["confirmBuyButton"].config.skillID != -1) getSkill(objects["confirmBuyButton"].config.skillID).buy(true);
-        }, { power: false });
-        createText("confirmBuyButtonText", 0.35, 0.775, "YES", { size: 20, power: false });
+        }, { aText: { text: "YES", size: 20 }, power: false });
         createButton("confirmBuyCancelButton", 0.55, 0.7, 0.2, 0.1, "button", () => {
             toggleShopConfirm(false);
-        }, { power: false });
-        createText("confirmBuyCancelButtonText", 0.65, 0.775, "NO", { size: 20, power: false });
+        }, { aText: { text: "NO", size: 20 }, power: false });
 
         audioPlayMusic("shop");
 

@@ -11,23 +11,21 @@ scenes["stats"] = new Scene(
         createImage("menuground3", 0, 0, 2, 0.1, "menuground");
 
         // Header
-        createImage("headerBg", 0.01, 0.01, 0.2, 0.1, "title");
-        createText("header", 0.11, 0.09, "Stats", { size: 48, color: "darkgreen" });
+        createImage("header", 0.01, 0.01, 0.2, 0.1, "title", { aText: { text: "Stats", size: 48, color: "darkgreen" } });
+        objects["header"].init();
 
         createText("playerName", 0.5, 0.3, "Player", { size: 80 });
         createButton("playerNameButton", 0.75, 0.15, 0.05, 0.05, "button", () => {
             let newName = prompt("New player name?", "Peter").slice(0, 12);
             game.name = newName;
-        });
-        createText("playerNameButtonText", 0.775, 0.2, "*", { size: 40 });
+        }, { aText: { text: "*", size: 40 } });
 
         // Back button
         createButton("backbutton", 0.4, 0.875, 0.2, 0.1, "button", () => {
             audioPlaySound("click");
             createAnimation("transOut", "fade", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu"); save();', 300);
-        });
-        createText("buttonText", 0.5, 0.95, "Back", { size: 40 });
+        }, { aText: { text: "Back", size: 40 } });
 
         // Export button
         createButton("buttonExport", 0.2, 0.7, 0.1, 0.1, "export", () => {
@@ -59,17 +57,11 @@ scenes["stats"] = new Scene(
         // transition fade
         createImage("fade", 0, 0, 1, 1, "fade");
         createAnimation("transIn", "fade", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        groundAnimation = 0;
     },
     (tick) => {
         // Loop
-        groundAnimation += tick;
-        objects["menuground"].x -= tick;
-        objects["menuground3"].x -= tick;
-        if (groundAnimation >= 1) {
-            groundAnimation = 0;
-            objects["menuground"].x = 0;
-            objects["menuground3"].x = 0;
-        }
+        groundAnimationLoop(tick);
 
         objects["stat1"].text = "Highscore: " + game.stats.highscore;
         objects["stat2"].text = "Total Plays: " + game.stats.totalplays;
