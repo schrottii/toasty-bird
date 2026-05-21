@@ -96,17 +96,17 @@ class FeatherUpgrade extends Upgrade {
     }
 
     getLevel() {
-        if (game.idlemode.pointupgrades[this.id] != undefined) {
-            return Math.min(game.idlemode.pointupgrades[this.id], this.getMaxLevel());
+        if (game.idlemode.featherupgrades[this.id] != undefined) {
+            return Math.min(game.idlemode.featherupgrades[this.id], this.getMaxLevel());
         }
         return 0;
     }
 
     setLevel(x) {
-        if (game.idlemode.pointupgrades[this.id] == undefined) {
-            game.idlemode.pointupgrades[this.id] = x;
+        if (game.idlemode.featherupgrades[this.id] == undefined) {
+            game.idlemode.featherupgrades[this.id] = x;
         }
-        game.idlemode.pointupgrades[this.id] = x;
+        game.idlemode.featherupgrades[this.id] = x;
     }
 }
 
@@ -119,17 +119,17 @@ class PointUpgrade extends Upgrade {
     }
 
     getLevel() {
-        if (game.idlemode.featherupgrades[this.id] != undefined) {
-            return Math.min(game.idlemode.featherupgrades[this.id], this.getMaxLevel());
+        if (game.idlemode.pointupgrades[this.id] != undefined) {
+            return Math.min(game.idlemode.pointupgrades[this.id], this.getMaxLevel());
         }
         return 0;
     }
 
     setLevel(x) {
-        if (game.idlemode.featherupgrades[this.id] == undefined) {
-            game.idlemode.featherupgrades[this.id] = x;
+        if (game.idlemode.pointupgrades[this.id] == undefined) {
+            game.idlemode.pointupgrades[this.id] = x;
         }
-        game.idlemode.featherupgrades[this.id] = x;
+        game.idlemode.pointupgrades[this.id] = x;
     }
 }
 

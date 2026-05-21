@@ -14,6 +14,8 @@ class GameRun {
         this.playerPoints = 0;
         this.playerCoins = 0;
 
+        this.springTime = 0; // 0 - 1
+
         this.state = ""; // running / lost / paused
     }
 
@@ -57,13 +59,14 @@ function jump(source = "") {
         return false;
     }
     // Jump!
-    if (objects.player.upTicks <= 0.001 && currentRun.state == "running") {
+    if ((objects.player.upTicks <= 0.001 || source == "auto") && currentRun.state == "running") {
         if (!getSkill(5).isEquipped()) {
             objects.player.velocity = -0.01;
             objects.player.upTicks = getSkill(3).isEquipped() ? 10 : 20;
             objects.player.snip = [0, 32, 32, 32];
 
-            game.increaseStat("jumps", 1);
+            if (source != "auto") game.increaseStat("jumps", 1);
+            else game.increaseStat("totalimautojumps", 1);
         }
         else {
             if (objects.player.velocity > 0) {
@@ -131,6 +134,10 @@ scenes["play"] = new Scene(
         createSquare("top1", 0, 0, 0.175, 0.0475, "#006800", { foreground: true });
         createText("topPlayerName", 0.005, 0.03, game.name, { align: "left", size: 20, foreground: true });
         createText("topModeName", 0.005, 0.05, currentRun.getModeName(), { align: "left", size: 16, foreground: true });
+
+        if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
+            createSquare("top_spring", 0, 0.1, 0.175, 0.02, "#006420", { foreground: true });
+        }
 
         // Skill (left)
         createImage("skillsListBg0", 0.125, 0.05, 0.1, 0.1, "invBg", { quadratic: true, centered: true, foreground: true });
@@ -302,7 +309,13 @@ scenes["play"] = new Scene(
             objects.player.y = Math.max(0, Math.min(0.81, objects.player.y + objects.player.velocity * (tick * 60)));
             if (objects.player.upTicks < 0) {
                 // fall
-                objects.player.velocity += 0.00015 * (tick * 60);
+                if (gamemode == "idlemode" && objects.player.y < 0.6) {
+                    objects.player.velocity += 0.00015 * (tick * 60) * (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
+                }
+                else if (gamemode == "idlemode" && objects.player.y > 0.6) {
+                    objects.player.velocity += 0.00015 * (tick * 60) / (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
+                }
+                else objects.player.velocity += 0.00015 * (tick * 60);
             }
             else {
                 // jump
@@ -316,6 +329,15 @@ scenes["play"] = new Scene(
             }
             objects.player.rotatevelocity = (objects.player.rotatevelocity * 0.9) + (objects.player.velocity * 0.1);
             if (game.settings.birdRotation) objects.player.rotate = -365 * Math.max(-0.12, Math.min(0.0777, -objects.player.rotatevelocity * 7.77));
+
+            if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
+                currentRun.springTime -= tick;
+                if (currentRun.springTime < 0) {
+                    // auto jump
+                    currentRun.springTime = 1.5 - 0.01 * game.idlemode.pointupgrades.springs;
+                    jump("auto");
+                }
+            }
 
             // Clouds
             for (i = 1; i < 5; i++) {
@@ -351,5 +373,9 @@ scenes["play"] = new Scene(
         objects["pointsDisplay"].text = currentRun.playerPoints + " Point" + (currentRun.playerPoints != 1 ? "s" : "");
         objects["coinsDisplay"].text = currentRun.playerCoins + " Coin" + (currentRun.playerCoins != 1 ? "s" : "");
         objects["coinsDisplay"].power = currentRun.playerCoins > 0;
+
+        if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
+            objects["top_spring"].w = 0.175 * currentRun.springTime;
+        }
     }
 );
