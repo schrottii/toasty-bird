@@ -139,7 +139,7 @@ scenes["play"] = new Scene(
         createText("topModeName", 0.005, 0.05, currentRun.getModeName(), { align: "left", size: 16, foreground: true });
 
         if (gamemode == "idlemode") {
-            if (game.idlemode.pointupgrades.springs > 0) {
+            if (upgrades.pointupgrades.springs.getLevel() > 0) {
                 createSquare("top_spring", 0, 0.1, 0.175, 0.02, "#006420", { foreground: true });
             }
             createSquare("top_piperesearch", 0.1, 0.15, 0.02, 0.02, "yellow", { foreground: true });
@@ -302,6 +302,7 @@ scenes["play"] = new Scene(
 
                         if (gamemode == "normal") game.coins += amount;
                         if (gamemode == "idlemode") game.idlemode.feathers += amount;
+                        if (gamemode == "idlemode") game.idlemode.totalfeathers += amount;
                         if (gamemode == "idlemode") game.stats.totalimfeathers += amount;
                     }
 
@@ -317,11 +318,11 @@ scenes["play"] = new Scene(
             objects.player.y = Math.max(0, Math.min(0.81, objects.player.y + objects.player.velocity * (tick * 60)));
 
             if (gamemode == "idlemode" && objects.player.y < currentRun.pipeResearchYs[0] /*0.4*/) {
-                objects.player.velocity += 0.00015 * (tick * 60) * (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
+                objects.player.velocity += 0.00015 * (tick * 60) * (1 + upgrades.featherupgrades.pipeResearch.getLevel() * 0.2);
                 objects["top_piperesearch"].color = "red";
             }
             else if (gamemode == "idlemode" && objects.player.y > currentRun.pipeResearchYs[1] /*0.6*/) {
-                if (objects.player.upTicks > 0) objects.player.velocity -= 0.00015 * (tick * 60) * (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
+                if (objects.player.upTicks > 0) objects.player.velocity -= 0.00015 * (tick * 60) * (1 + upgrades.featherupgrades.pipeResearch.getLevel() * 0.2);
                 objects["top_piperesearch"].color = "blue";
             }
             else if (gamemode == "idlemode") {
@@ -347,19 +348,20 @@ scenes["play"] = new Scene(
             objects.player.rotatevelocity = (objects.player.rotatevelocity * 0.9) + (objects.player.velocity * 0.1);
             if (game.settings.birdRotation) objects.player.rotate = -365 * Math.max(-0.12, Math.min(0.0777, -objects.player.rotatevelocity * 7.77));
 
-            if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
+            if (gamemode == "idlemode" && upgrades.pointupgrades.springs.getLevel() > 0) {
                 currentRun.springTime -= tick;
                 if (currentRun.springTime < 0) {
                     //console.log(objects.player.y, currentRun.pipeResearchYs[1])
-                    if (objects.player.y >= currentRun.pipeResearchYs[1] - (0.04 + game.idlemode.pointupgrades.pipeResearch * 0.003)) {
+                    if (objects.player.y >= currentRun.pipeResearchYs[1] - (0.04 + upgrades.featherupgrades.pipeResearch.getLevel() * 0.003)) {
                         // auto jump
-                        currentRun.springTime = 1 - 0.009 * game.idlemode.pointupgrades.springs;
+                        currentRun.springTime = 0.7 - 0.01 * upgrades.pointupgrades.springs.getLevel();
+                        game.stats.totalimautojumps++;
                         jump("auto");
                     }
 
                     if (currentRun.pipeResearchWait == false
                         && currentRun.pipes.length >= currentRun.playerPipes + 2
-                        && game.idlemode.pointupgrades.pipeResearch > 0) {
+                        && upgrades.featherupgrades.pipeResearch.getLevel() > 0) {
                         // 0 = lower pipe (higher Y), 1 = upper pipe (lower Y)
                         // get lower end of upper pipe ~ upper end of lower pipe
                         currentRun.pipeResearchWait = true;
@@ -410,7 +412,7 @@ scenes["play"] = new Scene(
         else objects["coinsDisplay"].text = currentRun.playerCoins + " Coin" + (currentRun.playerCoins != 1 ? "s" : "");
         objects["coinsDisplay"].power = currentRun.playerCoins > 0;
 
-        if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
+        if (gamemode == "idlemode" && upgrades.pointupgrades.springs.getLevel() > 0) {
             objects["top_spring"].w = 0.175 * currentRun.springTime;
         }
     }

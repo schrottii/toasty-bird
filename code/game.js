@@ -41,7 +41,8 @@ class SaveGame {
             totalimpoints: 0,
             totalimfeathers: 0,
             totalimgoldenfeathers: 0,
-            totalimautojumps: 0
+            totalimautojumps: 0,
+            totalimcoins: 0
         }
 
         this.settings = {

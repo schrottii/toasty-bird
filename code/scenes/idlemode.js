@@ -5,7 +5,7 @@ Based on your attempt that got furthest,
 points are generated every second.
 Both can be spent on upgrades.
 Prestige to get real coins and
-golden feathers.`;
+golden feathers. (+1% points each)`;
 
 var idleModeProdTime = 1;
 
@@ -140,22 +140,19 @@ const upgrades = {
             { maxLevel: 100 }),
         springs: new PointUpgrade("springs", "Springs", "upgrades/springs", "Bird can auto jump more often",
             (l) => 250 + 50 * l * Math.pow(1.1, l), (l) => 0,
-            { maxLevel: 100 }),
-        pipeResearch: new PointUpgrade("pipeResearch", "Pipe Research", "upgrades/pipeResearch", "Bird tries to be on the correct height",
-            (l) => Math.pow(10, l + 1), (l) => 0,
-            { maxLevel: 10 }),
+            { maxLevel: 50 }),
     },
     featherupgrades: {
         fastStart: new FeatherUpgrade("fastStart", "Fast Start", "upgrades/fastStart", "Begin with +1 point",
             (l) => 1 + l, (l) => l,
+            { maxLevel: 100 }),
+        pipeResearch: new FeatherUpgrade("pipeResearch", "Pipe Research", "upgrades/pipeResearch", "Bird tries to be on the correct height",
+            (l) => 5 * (l + 1), (l) => 0,
             { maxLevel: 10 }),
         /*
         aa: new FeatherUpgrade("4", "More Points", "", "Get more points",
             (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
             { maxLevel: 100 }),
-        aa: new FeatherUpgrade("5", "More Points", "", "Get more points",
-            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
-            { maxLevel: 100 })
             */
     }
 };
@@ -185,10 +182,10 @@ scenes["idlemode"] = new Scene(
 
         // run info
         let siz = isMobile() ? 16 : 24;
-        createText("runInfo1", 0.1, 0.15, "Run #150", { align: "left", size: siz });
-        createSmartText("runInfo2", 0.3, 0.15, "Points: 15548 i{points}", { align: "left", size: siz, images: { points: createImage("pointsImage", 0.925, 0.05, 0.05, 0.05, "points") } });
-        createText("runInfo3", 0.5, 0.15, "155/s", { align: "left", size: siz });
-        createSmartText("runInfo4", 0.7, 0.15, "??", { align: "left", size: siz, images: { goldenfeather: createImage("goldenfeather", 0.925, 0.05, 0.05, 0.05, "goldenfeather") } });
+        createText("runInfo1", 0.1, 0.15, "Run #150", { align: "center", size: siz });
+        createSmartText("runInfo2", 0.3, 0.15, "Points: 15548 i{points}", { align: "center", size: siz, images: { points: createImage("pointsImage", 0.925, 0.05, 0.05, 0.05, "points") } });
+        createText("runInfo3", 0.5, 0.15, "155/s", { align: "center", size: siz });
+        createSmartText("runInfo4", 0.7, 0.15, "??", { align: "center", size: siz, images: { goldenfeather: createImage("goldenfeather", 0.925, 0.05, 0.05, 0.05, "goldenfeather") } });
         createSquare("runInfoEpicRect", 0.09, 0.16, 0.82, 0.005, "red");
         createSquare("runInfoEpicRect2", 0.89, 0.16, 0.02, 0.01, "red");
 
@@ -219,7 +216,30 @@ scenes["idlemode"] = new Scene(
             currentRun.startRun("idlemode");
         }, { aText: { text: "Play", size: 40 } });
         //createButton("button2", 0.4, 0.2, 0.2, 0.1, "button", () => { }, { aText: { text: "Play", size: 40 }});
-        createButton("button3", 0.7, 0.2, 0.2, 0.1, "button", () => { }, { aText: { text: "Prestige", size: 40 }});
+        createButton("button3", 0.7, 0.2, 0.2, 0.1, "button", () => {
+            if (game.idlemode.feathers >= 100) {
+                // can prestige
+                let gainGF = Math.floor(Math.min(Math.log2(game.idlemode.points), game.idlemode.feathers / 4));
+                let gainCoins = Math.floor(Math.min(Math.min(Math.log2(game.idlemode.points * 6), game.idlemode.totalfeathers / 2), game.idlemode.pointprod / 10));
+
+                if (gainGF < 1 || gainCoins < 1) return;
+                if (isNaN(gainGF) || isNaN(gainCoins)) return;
+
+                if (confirm("Prestige for " + gainGF + " Golden Feathers and " + gainCoins + " Coins?")) {
+                    game.stats.totalimgoldenfeathers += gainGF;
+                    game.idlemode.goldenfeathers += gainGF;
+                    game.coins += gainCoins;
+                    game.stats.totalimcoins += gainCoins;
+
+                    game.newIdleMode(game.idlemode.goldenfeathers);
+                    game.idlemode.active = true;
+                    game.stats.totalimruns++;
+
+                    save();
+                }
+            }
+        }, { aText: { text: "Prestige", size: 40 } });
+        createSquare("button3_blackout", 0.7, 0.2, 0.2, 0.1, "#000000");
 
         // how it works
         createText("howToPlayHeader", 0.83, 0.4, "how to play", { size: isMobile() ? 16 : 24 });
@@ -244,6 +264,8 @@ scenes["idlemode"] = new Scene(
 
         objects["pointDisplay"].text = game.idlemode.feathers + "i{feather}";
 
+        objects["button3_blackout"].alpha = game.idlemode.feathers >= 100 ? 0 : 0.5;
+
         // update upgrades
         for (let u in upgrades.featherupgrades) {
             upgrades.featherupgrades[u].renderObjects();
@@ -257,7 +279,7 @@ scenes["idlemode"] = new Scene(
         if (idleModeProdTime < 0) {
             idleModeProdTime += 1;
 
-            let prod = Math.ceil(game.idlemode.pointprod * upgrades.pointupgrades.morePoints.getEffect());
+            let prod = Math.ceil(game.idlemode.pointprod * upgrades.pointupgrades.morePoints.getEffect() * (1 + 0.01 * game.idlemode.goldenfeathers));
             objects["runInfo3"].text = prod + "/s";
 
             game.idlemode.points += prod;
