@@ -12,9 +12,12 @@ class GameRun {
         this.pipesAmount = 0;
 
         this.playerPoints = 0;
+        this.playerPipes = 0;
         this.playerCoins = 0;
 
         this.springTime = 0; // 0 - 1
+        this.pipeResearchYs = [0.2, 0.8];
+        this.pipeResearchWait = false;
 
         this.state = ""; // running / lost / paused
     }
@@ -135,8 +138,11 @@ scenes["play"] = new Scene(
         createText("topPlayerName", 0.005, 0.03, game.name, { align: "left", size: 20, foreground: true });
         createText("topModeName", 0.005, 0.05, currentRun.getModeName(), { align: "left", size: 16, foreground: true });
 
-        if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
-            createSquare("top_spring", 0, 0.1, 0.175, 0.02, "#006420", { foreground: true });
+        if (gamemode == "idlemode") {
+            if (game.idlemode.pointupgrades.springs > 0) {
+                createSquare("top_spring", 0, 0.1, 0.175, 0.02, "#006420", { foreground: true });
+            }
+            createSquare("top_piperesearch", 0.1, 0.15, 0.02, 0.02, "yellow", { foreground: true });
         }
 
         // Skill (left)
@@ -285,6 +291,8 @@ scenes["play"] = new Scene(
                     currentRun.playerPoints += pointAmount;
                     game.increaseStat("points", pointAmount);
 
+                    currentRun.playerPipes += 2;
+
                     if (objects["coin" + (parseInt(currentRun.pipes[p][0].substr(4)) + 1)] != undefined) {
                         let amount = 1;
                         if (getSkill(2).isEquipped() && Math.random() >= 0.8) amount *= 2;
@@ -307,15 +315,22 @@ scenes["play"] = new Scene(
 
             // Player falling
             objects.player.y = Math.max(0, Math.min(0.81, objects.player.y + objects.player.velocity * (tick * 60)));
+
+            if (gamemode == "idlemode" && objects.player.y < currentRun.pipeResearchYs[0] /*0.4*/) {
+                objects.player.velocity += 0.00015 * (tick * 60) * (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
+                objects["top_piperesearch"].color = "red";
+            }
+            else if (gamemode == "idlemode" && objects.player.y > currentRun.pipeResearchYs[1] /*0.6*/) {
+                if (objects.player.upTicks > 0) objects.player.velocity -= 0.00015 * (tick * 60) * (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
+                objects["top_piperesearch"].color = "blue";
+            }
+            else if (gamemode == "idlemode") {
+                objects["top_piperesearch"].color = "yellow";
+            }
+
             if (objects.player.upTicks < 0) {
                 // fall
-                if (gamemode == "idlemode" && objects.player.y < 0.6) {
-                    objects.player.velocity += 0.00015 * (tick * 60) * (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
-                }
-                else if (gamemode == "idlemode" && objects.player.y > 0.6) {
-                    objects.player.velocity += 0.00015 * (tick * 60) / (1 + game.idlemode.pointupgrades.pipeResearch * 0.2);
-                }
-                else objects.player.velocity += 0.00015 * (tick * 60);
+                objects.player.velocity += 0.00015 * (tick * 60);
             }
             else {
                 // jump
@@ -327,15 +342,35 @@ scenes["play"] = new Scene(
                     objects.player.snip = [0, 0, 32, 32];
                 }
             }
+
+            // rotation
             objects.player.rotatevelocity = (objects.player.rotatevelocity * 0.9) + (objects.player.velocity * 0.1);
             if (game.settings.birdRotation) objects.player.rotate = -365 * Math.max(-0.12, Math.min(0.0777, -objects.player.rotatevelocity * 7.77));
 
             if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {
                 currentRun.springTime -= tick;
                 if (currentRun.springTime < 0) {
-                    // auto jump
-                    currentRun.springTime = 1.5 - 0.01 * game.idlemode.pointupgrades.springs;
-                    jump("auto");
+                    //console.log(objects.player.y, currentRun.pipeResearchYs[1])
+                    if (objects.player.y >= currentRun.pipeResearchYs[1] - (0.04 + game.idlemode.pointupgrades.pipeResearch * 0.003)) {
+                        // auto jump
+                        currentRun.springTime = 1 - 0.009 * game.idlemode.pointupgrades.springs;
+                        jump("auto");
+                    }
+
+                    if (currentRun.pipeResearchWait == false
+                        && currentRun.pipes.length >= currentRun.playerPipes + 2
+                        && game.idlemode.pointupgrades.pipeResearch > 0) {
+                        // 0 = lower pipe (higher Y), 1 = upper pipe (lower Y)
+                        // get lower end of upper pipe ~ upper end of lower pipe
+                        currentRun.pipeResearchWait = true;
+                        setTimeout(() => {
+                            currentRun.pipeResearchYs =
+                                [objects[currentRun.pipes[currentRun.playerPipes + 1][0]].y + (objects[currentRun.pipes[currentRun.playerPipes + 1][0]].h * 0.7),
+                                objects[currentRun.pipes[currentRun.playerPipes][0]].y * 1.3];
+                            currentRun.pipeResearchWait = false;
+                        }, 100);
+
+                    }
                 }
             }
 
@@ -371,7 +406,8 @@ scenes["play"] = new Scene(
 
         // Active no matter what
         objects["pointsDisplay"].text = currentRun.playerPoints + " Point" + (currentRun.playerPoints != 1 ? "s" : "");
-        objects["coinsDisplay"].text = currentRun.playerCoins + " Coin" + (currentRun.playerCoins != 1 ? "s" : "");
+        if (gamemode == "idlemode") objects["coinsDisplay"].text = currentRun.playerCoins + " Feather" + (currentRun.playerCoins != 1 ? "s" : "");
+        else objects["coinsDisplay"].text = currentRun.playerCoins + " Coin" + (currentRun.playerCoins != 1 ? "s" : "");
         objects["coinsDisplay"].power = currentRun.playerCoins > 0;
 
         if (gamemode == "idlemode" && game.idlemode.pointupgrades.springs > 0) {

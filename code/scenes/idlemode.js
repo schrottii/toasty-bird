@@ -64,7 +64,7 @@ class Upgrade {
         createText(n + "name", 0.025 + x, 0.475 + u * 0.15, "upgrade name", { align: "left", size: 24, color: "white" });
         createText(n + "description", 0.025 + x, 0.5 + u * 0.15, "", { align: "left", size: 18, color: "white", maxW: 0.2 });
         createText(n + "lvl", 0.025 + x, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
-        createSmartText(n + "price", 0.275 + x, 0.575 + u * 0.15, "10i{coin}", { align: "right", size: 20, color: "white", images: { feather: "featherImage", points: "pointsImage" } });
+        createSmartText(n + "price", 0.275 + x, 0.575 + u * 0.15, "10i{coin}", { align: "right", size: 20, color: "white", images: { feathers: "featherImage", points: "pointsImage" } });
 
         createButton(n + "buybtn",
             isMobile() ? 0.02 + x : 0.13 + x,
@@ -92,7 +92,7 @@ class FeatherUpgrade extends Upgrade {
         super(id, name, img, description, price, effect, config);
 
         // upgrade type specifics
-        this.currency = "feather";
+        this.currency = "feathers";
     }
 
     getLevel() {
