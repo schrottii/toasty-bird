@@ -1,11 +1,14 @@
 var idleModeHowToPlay = `
 Press play to start a run like normal.
-You get one feather for every pipe passed.
+Feathers randomly spawn in pipes
+(10% chance) and can be collected
 Based on your attempt that got furthest,
 points are generated every second.
 Both can be spent on upgrades.
+
 Prestige to get real coins and
-golden feathers. (+1% points each)`;
+golden feathers. (+1% points each)
+(Requirement: 100 Feathers)`;
 
 var idleModeProdTime = 1;
 
@@ -275,8 +278,10 @@ scenes["idlemode"] = new Scene(
         }
 
         // give points
+        if (tick > 0.1) tick = 0.1;
         idleModeProdTime -= tick;
         if (idleModeProdTime < 0) {
+            if (idleModeProdTime < 10) idleModeProdTime = 0;
             idleModeProdTime += 1;
 
             let prod = Math.ceil(game.idlemode.pointprod * upgrades.pointupgrades.morePoints.getEffect() * (1 + 0.01 * game.idlemode.goldenfeathers));

@@ -73,7 +73,7 @@ class Skill {
 
     isEquipped() {
         // this one is only for permanent (0 1)
-        return game.selSkills[0] == this.ID || game.selSkills[1] == this.ID;
+        return (game.selSkills[0] == this.ID || game.selSkills[1] == this.ID) && gamemode != "idlemode";
     }
 
     select(confirm = false) {

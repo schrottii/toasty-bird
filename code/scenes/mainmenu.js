@@ -1,10 +1,14 @@
 var groundAnimation = 0;
 
 function groundAnimationLoop(tick) {
+    if (tick > 0.1) tick = 0.1;
+
     groundAnimation += 0.5 * tick;
     objects["menuground"].x -= 0.5 * tick;
     if (objects["menuground3"]) objects["menuground3"].x -= 0.5 * tick;
+
     if (groundAnimation >= 0.5) {
+        if (groundAnimation > 5) groundAnimation = 0.5;
         groundAnimation -= 0.25;
         objects["menuground"].x += 0.25;
         if (objects["menuground3"]) objects["menuground3"].x += 0.25;

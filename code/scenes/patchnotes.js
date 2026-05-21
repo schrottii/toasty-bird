@@ -349,6 +349,32 @@ Shopping Bird Update
 `,
     "v1.8":
         `
+-> Idle Bird
+- Major new idle game-like feature
+- Play normal runs within it to increase point production (based on highscore)
+- Skins can be used normally, Skills are disabled entirely
+- Instead of Coins, Feathers spawn (10% chance every pair of pipes)
+
+- There are upgrades for Points and for Feathers:
+- More Points (max. 100): costs Points, increases point production by 1% every level (= max. x2)
+- Springs (max. 50): costs Points, first level enables automatic jumping, further levels reduce the cooldown (0.7s - 0.2s)
+- Fast Start (max. 100): costs Feathers, after making it through the first pipe, one point is applied for every level
+- Pipe Research (max. 10): costs Feathers, first level enables height adjustment based on the upcoming pair of pipes,
+- also displayed in the top left (yellow = just right, red = too high, blue = too low),
+- further levels make it easier to stay out of the red and blue areas
+
+- When having at least 100 Feathers (at the same time), Prestige becomes available
+- Prestige resets almost everything in Idle Mode (doesn't reset: Golden Feathers, stats) and gives Golden Feathers and real Coins (for shop)
+- Golden Feathers formula: log2(current points) OR current feathers / 4, whatever is lower
+- Coins formula: log2(current points * 6) OR total feathers / 2 OR base point prod (highscore) / 10, whatever is lowest
+- Every Golden Feather increases point production by +1%
+
+- There is a help text on the right side to explain the basics of the mode
+- Run number, points, point production, and Golden Feathers are displayed at the top
+- 2 new songs (Lazy Feathers and For All The Birds) can be heard here
+- UI gets adjusted when playing in portrait mode, but landscape is preferred (especially for text readability)
+- More content (such as Golden Feather upgrades or balance changes) may come in future updates
+
 -> Music: 
 - 2 new songs:
 - Lazy Feathers (idle bird)
