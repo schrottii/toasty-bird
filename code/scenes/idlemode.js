@@ -62,8 +62,9 @@ class Upgrade {
         createSquare(n + "bg2", 0.02 + x, 0.45 + (0.125 / 2) + u * 0.15, 0.3, 0.125 / 2, "#006B00");
 
         createText(n + "name", 0.025 + x, 0.475 + u * 0.15, "upgrade name", { align: "left", size: 24, color: "white" });
+        createText(n + "description", 0.025 + x, 0.5 + u * 0.15, "", { align: "left", size: 18, color: "white", maxW: 0.2 });
         createText(n + "lvl", 0.025 + x, 0.575 + u * 0.15, "lvl 0/50", { align: "left", size: 20, color: "white" });
-        createSmartText(n + "price", 0.275 + x, 0.575 + u * 0.15, "10i{coin}", { align: "right", size: 20, color: "white", images: { coin: "featherImage" } });
+        createSmartText(n + "price", 0.275 + x, 0.575 + u * 0.15, "10i{coin}", { align: "right", size: 20, color: "white", images: { feather: "featherImage", points: "pointsImage" } });
 
         createButton(n + "buybtn",
             isMobile() ? 0.02 + x : 0.13 + x,
@@ -78,8 +79,9 @@ class Upgrade {
         let n = "upg" + this.id;
 
         objects[n + "name"].text = this.name;
+        objects[n + "description"].text = this.description;
         objects[n + "lvl"].text = this.getLevel() + (this.getMaxLevel() != 1e9 ? "/" + this.getMaxLevel() : "");
-        objects[n + "price"].text = this.getCurrentPrice() + "i{coin}";
+        objects[n + "price"].text = this.getCurrentPrice() + "i{" + this.currency + "}";
 
         objects[n + "buybtn"].power = this.getLevel() < this.getMaxLevel();
     }
@@ -133,20 +135,18 @@ class PointUpgrade extends Upgrade {
 
 const upgrades = {
     pointupgrades: {
-        morePoints: new PointUpgrade("morePoints", "More Points", "", "Get more points",
+        morePoints: new PointUpgrade("morePoints", "More Points", "upgrades/morePoints", "Get more points",
             (l) => 100 + 100 * l * Math.pow(1.05, l), (l) => 1 + 0.01 * l,
             { maxLevel: 100 }),
-        /*
-        aa: new PointUpgrade("1", "More Points", "", "Get more points",
-            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
+        springs: new PointUpgrade("springs", "Springs", "upgrades/springs", "Bird can auto jump more often",
+            (l) => 250 + 50 * l * Math.pow(1.1, l), (l) => 0,
             { maxLevel: 100 }),
-        aa: new PointUpgrade("2", "More Points", "", "Get more points",
-            (l) => 10 + 5 * l * Math.pow(1.01, l), (l) => 0,
-            { maxLevel: 100 }),
-            */
+        pipeResearch: new PointUpgrade("pipeResearch", "Pipe Research", "upgrades/pipeResearch", "Bird tries to be on the correct height",
+            (l) => Math.pow(10, l + 1), (l) => 0,
+            { maxLevel: 10 }),
     },
     featherupgrades: {
-        fastStart: new FeatherUpgrade("fastStart", "Fast Start", "", "Begin with +1 point",
+        fastStart: new FeatherUpgrade("fastStart", "Fast Start", "upgrades/fastStart", "Begin with +1 point",
             (l) => 1 + l, (l) => l,
             { maxLevel: 10 }),
         /*
@@ -186,7 +186,7 @@ scenes["idlemode"] = new Scene(
         // run info
         let siz = isMobile() ? 16 : 24;
         createText("runInfo1", 0.1, 0.15, "Run #150", { align: "left", size: siz });
-        createText("runInfo2", 0.3, 0.15, "Points: 15548", { align: "left", size: siz });
+        createSmartText("runInfo2", 0.3, 0.15, "Points: 15548 i{points}", { align: "left", size: siz, images: { points: createImage("pointsImage", 0.925, 0.05, 0.05, 0.05, "points") } });
         createText("runInfo3", 0.5, 0.15, "155/s", { align: "left", size: siz });
         createSmartText("runInfo4", 0.7, 0.15, "??", { align: "left", size: siz, images: { goldenfeather: createImage("goldenfeather", 0.925, 0.05, 0.05, 0.05, "goldenfeather") } });
         createSquare("runInfoEpicRect", 0.09, 0.16, 0.82, 0.005, "red");
@@ -194,7 +194,7 @@ scenes["idlemode"] = new Scene(
 
         // upgrades
         createText("upgradesHeader", 0.1, 0.4, "Upgrades", { size: isMobile() ? 24 : 40 });
-        createSmartText("pointDisplay", 0.3, 0.4, "1 i{coin}", { size: 32, images: { coin: createImage("featherImage", 0.925, 0.05, 0.05, 0.05, "feather") }});
+        createSmartText("pointDisplay", 0.3, 0.4, "1 i{coin}", { size: 32, images: { feather: createImage("featherImage", 0.925, 0.05, 0.05, 0.05, "feather") }});
         createSquare("upgradesUnderLine", 0.025, 0.4, 0.3, 0.005, "red");
 
         let i = 0;
@@ -210,6 +210,7 @@ scenes["idlemode"] = new Scene(
         i = 0;
         for (let u in upgrades.pointupgrades) {
             upgrades.pointupgrades[u].createObjects(i, 0.35);
+            i++;
         }
 
         // buttons
@@ -238,10 +239,10 @@ scenes["idlemode"] = new Scene(
 
         // update info texts
         objects["runInfo1"].text = "Run #" + game.stats.totalimruns;
-        objects["runInfo2"].text = "Points: " + game.idlemode.points;
-        objects["runInfo4"].text = game.idlemode.goldenfeathers + " i{goldenfeather}";
+        objects["runInfo2"].text = "Points: " + game.idlemode.points + " i{points}";
+        objects["runInfo4"].text = game.idlemode.goldenfeathers + "   i{goldenfeather}";
 
-        objects["pointDisplay"].text = game.idlemode.feathers + "i{coin}";
+        objects["pointDisplay"].text = game.idlemode.feathers + "i{feather}";
 
         // update upgrades
         for (let u in upgrades.featherupgrades) {

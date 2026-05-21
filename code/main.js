@@ -55,6 +55,13 @@ images = {
     "skills/carefuljumper": "skills/carefuljumper.png",
     "skills/ballbird": "skills/ballbird.png",
 
+    // upgrades
+    "upgrades/morePoints": "upgrades/morePoints.png",
+    "upgrades/springs": "upgrades/springs.png",
+    "upgrades/pipeResearch": "upgrades/pipeResearch.png",
+    "upgrades/fastStart": "upgrades/fastStart.png",
+
+    // other
     menuground: "menu-ground.png",
     menuground2: "menu-ground2.png",
     menuground3: "menu-ground3.png",
@@ -66,6 +73,7 @@ images = {
 
     feather: "idlemode/feather.png",
     goldenfeather: "idlemode/goldenfeather.png",
+    points: "points.png",
 
     pipeUp: "pipe-up.png",
     pipeDown: "pipe-down.png",
